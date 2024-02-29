@@ -1,5 +1,5 @@
 import { useTheme } from "../contexts/themeContext";
-import "./css/themeToggleButton.css";
+import "./themeToggleButton.css";
 
 export function ThemeToggleButton() {
   const { currentTheme, toggleTheme } = useTheme();

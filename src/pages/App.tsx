@@ -1,6 +1,6 @@
 import "./App.css";
-import { ThemeToggleButton } from "./components/themeToggleButton";
-import { useTheme } from "./contexts/themeContext";
+import { ThemeToggleButton } from "../components/themeToggleButton";
+import { useTheme } from "../contexts/themeContext";
 
 function App() {
   const { currentTheme } = useTheme();
