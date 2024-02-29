@@ -6,10 +6,10 @@
   cursor: pointer;
 }
 
-.dark-svg {
-  fill: #fff;
+.theme-svg {
+  fill: #000;
 }
 
-.light-svg {
-  fill: #000;
+body.dark .theme-svg {
+  fill: #fff;
 }

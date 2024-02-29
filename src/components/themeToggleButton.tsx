@@ -6,7 +6,7 @@ export function ThemeToggleButton() {
 
   const LIGHT_SVG = (
     <svg
-      className='light-svg'
+      className='theme-svg'
       width='32'
       height='32'
       viewBox='0 0 16 16'
@@ -19,7 +19,7 @@ export function ThemeToggleButton() {
 
   const DARK_SVG = (
     <svg
-      className='dark-svg'
+      className='theme-svg'
       width='32'
       height='32'
       viewBox='0 0 16 16'
