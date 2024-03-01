@@ -1,0 +1,16 @@
+.panel-group {
+  align-items: stretch;
+}
+
+.resize-handle {
+  position: relative;
+}
+
+.resize-handle[data-resize-handle-active]::before {
+  background-color: black;
+  position: absolute;
+  width: 4px;
+  height: 100%;
+  translate: -2px; /* half of width */
+  content: "";
+}

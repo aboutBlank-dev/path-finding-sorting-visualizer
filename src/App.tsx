@@ -1,4 +1,6 @@
 import "./App.css";
+import "./pages/Pages.css";
+import "./ResizePanels.css";
 import NavBar from "./components/navbar";
 import Sorting from "./pages/Sorting";
 import Home from "./pages/Home";

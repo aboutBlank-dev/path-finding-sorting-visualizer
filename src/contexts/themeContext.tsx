@@ -23,9 +23,12 @@ export function ThemeContextProvider({
     const userPrefersDark = window.matchMedia(
       "(prefers-color-scheme: dark)"
     ).matches;
+
     if (userPrefersDark) {
       setTheme("dark");
       document.body.classList.add("dark");
+    } else {
+      document.body.classList.add("light");
     }
   }, []);
 
@@ -33,13 +36,15 @@ export function ThemeContextProvider({
   useEffect(() => {
     if (theme === "dark") {
       document.body.classList.add("dark");
+      document.body.classList.remove("light");
     } else {
       document.body.classList.remove("dark");
+      document.body.classList.add("light");
     }
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
+    setTheme((currTheme) => (currTheme === "light" ? "dark" : "light"));
   };
 
   return (

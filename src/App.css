@@ -1,7 +1,20 @@
-body {
-  margin: 0;
+html {
+  --nav-height: 3rem;
 }
 
-body.dark {
-  background-color: rgba(0, 0, 0, 0.237);
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+.dark {
+  --text-color: white;
+  --bg-color-1: #333;
+  --bg-color-2: #444;
+}
+
+.light {
+  --text-color: black;
+  --bg-color-1: #f4f4f4;
+  --bg-color-2: #e4e4e4;
 }

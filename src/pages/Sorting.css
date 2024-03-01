@@ -1,0 +1,18 @@
+.sorting-page {
+}
+
+.left,
+.right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.right {
+  background-color: navy;
+}
+
+.left {
+  background-color: red;
+}
