@@ -1,4 +1,7 @@
+body {
+  margin: 0;
+}
+
 body.dark {
   background-color: rgba(0, 0, 0, 0.237);
 }
-
