@@ -1,5 +1,6 @@
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import "./Sorting.css";
+import Canvas from "../components/sorting/canvas";
 export default function Sorting() {
   return (
     <div className='page sorting-page'>
@@ -9,7 +10,10 @@ export default function Sorting() {
         </Panel>
         <PanelResizeHandle className='resize-handle' />
         <Panel>
-          <div className='right'>Right</div>
+          <div className='right'>
+            <h1>Sorting</h1>
+            <Canvas className='canvas-1' />
+          </div>
         </Panel>
       </PanelGroup>
     </div>

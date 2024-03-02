@@ -4,15 +4,19 @@
 .left,
 .right {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
   height: 100%;
 }
 
 .right {
-  background-color: navy;
+  background-color: blue;
 }
 
 .left {
   background-color: red;
+}
+
+.right h1 {
+  color: white;
+  margin: 0;
 }
