@@ -1,0 +1,15 @@
+.step-slider {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.play-button {
+  width: 25px;
+  height: 25px;
+}
+
+.slider {
+  flex: 1;
+}

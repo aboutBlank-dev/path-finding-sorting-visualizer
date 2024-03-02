@@ -1,22 +1,24 @@
-.sorting-page {
-}
-
-.left,
-.right {
+.controls-section,
+.visualize-section {
   display: flex;
   flex-direction: column;
   height: 100%;
+  padding: 1rem;
+  box-sizing: border-box;
 }
 
-.right {
-  background-color: blue;
+.visualize-section {
+  background-color: var(--bg-color-2);
+  gap: 0.5rem;
 }
 
-.left {
-  background-color: red;
+.controls-section {
+  background-color: var(--bg-color-1);
 }
 
-.right h1 {
-  color: white;
-  margin: 0;
+.algorithm-title {
+  font-size: 1.5rem;
+  text-align: center;
+  text-transform: capitalize;
+  color: var(--text-color);
 }
