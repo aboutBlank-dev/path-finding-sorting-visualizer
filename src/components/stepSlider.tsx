@@ -6,6 +6,7 @@ type StepSliderProps = {
   onChange: (value: number) => void;
 };
 
+let cancel = false;
 export default function StepSlider({ max, onChange }: StepSliderProps) {
   const intervalMS = 100;
   const [activeStepIndex, setActiveStepIndex] = useState(max);
@@ -13,6 +14,7 @@ export default function StepSlider({ max, onChange }: StepSliderProps) {
 
   if (playing) {
     setTimeout(() => {
+      if (cancel) return;
       if (activeStepIndex < max) {
         setActiveStepIndex(activeStepIndex + 1);
         onChange(activeStepIndex + 1);
@@ -24,6 +26,7 @@ export default function StepSlider({ max, onChange }: StepSliderProps) {
 
   const togglePlaying = () => {
     setPlaying(!playing);
+    cancel = false;
   };
 
   //reset active step index when max changes
@@ -47,6 +50,7 @@ export default function StepSlider({ max, onChange }: StepSliderProps) {
 
           //manually stop playing if user changes the slider
           setPlaying(false);
+          cancel = true;
         }}
       />
     </div>
