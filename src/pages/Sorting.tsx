@@ -1,5 +1,5 @@
-import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import "./Sorting.css";
+import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import SortingCanvas from "../components/sorting/sortingCanvas";
 import StepSlider from "../components/stepSlider";
 import { useEffect, useState } from "react";
@@ -14,9 +14,10 @@ import { useNavigate, useParams } from "react-router-dom";
 export default function Sorting() {
   const [activeStepIndex, setActiveStepIndex] = useState(0);
   const sortingContext = useSorting();
+  const isMediumScreen = useMediaQuery("(max-width: 768px)");
+
   const params = useParams();
   const navigate = useNavigate();
-  const isMediumScreen = useMediaQuery("(max-width: 768px)");
 
   useEffect(() => {
     const algorithm = params.algorithm;
@@ -25,7 +26,7 @@ export default function Sorting() {
     } else {
       navigate("/sorting-visualizer/" + sortingContext.algorithm);
     }
-  }, []);
+  }, [params.algorithm]);
 
   function ControlsSection(order: number) {
     return (

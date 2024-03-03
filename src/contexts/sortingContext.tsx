@@ -1,11 +1,14 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import SortingIterationStep from "../types/sortingIterationStep";
 import { quickSort } from "../algorithms/sorting_algorithms/quick";
+import { bubbleSort } from "../algorithms/sorting_algorithms/bubble";
 
 export enum SortingAlgorithm {
   BUBBLE = "bubble",
   QUICK = "quick",
 }
+
+export const DEFAULT_SORTING_ALGORITHM = SortingAlgorithm.BUBBLE;
 
 export function isValidSortingAlgorithm(
   algorithm: string
@@ -26,7 +29,7 @@ export type SortingContextType = {
 const SortingContext = createContext<SortingContextType>({
   input: [],
   iterationSteps: [],
-  algorithm: SortingAlgorithm.QUICK,
+  algorithm: DEFAULT_SORTING_ALGORITHM,
   generateInput: () => {},
   setAlgorithm: () => {},
 });
@@ -41,8 +44,9 @@ export function SortingContextProvider({
     []
   );
   const [algorithm, setAlgorithm] = useState<SortingAlgorithm>(
-    SortingAlgorithm.QUICK
+    DEFAULT_SORTING_ALGORITHM
   );
+
   const generateInput = (size: number) => {
     const arr = [...Array(size).keys()].map((i) => i + 1);
     arr.sort(() => Math.random() - 0.5);
@@ -51,10 +55,11 @@ export function SortingContextProvider({
 
   const setSortingAlgorithm = (algorithm: SortingAlgorithm) => {
     setAlgorithm(algorithm);
+    generateInput(input.length);
   };
 
   useEffect(() => {
-    const iterationSteps = quickSort(input);
+    const iterationSteps = sort(input, algorithm);
 
     //manually add the final step/state (which contains no swaps)
     if (iterationSteps.length > 0) {
@@ -93,4 +98,15 @@ export function useSorting() {
     throw new Error("useSorting must be used within a SortingContext");
   }
   return context;
+}
+
+function sort(input: number[], algorithm: SortingAlgorithm) {
+  switch (algorithm) {
+    case SortingAlgorithm.QUICK:
+      return quickSort(input);
+    case SortingAlgorithm.BUBBLE:
+      return bubbleSort(input);
+    default:
+      return bubbleSort(input);
+  }
 }

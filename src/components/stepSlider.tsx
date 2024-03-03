@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./stepSlider.css";
 
 type StepSliderProps = {
@@ -25,6 +25,12 @@ export default function StepSlider({ max, onChange }: StepSliderProps) {
   const togglePlaying = () => {
     setPlaying(!playing);
   };
+
+  //reset active step index when max changes
+  useEffect(() => {
+    setActiveStepIndex(0);
+    onChange(0);
+  }, [max]);
 
   return (
     <div className='step-slider'>
