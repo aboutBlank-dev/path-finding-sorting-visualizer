@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
 import "./navBar.css";
 import { ThemeToggleButton } from "./themeToggleButton";
-import { DEFAULT_SORTING_ALGORITHM } from "../contexts/sortingContext";
+import {
+  DEFAULT_SORTING_ALGORITHM,
+  SortingAlgorithm,
+} from "../contexts/sortingContext";
 
 const NavBar = () => {
   return (

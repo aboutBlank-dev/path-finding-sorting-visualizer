@@ -8,7 +8,7 @@ export enum SortingAlgorithm {
   QUICK = "quick",
 }
 
-export const DEFAULT_SORTING_ALGORITHM = SortingAlgorithm.BUBBLE;
+export const DEFAULT_SORTING_ALGORITHM = SortingAlgorithm.QUICK;
 
 export function isValidSortingAlgorithm(
   algorithm: string
@@ -21,7 +21,7 @@ export function isValidSortingAlgorithm(
 export type SortingContextType = {
   input: number[];
   iterationSteps: SortingIterationStep[];
-  algorithm: SortingAlgorithm;
+  sortingAlgorithm: SortingAlgorithm;
   generateInput: (size: number) => void;
   setAlgorithm: (algorithm: SortingAlgorithm) => void;
 };
@@ -29,7 +29,7 @@ export type SortingContextType = {
 const SortingContext = createContext<SortingContextType>({
   input: [],
   iterationSteps: [],
-  algorithm: DEFAULT_SORTING_ALGORITHM,
+  sortingAlgorithm: DEFAULT_SORTING_ALGORITHM,
   generateInput: () => {},
   setAlgorithm: () => {},
 });
@@ -43,7 +43,7 @@ export function SortingContextProvider({
   const [iterationSteps, setIterationSteps] = useState<SortingIterationStep[]>(
     []
   );
-  const [algorithm, setAlgorithm] = useState<SortingAlgorithm>(
+  const [sortingAlgorithm, setAlgorithm] = useState<SortingAlgorithm>(
     DEFAULT_SORTING_ALGORITHM
   );
 
@@ -54,12 +54,15 @@ export function SortingContextProvider({
   };
 
   const setSortingAlgorithm = (algorithm: SortingAlgorithm) => {
-    setAlgorithm(algorithm);
-    generateInput(input.length);
+    if (!isValidSortingAlgorithm(algorithm)) return;
+    if (algorithm !== sortingAlgorithm) {
+      setAlgorithm(algorithm);
+      generateInput(input.length);
+    }
   };
 
   useEffect(() => {
-    const iterationSteps = sort(input, algorithm);
+    const iterationSteps = sort(input, sortingAlgorithm);
 
     //manually add the final step/state (which contains no swaps)
     if (iterationSteps.length > 0) {
@@ -70,7 +73,7 @@ export function SortingContextProvider({
     }
 
     setIterationSteps(iterationSteps);
-  }, [input, algorithm]);
+  }, [input, sortingAlgorithm]);
 
   //Generate input on mount
   useEffect(() => {
@@ -82,7 +85,7 @@ export function SortingContextProvider({
       value={{
         input: input,
         iterationSteps: iterationSteps,
-        algorithm: algorithm,
+        sortingAlgorithm: sortingAlgorithm,
         generateInput: generateInput,
         setAlgorithm: setSortingAlgorithm,
       }}

@@ -19,25 +19,22 @@ export default function Sorting() {
   const params = useParams();
   const navigate = useNavigate();
 
+  //Change the URL based on the algorithm
+  useEffect(() => {
+    navigate(`/sorting-visualizer/${sortingContext.sortingAlgorithm}`);
+  }, [sortingContext.sortingAlgorithm]);
+
   //Change the algorithm based on the URL
   useEffect(() => {
     const algorithm = params.algorithm;
-    if (algorithm && isValidSortingAlgorithm(algorithm)) {
+    if (algorithm && isValidSortingAlgorithm(algorithm))
       sortingContext.setAlgorithm(algorithm);
-    } else {
-      navigate("/sorting-visualizer/" + sortingContext.algorithm);
-    }
-  }, [params.algorithm]);
-
-  //Change the URL based on the algorithm
-  useEffect(() => {
-    navigate(`/sorting-visualizer/${sortingContext.algorithm}`);
-  }, [sortingContext.algorithm]);
+  }, []);
 
   return (
     <div className='page sorting-page'>
       <PanelGroup direction={isMediumScreen ? "vertical" : "horizontal"}>
-        {/* Change the order of the panels based on the screen size */}
+        {/* Change the order/size of the panels based on the screen size */}
         {isMediumScreen ? (
           <SortingVisualizePanel
             order={1}

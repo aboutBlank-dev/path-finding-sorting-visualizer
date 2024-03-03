@@ -22,7 +22,7 @@ export default function SortingControlsPanel(props: PanelProps) {
           name='algorithms'
           id='sorting-algorithms'
           onChange={onAlgorithmSelected}
-          value={sortingContext.algorithm}
+          value={sortingContext.sortingAlgorithm}
         >
           {Object.values(SortingAlgorithm).map((algorithm) => {
             return (
