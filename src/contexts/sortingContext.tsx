@@ -109,7 +109,5 @@ function sort(input: number[], algorithm: SortingAlgorithm) {
       return quickSort(input);
     case SortingAlgorithm.BUBBLE:
       return bubbleSort(input);
-    default:
-      return bubbleSort(input);
   }
 }

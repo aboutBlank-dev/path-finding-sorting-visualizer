@@ -1,0 +1,11 @@
+.number-input-field {
+  display: flex;
+}
+
+.label {
+  color: var(--text-color);
+}
+
+.capitalize {
+  text-transform: capitalize;
+}

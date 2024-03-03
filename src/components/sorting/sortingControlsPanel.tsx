@@ -4,12 +4,13 @@ import {
   isValidSortingAlgorithm,
   useSorting,
 } from "../../contexts/sortingContext";
+import NumberInputField from "../numberInputField";
+import DropDown from "../dropDown";
 
 export default function SortingControlsPanel(props: PanelProps) {
   const sortingContext = useSorting();
 
-  const onAlgorithmSelected = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = event.target.value;
+  const onAlgorithmSelected = (value: string) => {
     if (isValidSortingAlgorithm(value)) {
       sortingContext.setAlgorithm(value);
     }
@@ -18,20 +19,23 @@ export default function SortingControlsPanel(props: PanelProps) {
   return (
     <Panel {...props}>
       <div className='controls-section'>
-        <select
-          name='algorithms'
-          id='sorting-algorithms'
+        <button onClick={() => sortingContext.generateInput(100)}>
+          Generate Input
+        </button>
+        <DropDown
+          id='algorithm-dropdown'
+          label='Algorithm'
+          defaultValue={sortingContext.sortingAlgorithm}
+          options={Object.values(SortingAlgorithm)}
           onChange={onAlgorithmSelected}
-          value={sortingContext.sortingAlgorithm}
-        >
-          {Object.values(SortingAlgorithm).map((algorithm) => {
-            return (
-              <option key={algorithm} value={algorithm}>
-                {algorithm}
-              </option>
-            );
-          })}
-        </select>
+        />
+        <NumberInputField
+          label='Input Size'
+          onChange={(num) => console.log("changed input to" + num)}
+          max={100}
+          min={1}
+          value={100}
+        />
       </div>
     </Panel>
   );

@@ -1,0 +1,8 @@
+.number-input-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  color: var(--text-color);
+}

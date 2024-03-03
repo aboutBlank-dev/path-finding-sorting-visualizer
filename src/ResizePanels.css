@@ -9,8 +9,17 @@
 .resize-handle[data-resize-handle-active]::before {
   background-color: black;
   position: absolute;
-  width: 4px;
-  height: 100%;
-  translate: -2px; /* half of width */
+  height: 4px;
+  width: 100%;
+  transform: translateY(-50%);
   content: "";
+}
+
+@media (min-width: 768px) {
+  .resize-handle[data-resize-handle-active]::before {
+    width: 4px;
+    height: 100%;
+    transform: none;
+    translate: -2px;
+  }
 }
