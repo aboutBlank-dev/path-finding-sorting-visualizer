@@ -2,27 +2,61 @@ import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import "./Sorting.css";
 import SortingCanvas from "../components/sorting/sortingCanvas";
 import StepSlider from "../components/stepSlider";
-import { useState } from "react";
-import { useSorting } from "../contexts/sortingContext";
+import { useEffect, useState } from "react";
+import {
+  SortingAlgorithm,
+  isValidSortingAlgorithm,
+  useSorting,
+} from "../contexts/sortingContext";
 import useMediaQuery from "../hooks/useMediaQuery";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function Sorting() {
   const [activeStepIndex, setActiveStepIndex] = useState(0);
   const sortingContext = useSorting();
-
+  const params = useParams();
+  const navigate = useNavigate();
   const isMediumScreen = useMediaQuery("(max-width: 768px)");
 
-  const handleStepChange = (value: number) => {
-    setActiveStepIndex(value);
-  };
+  useEffect(() => {
+    const algorithm = params.algorithm;
+    if (algorithm && isValidSortingAlgorithm(algorithm)) {
+      sortingContext.setAlgorithm(algorithm);
+    } else {
+      navigate("/sorting-visualizer/" + sortingContext.algorithm);
+    }
+  }, []);
 
   function ControlsSection(order: number) {
     return (
       <Panel defaultSize={isMediumScreen ? 50 : 33} id='controls' order={order}>
-        <div className='controls-section'></div>
+        <div className='controls-section'>
+          <select
+            name='algorithms'
+            id='sorting-algorithms'
+            onChange={onAlgorithmChange}
+            value={sortingContext.algorithm}
+          >
+            {Object.values(SortingAlgorithm).map((algorithm) => {
+              return (
+                <option key={algorithm} value={algorithm}>
+                  {algorithm}
+                </option>
+              );
+            })}
+          </select>
+        </div>
       </Panel>
     );
   }
+
+  const onAlgorithmChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = event.target.value;
+    if (isValidSortingAlgorithm(value)) {
+      sortingContext.setAlgorithm(value);
+      navigate(`/sorting-visualizer/${value.toLowerCase()}`);
+    }
+  };
 
   function VisualizeSection(order: number) {
     return (
@@ -45,6 +79,10 @@ export default function Sorting() {
       </Panel>
     );
   }
+
+  const handleStepChange = (value: number) => {
+    setActiveStepIndex(value);
+  };
 
   return (
     <div className='page sorting-page'>

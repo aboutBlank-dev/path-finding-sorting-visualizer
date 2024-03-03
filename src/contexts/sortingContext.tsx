@@ -2,7 +2,18 @@ import { createContext, useContext, useEffect, useState } from "react";
 import SortingIterationStep from "../types/sortingIterationStep";
 import { quickSort } from "../algorithms/sorting_algorithms/quick";
 
-type SortingAlgorithm = "bubble" | "quick";
+export enum SortingAlgorithm {
+  BUBBLE = "bubble",
+  QUICK = "quick",
+}
+
+export function isValidSortingAlgorithm(
+  algorithm: string
+): algorithm is SortingAlgorithm {
+  return Object.keys(SortingAlgorithm).includes(
+    algorithm.toUpperCase() as SortingAlgorithm
+  );
+}
 
 export type SortingContextType = {
   input: number[];
@@ -15,7 +26,7 @@ export type SortingContextType = {
 const SortingContext = createContext<SortingContextType>({
   input: [],
   iterationSteps: [],
-  algorithm: "quick",
+  algorithm: SortingAlgorithm.QUICK,
   generateInput: () => {},
   setAlgorithm: () => {},
 });
@@ -29,7 +40,9 @@ export function SortingContextProvider({
   const [iterationSteps, setIterationSteps] = useState<SortingIterationStep[]>(
     []
   );
-  const [algorithm, setAlgorithm] = useState<SortingAlgorithm>("quick");
+  const [algorithm, setAlgorithm] = useState<SortingAlgorithm>(
+    SortingAlgorithm.QUICK
+  );
   const generateInput = (size: number) => {
     const arr = [...Array(size).keys()].map((i) => i + 1);
     arr.sort(() => Math.random() - 0.5);

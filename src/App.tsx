@@ -5,7 +5,7 @@ import NavBar from "./components/navbar";
 import Sorting from "./pages/Sorting";
 import Home from "./pages/Home";
 import Pathfinding from "./pages/Pathfinding";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { SortingContextProvider } from "./contexts/sortingContext";
 
 function App() {
@@ -15,7 +15,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route
-          path='/sorting-visualizer'
+          path='/sorting-visualizer/:algorithm'
           element={
             <SortingContextProvider>
               <Sorting />
@@ -23,6 +23,8 @@ function App() {
           }
         />
         <Route path='/pathfinding-visualizer' element={<Pathfinding />} />
+        <Route path='*' element={<Navigate to='/' />} /> //Redirect to home if
+        URL is invalid
       </Routes>
     </div>
   );

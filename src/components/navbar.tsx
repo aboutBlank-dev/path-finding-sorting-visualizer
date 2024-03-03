@@ -11,7 +11,7 @@ const NavBar = () => {
             <Link to='/'>Home</Link>
           </li>
           <li>
-            <Link to='/sorting-visualizer'>Sorting</Link>
+            <Link to='/sorting-visualizer/quick'>Sorting</Link>
           </li>
           <li>
             <Link to='/pathfinding-visualizer'>Pathfinding</Link>
