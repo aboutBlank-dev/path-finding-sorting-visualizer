@@ -152,7 +152,11 @@ export function getDataState(
   if (stepIndex === 0) return sortingContext.input;
 
   const dataState = [...sortingContext.input];
-  for (let i = 0; i <= stepIndex; i++) {
+  const maxStepIndex = Math.min(
+    stepIndex,
+    sortingContext.iterationSteps.length - 1
+  );
+  for (let i = 0; i <= maxStepIndex; i++) {
     const step = sortingContext.iterationSteps[i];
     if (step.swap && step.swap.length === 2) {
       const [a, b] = step.swap;
