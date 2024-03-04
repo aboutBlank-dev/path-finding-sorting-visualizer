@@ -19,7 +19,11 @@ export default function SortingControlsPanel(props: PanelProps) {
   return (
     <Panel {...props}>
       <div className='controls-section'>
-        <button onClick={() => sortingContext.generateInput(100)}>
+        <h1 className='controls-section-title'>Controls</h1>
+        <button
+          className='input-button'
+          onClick={() => sortingContext.generateInput()}
+        >
           Generate Input
         </button>
         <DropDown
@@ -31,10 +35,19 @@ export default function SortingControlsPanel(props: PanelProps) {
         />
         <NumberInputField
           label='Input Size'
-          onChange={(num) => console.log("changed input to" + num)}
-          max={100}
+          onChange={(num) => sortingContext.setInputSize(num)}
+          max={1000}
           min={1}
           value={100}
+          id='input-size'
+        />
+        <NumberInputField
+          label='Playback time (seconds)'
+          onChange={(num) => sortingContext.setPlayBackTime(num)}
+          max={100}
+          min={1}
+          value={10}
+          id='playback-time'
         />
       </div>
     </Panel>

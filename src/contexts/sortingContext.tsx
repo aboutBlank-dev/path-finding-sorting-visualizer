@@ -9,6 +9,8 @@ export enum SortingAlgorithm {
 }
 
 export const DEFAULT_SORTING_ALGORITHM = SortingAlgorithm.QUICK;
+const DEFAULT_INPUT_SIZE = 100;
+const DEFAULT_PLAYBACK_TIME_SECONDS = 10;
 
 export function isValidSortingAlgorithm(
   algorithm: string
@@ -21,17 +23,25 @@ export function isValidSortingAlgorithm(
 export type SortingContextType = {
   input: number[];
   iterationSteps: SortingIterationStep[];
+  inputSize: number;
   sortingAlgorithm: SortingAlgorithm;
-  generateInput: (size: number) => void;
+  playbackTimeS: number;
+  setInputSize: (size: number) => void;
   setAlgorithm: (algorithm: SortingAlgorithm) => void;
+  setPlayBackTime: (time: number) => void;
+  generateInput: () => void;
 };
 
 const SortingContext = createContext<SortingContextType>({
   input: [],
   iterationSteps: [],
+  inputSize: DEFAULT_INPUT_SIZE,
   sortingAlgorithm: DEFAULT_SORTING_ALGORITHM,
-  generateInput: () => {},
+  playbackTimeS: DEFAULT_PLAYBACK_TIME_SECONDS,
+  setInputSize: () => {},
   setAlgorithm: () => {},
+  setPlayBackTime: () => {},
+  generateInput: () => {},
 });
 
 export function SortingContextProvider({
@@ -43,12 +53,16 @@ export function SortingContextProvider({
   const [iterationSteps, setIterationSteps] = useState<SortingIterationStep[]>(
     []
   );
+  const [inputSize, setInputSize] = useState<number>(DEFAULT_INPUT_SIZE);
   const [sortingAlgorithm, setAlgorithm] = useState<SortingAlgorithm>(
     DEFAULT_SORTING_ALGORITHM
   );
+  const [playbackTimeS, setPlayBackTime] = useState<number>(
+    DEFAULT_PLAYBACK_TIME_SECONDS
+  );
 
-  const generateInput = (size: number) => {
-    const arr = [...Array(size).keys()].map((i) => i + 1);
+  const generateInput = () => {
+    const arr = [...Array(inputSize).keys()].map((i) => i + 1);
     arr.sort(() => Math.random() - 0.5);
     setInput(arr);
   };
@@ -57,7 +71,7 @@ export function SortingContextProvider({
     if (!isValidSortingAlgorithm(algorithm)) return;
     if (algorithm !== sortingAlgorithm) {
       setAlgorithm(algorithm);
-      generateInput(input.length);
+      generateInput();
     }
   };
 
@@ -77,17 +91,21 @@ export function SortingContextProvider({
 
   //Generate input on mount
   useEffect(() => {
-    generateInput(100);
+    generateInput();
   }, []);
 
   return (
     <SortingContext.Provider
       value={{
         input: input,
+        inputSize: inputSize,
         iterationSteps: iterationSteps,
         sortingAlgorithm: sortingAlgorithm,
+        playbackTimeS: playbackTimeS,
         generateInput: generateInput,
+        setInputSize: setInputSize,
         setAlgorithm: setSortingAlgorithm,
+        setPlayBackTime: setPlayBackTime,
       }}
     >
       {children}

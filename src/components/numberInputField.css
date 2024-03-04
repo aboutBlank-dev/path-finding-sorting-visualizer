@@ -1,8 +1,22 @@
 .number-input-field {
   display: flex;
   flex-direction: column;
+  background-color: var(--bg-color-2);
+  border: 2px solid black;
+  border-radius: 0.5rem;
 }
 
 .label {
   color: var(--text-color);
+  font-size: 1rem;
+  margin: 0.5rem 0.5rem 0 0.5rem;
+}
+
+.input {
+  margin: 0.5rem;
+  padding: 0;
+  border: none;
+  background-color: var(--bg-color-2);
+  color: var(--text-color);
+  font-size: 1rem;
 }

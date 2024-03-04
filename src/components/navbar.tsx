@@ -12,9 +12,6 @@ const NavBar = () => {
       <div>
         <ul>
           <li>
-            <Link to='/'>Home</Link>
-          </li>
-          <li>
             <Link to={"/sorting-visualizer/" + DEFAULT_SORTING_ALGORITHM}>
               Sorting
             </Link>

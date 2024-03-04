@@ -1,17 +1,21 @@
 import { useState } from "react";
 import "./numberInputField.css";
+
 type NumberInputFieldProps = {
   value: number;
   label: string;
   min?: number;
   max?: number;
+  id?: string;
   onChange?: (value: number) => void;
 };
+
 export default function NumberInputField({
   min = 1,
   max = 100,
   value,
   label,
+  id,
   onChange,
 }: NumberInputFieldProps) {
   const [inputValue, setInputValue] = useState(value);
@@ -23,9 +27,11 @@ export default function NumberInputField({
 
   return (
     <div className='number-input-field'>
-      <span className='label'>{label + `(${min} - ${max})`}</span>
+      <span className='label'>{label + ` (${min} - ${max})`}</span>
       <input
+        className='input'
         type='number'
+        id={id}
         onChange={handleChange}
         max={max}
         min={min}

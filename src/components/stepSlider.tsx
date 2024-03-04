@@ -1,16 +1,24 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "./stepSlider.css";
 
 type StepSliderProps = {
   max: number;
+  playbackTimeS: number;
   onChange: (value: number) => void;
 };
 
 let cancel = false;
-export default function StepSlider({ max, onChange }: StepSliderProps) {
-  const intervalMS = 100;
+export default function StepSlider({
+  max,
+  playbackTimeS,
+  onChange,
+}: StepSliderProps) {
   const [activeStepIndex, setActiveStepIndex] = useState(max);
   const [playing, setPlaying] = useState(false);
+
+  const intervalMS = useMemo(() => {
+    return (playbackTimeS * 1000) / max;
+  }, [playbackTimeS, max]);
 
   if (playing) {
     setTimeout(() => {
@@ -27,6 +35,11 @@ export default function StepSlider({ max, onChange }: StepSliderProps) {
   const togglePlaying = () => {
     cancel = playing;
     setPlaying(!playing);
+
+    if (activeStepIndex === max) {
+      setActiveStepIndex(0);
+      onChange(0);
+    }
   };
 
   //reset active step index when max changes

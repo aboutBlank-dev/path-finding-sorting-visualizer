@@ -1,8 +1,6 @@
 import "./Sorting.css";
-import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
-import SortingCanvas from "../components/sorting/sortingCanvas";
-import StepSlider from "../components/stepSlider";
-import { useEffect, useState } from "react";
+import { PanelGroup, PanelResizeHandle } from "react-resizable-panels";
+import { useEffect } from "react";
 import {
   isValidSortingAlgorithm,
   useSorting,

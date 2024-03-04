@@ -3,7 +3,6 @@ import "./pages/Pages.css";
 import "./ResizePanels.css";
 import NavBar from "./components/navbar";
 import Sorting from "./pages/Sorting";
-import Home from "./pages/Home";
 import Pathfinding from "./pages/Pathfinding";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { SortingContextProvider } from "./contexts/sortingContext";
@@ -13,7 +12,6 @@ function App() {
     <div>
       <NavBar />
       <Routes>
-        <Route path='/' element={<Home />} />
         <Route
           path='/sorting-visualizer/:algorithm'
           element={

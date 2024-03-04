@@ -10,6 +10,10 @@ body {
   overflow: overlay;
 }
 
+html * {
+  box-sizing: border-box;
+}
+
 .dark {
   --text-color: white;
   --bg-color-1: #333;

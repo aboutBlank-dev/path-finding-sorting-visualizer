@@ -21,10 +21,10 @@ export default function DropDown({
   };
 
   return (
-    <div className='number-input-field'>
+    <div className='dropdown'>
       <span className='label'>{label}</span>
       <select
-        className='capitalize'
+        className='capitalize input'
         id={id}
         onChange={onOptionSelected}
         defaultValue={defaultValue}
