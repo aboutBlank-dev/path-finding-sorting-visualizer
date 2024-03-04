@@ -1,5 +1,4 @@
 type SortingIterationStep = {
-  input: number[];
   swap: number[];
 };
 

@@ -67,6 +67,11 @@ export function SortingContextProvider({
     setInput(arr);
   };
 
+  //Whenever inputsize changes, generate new input
+  useEffect(() => {
+    generateInput();
+  }, [inputSize]);
+
   const setSortingAlgorithm = (algorithm: SortingAlgorithm) => {
     if (!isValidSortingAlgorithm(algorithm)) return;
     if (algorithm !== sortingAlgorithm) {
@@ -81,7 +86,6 @@ export function SortingContextProvider({
     //manually add the final step/state (which contains no swaps)
     if (iterationSteps.length > 0) {
       iterationSteps.push({
-        input: [...iterationSteps[iterationSteps.length - 1].input],
         swap: [],
       });
     }
@@ -122,10 +126,38 @@ export function useSorting() {
 }
 
 function sort(input: number[], algorithm: SortingAlgorithm) {
+  const inputCopy = [...input];
   switch (algorithm) {
     case SortingAlgorithm.QUICK:
-      return quickSort(input);
+      return quickSort(inputCopy);
     case SortingAlgorithm.BUBBLE:
-      return bubbleSort(input);
+      return bubbleSort(inputCopy);
   }
+}
+
+/**
+ * <p> Get the state of the data at a given step index.
+ * <p> ote: Since JS garbage collection sucks, we can't keep a copy of the state of the input at each step as it is very slow.
+ *
+ * @param stepIndex
+ * @param data
+ * @param iterationSteps
+ *
+ * @returns the state of the data at the given step index
+ */
+export function getDataState(
+  stepIndex: number,
+  sortingContext: SortingContextType
+) {
+  if (stepIndex === 0) return sortingContext.input;
+
+  const dataState = [...sortingContext.input];
+  for (let i = 0; i <= stepIndex; i++) {
+    const step = sortingContext.iterationSteps[i];
+    if (step.swap && step.swap.length === 2) {
+      const [a, b] = step.swap;
+      [dataState[a], dataState[b]] = [dataState[b], dataState[a]];
+    }
+  }
+  return dataState;
 }

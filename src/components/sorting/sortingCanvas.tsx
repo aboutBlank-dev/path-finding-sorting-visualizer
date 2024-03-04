@@ -1,6 +1,7 @@
 import "./sortingCanvas.css";
 import { HTMLAttributes, useCallback, useEffect, useRef } from "react";
 import useSize from "../../hooks/useSize";
+import { useTheme } from "../../contexts/themeContext";
 
 interface CanvasProps extends HTMLAttributes<HTMLCanvasElement> {
   data: number[];
@@ -11,6 +12,7 @@ export default function SortingCanvas({ data, swap, ...props }: CanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const containerSize = useSize(containerRef);
+  const theme = useTheme();
 
   const drawBars = useCallback(() => {
     const canvas = canvasRef.current;
@@ -20,7 +22,7 @@ export default function SortingCanvas({ data, swap, ...props }: CanvasProps) {
       const ctx = canvas.getContext("2d");
       if (ctx) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = "yellow";
+        ctx.fillStyle = theme.currentTheme === "light" ? "black" : "white";
         for (let i = 0; i < data.length; i++) {
           const xPos = (i * canvas.width) / data.length;
           const width = canvas.width / data.length + 0.5; // +0.5 to avoid weird artifacts
@@ -42,7 +44,7 @@ export default function SortingCanvas({ data, swap, ...props }: CanvasProps) {
         }
       }
     }
-  }, [data]);
+  }, [data, theme.currentTheme]);
 
   useEffect(() => {
     drawBars();

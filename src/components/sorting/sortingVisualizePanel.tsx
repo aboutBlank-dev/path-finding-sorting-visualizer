@@ -2,7 +2,7 @@ import { Panel, PanelProps } from "react-resizable-panels";
 import StepSlider from "../stepSlider";
 import SortingCanvas from "./sortingCanvas";
 import { useState } from "react";
-import { useSorting } from "../../contexts/sortingContext";
+import { getDataState, useSorting } from "../../contexts/sortingContext";
 
 export default function SortingVisualizePanel(props: PanelProps) {
   const [activeStepIndex, setActiveStepIndex] = useState(0);
@@ -16,7 +16,7 @@ export default function SortingVisualizePanel(props: PanelProps) {
             {sortingContext.sortingAlgorithm}
           </span>
           <SortingCanvas
-            data={sortingContext.iterationSteps[activeStepIndex]?.input ?? []}
+            data={getDataState(activeStepIndex, sortingContext)}
             swap={sortingContext.iterationSteps[activeStepIndex]?.swap ?? []}
           />
           <StepSlider

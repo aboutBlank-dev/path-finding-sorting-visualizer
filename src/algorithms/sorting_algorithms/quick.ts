@@ -24,11 +24,11 @@ export function quickSort(arr: number[]): SortingIterationStep[] {
       }
 
       [arr[left], arr[right]] = [arr[right], arr[left]];
-      iterationSteps.push({ input: [...arr], swap: [left, right] });
+      iterationSteps.push({ swap: [left, right] });
     }
 
     [arr[left], arr[high]] = [arr[high], arr[left]];
-    iterationSteps.push({ input: [...arr], swap: [left, high] });
+    iterationSteps.push({ swap: [left, high] });
 
     return left;
   }

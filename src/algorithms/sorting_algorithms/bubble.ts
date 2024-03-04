@@ -1,25 +1,17 @@
 import SortingIterationStep from "../../types/sortingIterationStep";
 
-export function bubbleSort(arr: number[]): SortingIterationStep[] {
+export function bubbleSort(input: number[]): SortingIterationStep[] {
   const iterationSteps: SortingIterationStep[] = [];
-  for (let i = 0; i < arr.length; i++) {
-    let swapped = false;
-    for (let j = 0; j < arr.length - i - 1; j++) {
-      if (arr[j] > arr[j + 1]) {
-        [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]]; // Swap j and j+1
-        swapped = true;
+  for (let i = 0; i < input.length; i++) {
+    for (let j = 0; j < input.length - i - 1; j++) {
+      if (input[j] > input[j + 1]) {
+        [input[j], input[j + 1]] = [input[j + 1], input[j]]; // Swap j and j+1
 
         iterationSteps.push({
-          input: [...arr],
           swap: [j, j + 1],
         });
       }
     }
-
-    if (!swapped) {
-      break;
-    }
   }
-
   return iterationSteps;
 }
