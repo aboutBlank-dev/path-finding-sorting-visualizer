@@ -16,16 +16,23 @@ export default function StepSlider({
   const [activeStepIndex, setActiveStepIndex] = useState(max);
   const [playing, setPlaying] = useState(false);
 
-  const intervalMS = useMemo(() => {
-    return (playbackTimeS * 1000) / max;
+  const [intervalMS, stepIncrement] = useMemo(() => {
+    let stepIncrement = 1;
+    const interval = (playbackTimeS * 1000) / max;
+    if (interval < 10) {
+      stepIncrement = Math.ceil(10 / interval);
+      return [10, stepIncrement];
+    }
+
+    return [interval, 1];
   }, [playbackTimeS, max]);
 
   if (playing) {
     setTimeout(() => {
       if (cancel) return;
       if (activeStepIndex < max) {
-        setActiveStepIndex(activeStepIndex + 1);
-        onChange(activeStepIndex + 1);
+        setActiveStepIndex(activeStepIndex + stepIncrement);
+        onChange(activeStepIndex + stepIncrement);
       } else {
         setPlaying(false);
       }
@@ -81,7 +88,6 @@ export default function StepSlider({
 
   return (
     <div className='step-slider'>
-      {/* <button className='play-button' onClick={() => togglePlaying()}></button> */}
       {playing ? pauseSVG : playSVG}
       <input
         type='range'
@@ -93,7 +99,7 @@ export default function StepSlider({
           setActiveStepIndex(parseInt(e.target.value));
           onChange(parseInt(e.target.value));
 
-          //manually stop playing if user changes the slider
+          //manually stop playing if user interacts with the slider
           setPlaying(false);
           cancel = true;
         }}
