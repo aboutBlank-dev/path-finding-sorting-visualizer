@@ -8,6 +8,11 @@ export default function SortingVisualizePanel(props: PanelProps) {
   const [activeStepIndex, setActiveStepIndex] = useState(0);
   const sortingContext = useSorting();
 
+  const onActiveStepChange = (index: number) => {
+    setActiveStepIndex(index);
+    sortingContext.playStepAudio(sortingContext.iterationSteps[index]);
+  };
+
   return (
     <Panel {...props}>
       <div className='visualize-section-wrapper'>
@@ -22,7 +27,7 @@ export default function SortingVisualizePanel(props: PanelProps) {
           <StepSlider
             max={sortingContext.iterationSteps.length - 1}
             playbackTimeS={sortingContext.playbackTimeS}
-            onChange={(value: number) => setActiveStepIndex(value)}
+            onChange={(value: number) => onActiveStepChange(value)}
           />
         </div>
       </div>

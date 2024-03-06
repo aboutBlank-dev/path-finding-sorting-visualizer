@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import SortingIterationStep from "../types/sortingIterationStep";
 import { quickSort } from "../algorithms/sorting_algorithms/quick";
 import { bubbleSort } from "../algorithms/sorting_algorithms/bubble";
+import { Note, NotePlayer } from "../utils/audio";
 
 export enum SortingAlgorithm {
   BUBBLE = "bubble",
@@ -11,6 +12,9 @@ export enum SortingAlgorithm {
 export const DEFAULT_SORTING_ALGORITHM = SortingAlgorithm.QUICK;
 const DEFAULT_INPUT_SIZE = 100;
 const DEFAULT_PLAYBACK_TIME_SECONDS = 10;
+
+const MIN_FREQUENCY = 220;
+const MAX_FREQUENCY = 660;
 
 export function isValidSortingAlgorithm(
   algorithm: string
@@ -26,6 +30,9 @@ export type SortingContextType = {
   inputSize: number;
   sortingAlgorithm: SortingAlgorithm;
   playbackTimeS: number;
+  audioEnabled: boolean;
+  playStepAudio: (step: SortingIterationStep) => void;
+  setEnableAudio: (enabled: boolean) => void;
   setInputSize: (size: number) => void;
   setAlgorithm: (algorithm: SortingAlgorithm) => void;
   setPlayBackTime: (time: number) => void;
@@ -38,6 +45,9 @@ const SortingContext = createContext<SortingContextType>({
   inputSize: DEFAULT_INPUT_SIZE,
   sortingAlgorithm: DEFAULT_SORTING_ALGORITHM,
   playbackTimeS: DEFAULT_PLAYBACK_TIME_SECONDS,
+  audioEnabled: true,
+  playStepAudio: () => {},
+  setEnableAudio: () => {},
   setInputSize: () => {},
   setAlgorithm: () => {},
   setPlayBackTime: () => {},
@@ -60,6 +70,9 @@ export function SortingContextProvider({
   const [playbackTimeS, setPlayBackTime] = useState<number>(
     DEFAULT_PLAYBACK_TIME_SECONDS
   );
+
+  const [notePlayer] = useState(new NotePlayer());
+  const [audioEnabled, setAudioEnabled] = useState<boolean>(true);
 
   const generateInput = () => {
     const arr = [...Array(inputSize).keys()].map((i) => i + 1);
@@ -98,6 +111,17 @@ export function SortingContextProvider({
     generateInput();
   }, []);
 
+  const playStepAudio = (step: SortingIterationStep) => {
+    if (!step || !notePlayer) return;
+    if (!audioEnabled) return;
+
+    let ratio = step.swap[1] / iterationSteps.length;
+    let frequency = MIN_FREQUENCY + ratio * (MAX_FREQUENCY - MIN_FREQUENCY);
+
+    let note = new Note(notePlayer.ctx!, frequency, "sine");
+    notePlayer.playNote(note, 0.2);
+  };
+
   return (
     <SortingContext.Provider
       value={{
@@ -106,6 +130,9 @@ export function SortingContextProvider({
         iterationSteps: iterationSteps,
         sortingAlgorithm: sortingAlgorithm,
         playbackTimeS: playbackTimeS,
+        audioEnabled: audioEnabled,
+        playStepAudio: playStepAudio,
+        setEnableAudio: setAudioEnabled,
         generateInput: generateInput,
         setInputSize: setInputSize,
         setAlgorithm: setSortingAlgorithm,

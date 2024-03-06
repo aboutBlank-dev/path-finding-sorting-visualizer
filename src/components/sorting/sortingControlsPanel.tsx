@@ -6,6 +6,7 @@ import {
 } from "../../contexts/sortingContext";
 import NumberInputField from "../numberInputField";
 import DropDown from "../dropDown";
+import Toggle from "../toggle";
 
 export default function SortingControlsPanel(props: PanelProps) {
   const sortingContext = useSorting();
@@ -48,6 +49,12 @@ export default function SortingControlsPanel(props: PanelProps) {
           min={1}
           value={10}
           id='playback-time'
+        />
+        <Toggle
+          id='audio-enable'
+          label='Audio Enabled'
+          checked={sortingContext.audioEnabled}
+          onChange={(checked) => sortingContext.setEnableAudio(checked)}
         />
       </div>
     </Panel>
