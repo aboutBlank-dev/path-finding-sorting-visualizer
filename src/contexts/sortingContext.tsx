@@ -3,11 +3,10 @@ import SortingIterationStep from "../types/sortingIterationStep";
 import { quickSort } from "../algorithms/sorting_algorithms/quick";
 import { bubbleSort } from "../algorithms/sorting_algorithms/bubble";
 import { Note, NotePlayer } from "../utils/audio";
-
-export enum SortingAlgorithm {
-  BUBBLE = "bubble",
-  QUICK = "quick",
-}
+import {
+  SortingAlgorithm,
+  isValidSortingAlgorithm,
+} from "../types/sortingAlgorithm";
 
 export const DEFAULT_SORTING_ALGORITHM = SortingAlgorithm.QUICK;
 const DEFAULT_INPUT_SIZE = 100;
@@ -16,27 +15,20 @@ const DEFAULT_PLAYBACK_TIME_SECONDS = 10;
 const MIN_FREQUENCY = 220;
 const MAX_FREQUENCY = 660;
 
-export function isValidSortingAlgorithm(
-  algorithm: string
-): algorithm is SortingAlgorithm {
-  return Object.keys(SortingAlgorithm).includes(
-    algorithm.toUpperCase() as SortingAlgorithm
-  );
-}
-
 export type SortingContextType = {
   input: number[];
-  iterationSteps: SortingIterationStep[];
-  inputSize: number;
-  sortingAlgorithm: SortingAlgorithm;
-  playbackTimeS: number;
-  audioEnabled: boolean;
-  playStepAudio: (step: SortingIterationStep) => void;
-  setEnableAudio: (enabled: boolean) => void;
-  setInputSize: (size: number) => void;
-  setAlgorithm: (algorithm: SortingAlgorithm) => void;
-  setPlayBackTime: (time: number) => void;
   generateInput: () => void;
+  inputSize: number;
+  setInputSize: (size: number) => void;
+  sortingAlgorithm: SortingAlgorithm;
+  setAlgorithm: (algorithm: SortingAlgorithm) => void;
+  playbackTimeS: number;
+  setPlaybackTime: (time: number) => void;
+  audioEnabled: boolean;
+  setAudioEnabled: (enabled: boolean) => void;
+
+  playStepAudio: (step: SortingIterationStep) => void;
+  iterationSteps: SortingIterationStep[];
 };
 
 const SortingContext = createContext<SortingContextType>({
@@ -47,10 +39,10 @@ const SortingContext = createContext<SortingContextType>({
   playbackTimeS: DEFAULT_PLAYBACK_TIME_SECONDS,
   audioEnabled: true,
   playStepAudio: () => {},
-  setEnableAudio: () => {},
+  setAudioEnabled: () => {},
   setInputSize: () => {},
   setAlgorithm: () => {},
-  setPlayBackTime: () => {},
+  setPlaybackTime: () => {},
   generateInput: () => {},
 });
 
@@ -132,11 +124,11 @@ export function SortingContextProvider({
         playbackTimeS: playbackTimeS,
         audioEnabled: audioEnabled,
         playStepAudio: playStepAudio,
-        setEnableAudio: setAudioEnabled,
+        setAudioEnabled: setAudioEnabled,
         generateInput: generateInput,
         setInputSize: setInputSize,
         setAlgorithm: setSortingAlgorithm,
-        setPlayBackTime: setPlayBackTime,
+        setPlaybackTime: setPlayBackTime,
       }}
     >
       {children}
@@ -160,35 +152,4 @@ function sort(input: number[], algorithm: SortingAlgorithm) {
     case SortingAlgorithm.BUBBLE:
       return bubbleSort(inputCopy);
   }
-}
-
-/**
- * <p> Get the state of the data at a given step index.
- * <p> ote: Since JS garbage collection sucks, we can't keep a copy of the state of the input at each step as it is very slow.
- *
- * @param stepIndex
- * @param data
- * @param iterationSteps
- *
- * @returns the state of the data at the given step index
- */
-export function getDataState(
-  stepIndex: number,
-  sortingContext: SortingContextType
-) {
-  if (stepIndex === 0) return sortingContext.input;
-
-  const dataState = [...sortingContext.input];
-  const maxStepIndex = Math.min(
-    stepIndex,
-    sortingContext.iterationSteps.length - 1
-  );
-  for (let i = 0; i <= maxStepIndex; i++) {
-    const step = sortingContext.iterationSteps[i];
-    if (step.swap && step.swap.length === 2) {
-      const [a, b] = step.swap;
-      [dataState[a], dataState[b]] = [dataState[b], dataState[a]];
-    }
-  }
-  return dataState;
 }

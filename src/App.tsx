@@ -9,6 +9,7 @@ import {
   DEFAULT_SORTING_ALGORITHM,
   SortingContextProvider,
 } from "./contexts/sortingContext";
+import { PathfindingContextProvider } from "./contexts/pathfindingContext";
 
 function App() {
   return (
@@ -23,14 +24,21 @@ function App() {
             </SortingContextProvider>
           }
         />
-        <Route path='/pathfinding-visualizer' element={<Pathfinding />} />
+        <Route
+          path='/pathfinding-visualizer/:algorithm'
+          element={
+            <PathfindingContextProvider>
+              <Pathfinding />
+            </PathfindingContextProvider>
+          }
+        />
+        //Redirect to sorting visualizer if URL is invalid
         <Route
           path='*'
           element={
             <Navigate to={"/sorting-visualizer/" + DEFAULT_SORTING_ALGORITHM} />
           }
         />
-        //Redirect to home if URL is invalid
       </Routes>
     </div>
   );

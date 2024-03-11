@@ -1,14 +1,12 @@
 import "./Sorting.css";
 import { PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { useEffect } from "react";
-import {
-  isValidSortingAlgorithm,
-  useSorting,
-} from "../contexts/sortingContext";
+import { useSorting } from "../contexts/sortingContext";
 import useMediaQuery from "../hooks/useMediaQuery";
 import { useNavigate, useParams } from "react-router-dom";
 import SortingControlsPanel from "../components/sorting/sortingControlsPanel";
 import SortingVisualizePanel from "../components/sorting/sortingVisualizePanel";
+import { isValidSortingAlgorithm } from "../types/sortingAlgorithm";
 
 export default function Sorting() {
   const sortingContext = useSorting();
@@ -30,20 +28,20 @@ export default function Sorting() {
   }, []);
 
   return (
-    <div className='page sorting-page'>
+    <div className='page'>
       <PanelGroup direction={isMediumScreen ? "vertical" : "horizontal"}>
         {/* Change the order/size of the panels based on the screen size */}
         {isMediumScreen ? (
           <SortingVisualizePanel
             order={1}
             defaultSize={50}
-            id='visualize-panel'
+            id='sorting-visualize-panel'
           />
         ) : (
           <SortingControlsPanel
             order={1}
             defaultSize={33}
-            id='controls-panel'
+            id='sorting-controls-panel'
           />
         )}
         <PanelResizeHandle className='resize-handle' />
@@ -51,13 +49,13 @@ export default function Sorting() {
           <SortingControlsPanel
             order={2}
             defaultSize={50}
-            id='controls-panel'
+            id='sorting-controls-panel'
           />
         ) : (
           <SortingVisualizePanel
             order={2}
             defaultSize={67}
-            id='visualize-panel'
+            id='sorting-visualize-panel'
           />
         )}
       </PanelGroup>

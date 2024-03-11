@@ -1,12 +1,12 @@
 import { Panel, PanelProps } from "react-resizable-panels";
-import {
-  SortingAlgorithm,
-  isValidSortingAlgorithm,
-  useSorting,
-} from "../../contexts/sortingContext";
+import { useSorting } from "../../contexts/sortingContext";
 import NumberInputField from "../numberInputField";
 import DropDown from "../dropDown";
 import Toggle from "../toggle";
+import {
+  SortingAlgorithm,
+  isValidSortingAlgorithm,
+} from "../../types/sortingAlgorithm";
 
 export default function SortingControlsPanel(props: PanelProps) {
   const sortingContext = useSorting();
@@ -44,7 +44,7 @@ export default function SortingControlsPanel(props: PanelProps) {
         />
         <NumberInputField
           label='Playback time (seconds)'
-          onChange={(num) => sortingContext.setPlayBackTime(num)}
+          onChange={(num) => sortingContext.setPlaybackTime(num)}
           max={100}
           min={1}
           value={10}
@@ -52,9 +52,9 @@ export default function SortingControlsPanel(props: PanelProps) {
         />
         <Toggle
           id='audio-enable'
-          label='Audio Enabled'
+          label='Audio'
           checked={sortingContext.audioEnabled}
-          onChange={(checked) => sortingContext.setEnableAudio(checked)}
+          onChange={(checked) => sortingContext.setAudioEnabled(checked)}
         />
       </div>
     </Panel>

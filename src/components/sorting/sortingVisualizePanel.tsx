@@ -2,15 +2,18 @@ import { Panel, PanelProps } from "react-resizable-panels";
 import StepSlider from "../stepSlider";
 import SortingCanvas from "./sortingCanvas";
 import { useState } from "react";
-import { getDataState, useSorting } from "../../contexts/sortingContext";
+import { useSorting } from "../../contexts/sortingContext";
+import { getSortingDataStateIteration } from "../../types/sortingIterationStep";
 
 export default function SortingVisualizePanel(props: PanelProps) {
   const [activeStepIndex, setActiveStepIndex] = useState(0);
   const sortingContext = useSorting();
 
   const onActiveStepChange = (index: number) => {
-    setActiveStepIndex(index);
-    sortingContext.playStepAudio(sortingContext.iterationSteps[index]);
+    if (index !== activeStepIndex) {
+      setActiveStepIndex(index);
+      sortingContext.playStepAudio(sortingContext.iterationSteps[index]);
+    }
   };
 
   return (
@@ -21,7 +24,7 @@ export default function SortingVisualizePanel(props: PanelProps) {
             {sortingContext.sortingAlgorithm}
           </span>
           <SortingCanvas
-            data={getDataState(activeStepIndex, sortingContext)}
+            data={getSortingDataStateIteration(activeStepIndex, sortingContext)}
             swap={sortingContext.iterationSteps[activeStepIndex]?.swap ?? []}
           />
           <StepSlider
