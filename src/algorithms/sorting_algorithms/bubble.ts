@@ -1,4 +1,6 @@
-import SortingIterationStep from "../../types/sortingIterationStep";
+import SortingIterationStep, {
+  SortingIterationStepAction,
+} from "../../types/sortingIterationStep";
 
 export function bubbleSort(input: number[]): SortingIterationStep[] {
   const iterationSteps: SortingIterationStep[] = [];
@@ -8,7 +10,8 @@ export function bubbleSort(input: number[]): SortingIterationStep[] {
         [input[j], input[j + 1]] = [input[j + 1], input[j]]; // Swap j and j+1
 
         iterationSteps.push({
-          swap: [j, j + 1],
+          action: SortingIterationStepAction.SWAP,
+          indexes: [j, j + 1],
         });
       }
     }

@@ -17,7 +17,7 @@ export default function SortingVisualizePanel(props: PanelProps) {
   };
 
   return (
-    <Panel {...props}>
+    <Panel {...props} minSize={25}>
       <div className='visualize-section-wrapper'>
         <div className='visualize-section'>
           <span className='algorithm-title'>
@@ -25,7 +25,7 @@ export default function SortingVisualizePanel(props: PanelProps) {
           </span>
           <SortingCanvas
             data={getSortingDataStateIteration(activeStepIndex, sortingContext)}
-            swap={sortingContext.iterationSteps[activeStepIndex]?.swap ?? []}
+            swap={sortingContext.iterationSteps[activeStepIndex]?.indexes ?? []}
           />
           <StepSlider
             max={sortingContext.iterationSteps.length - 1}

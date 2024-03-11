@@ -15,14 +15,14 @@ export default function PathfindingControlsPanel(props: PanelProps) {
       pathfindingContext.setAlgorithm(value);
   };
   return (
-    <Panel {...props}>
+    <Panel {...props} minSize={20}>
       <div className='controls-section'>
         <h1 className='controls-section-title'>Controls</h1>
         <button
           className='input-button'
-          // onClick={() => pathfindingContext.generateInput()}
+          onClick={() => pathfindingContext.generateMaze()}
         >
-          Generate Input
+          Generate Maze
         </button>
         <DropDown
           id='algorithm-dropdown'

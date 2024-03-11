@@ -1,5 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import SortingIterationStep from "../types/sortingIterationStep";
+import SortingIterationStep, {
+  SortingIterationStepAction,
+} from "../types/sortingIterationStep";
 import { quickSort } from "../algorithms/sorting_algorithms/quick";
 import { bubbleSort } from "../algorithms/sorting_algorithms/bubble";
 import { Note, NotePlayer } from "../utils/audio";
@@ -91,7 +93,8 @@ export function SortingContextProvider({
     //manually add the final step/state (which contains no swaps)
     if (iterationSteps.length > 0) {
       iterationSteps.push({
-        swap: [],
+        action: SortingIterationStepAction.NONE,
+        indexes: [],
       });
     }
 
@@ -107,7 +110,7 @@ export function SortingContextProvider({
     if (!step || !notePlayer) return;
     if (!audioEnabled) return;
 
-    let ratio = step.swap[1] / iterationSteps.length;
+    let ratio = step.indexes[1] / iterationSteps.length;
     let frequency = MIN_FREQUENCY + ratio * (MAX_FREQUENCY - MIN_FREQUENCY);
 
     let note = new Note(notePlayer.ctx!, frequency, "sine");

@@ -1,16 +1,21 @@
 import { SortingContextType } from "../contexts/sortingContext";
 
 type SortingIterationStep = {
-  swap: number[];
+  action: SortingIterationStepAction;
+  indexes: number[];
 };
 
+export enum SortingIterationStepAction {
+  NONE = "NONE",
+  SWAP = "SWAP",
+}
+
 /**
- * Get the state of the data at a given step index.
+ * Helper function to get the state of the data at a given step index.
  * (Apply every instruction from the first step to the given step index)
  *
  * @param stepIndex The index of the step you want to get the state of the data at
- * @param data The INITIAL state of the data
- * @param iterationSteps ALL iteration steps
+ * @param sortingContext the sortingContext
  *
  * @returns the state of the data at the given step index
  */
@@ -27,8 +32,8 @@ export function getSortingDataStateIteration(
   );
   for (let i = 0; i <= maxStepIndex; i++) {
     const step = sortingContext.iterationSteps[i];
-    if (step.swap && step.swap.length === 2) {
-      const [a, b] = step.swap;
+    if (step.indexes && step.indexes.length === 2) {
+      const [a, b] = step.indexes;
       [dataState[a], dataState[b]] = [dataState[b], dataState[a]];
     }
   }

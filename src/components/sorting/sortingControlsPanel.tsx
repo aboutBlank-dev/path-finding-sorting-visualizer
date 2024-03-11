@@ -18,7 +18,7 @@ export default function SortingControlsPanel(props: PanelProps) {
   };
 
   return (
-    <Panel {...props}>
+    <Panel {...props} minSize={20}>
       <div className='controls-section'>
         <h1 className='controls-section-title'>Controls</h1>
         <button

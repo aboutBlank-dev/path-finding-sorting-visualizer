@@ -1,4 +1,6 @@
-import SortingIterationStep from "../../types/sortingIterationStep";
+import SortingIterationStep, {
+  SortingIterationStepAction,
+} from "../../types/sortingIterationStep";
 
 export function quickSort(arr: number[]): SortingIterationStep[] {
   const iterationSteps: SortingIterationStep[] = [];
@@ -24,11 +26,17 @@ export function quickSort(arr: number[]): SortingIterationStep[] {
       }
 
       [arr[left], arr[right]] = [arr[right], arr[left]];
-      iterationSteps.push({ swap: [left, right] });
+      iterationSteps.push({
+        action: SortingIterationStepAction.SWAP,
+        indexes: [left, right],
+      });
     }
 
     [arr[left], arr[high]] = [arr[high], arr[left]];
-    iterationSteps.push({ swap: [left, high] });
+    iterationSteps.push({
+      action: SortingIterationStepAction.SWAP,
+      indexes: [left, high],
+    });
 
     return left;
   }
