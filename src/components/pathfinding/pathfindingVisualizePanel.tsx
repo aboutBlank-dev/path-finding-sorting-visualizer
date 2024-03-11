@@ -1,6 +1,7 @@
 import { Panel, PanelProps } from "react-resizable-panels";
 import { usePathfinding } from "../../contexts/pathfindingContext";
 import StepSlider from "../stepSlider";
+import PathfindingCanvas from "./pathfindingCanvas";
 
 export default function PathfindingControlsPanel(props: PanelProps) {
   const pathfindingContext = usePathfinding();
@@ -11,6 +12,7 @@ export default function PathfindingControlsPanel(props: PanelProps) {
           <span className='algorithm-title'>
             {pathfindingContext.pathfindingAlgorithm}
           </span>
+          <PathfindingCanvas />
           {/* <StepSlider
             max={sortingContext.iterationSteps.length - 1}
             playbackTimeS={sortingContext.playbackTimeS}
