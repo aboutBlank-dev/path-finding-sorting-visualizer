@@ -1,14 +1,14 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import SortingIterationStep, {
   SortingIterationStepAction,
-} from "../types/SortingIterationStep";
+} from "../types/sortingIterationStep";
 import { quickSort } from "../algorithms/sorting_algorithms/quick";
 import { bubbleSort } from "../algorithms/sorting_algorithms/bubble";
 import { Note, NotePlayer } from "../utils/audio";
 import {
   SortingAlgorithm,
   isValidSortingAlgorithm,
-} from "../types/SortingAlgorithm";
+} from "../types/sortingAlgorithm";
 
 export const DEFAULT_SORTING_ALGORITHM = SortingAlgorithm.QUICK;
 const DEFAULT_INPUT_SIZE = 100;

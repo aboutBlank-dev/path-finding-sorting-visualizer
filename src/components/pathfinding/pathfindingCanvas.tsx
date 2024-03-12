@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import useSize from "../../hooks/useSize";
 import "./pathfindingCanvas.css";
-import { GridNodeType, PathfindingGrid } from "../../types/PathfindingGrid";
+import { GridNodeType, PathfindingGrid } from "../../types/pathfindingGrid";
 
 export enum PathfindingCanvasMode {
   MAZE = "MAZE",

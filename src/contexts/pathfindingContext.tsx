@@ -1,8 +1,9 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { PathfindingAlgorithm } from "../types/PathfindingAlgorithm";
-import { PathfindingGrid, createEmptyGrid } from "../types/PathfindingGrid";
+import { PathfindingAlgorithm } from "../types/pathfindingAlgorithm";
+import { PathfindingGrid, createEmptyGrid } from "../types/pathfindingGrid";
 import { MazeUtils } from "../utils/mazeGenerator";
-import { MazeGenerationStep } from "../types/MazeGenerationStep";
+import { MazeGenerationStep } from "../types/mazeGenerationStep";
+import { PathfindingIterationStep } from "../types/pathfindingIterationStep";
 
 export const DEFAULT_PATHFINDING_ALGORITHM = PathfindingAlgorithm.DIJKSTRA;
 const DEFAULT_PLAYBACK_TIME_SECONDS = 10;
@@ -21,7 +22,7 @@ export type PathfindingContextType = {
   inputGrid: PathfindingGrid;
   setInputGrid: (grid: PathfindingGrid) => void;
   mazeGenerationSteps: MazeGenerationStep[];
-  setMazeGenerationSteps: (steps: MazeGenerationStep[]) => void;
+  pathfindingIterationSteps: PathfindingIterationStep[];
   generateMaze: () => void;
 };
 
@@ -32,12 +33,12 @@ const PathfindingContext = createContext<PathfindingContextType>({
   inputGridHeight: DEFAULT_INPUT_GRID_HEIGHT,
   inputGrid: {} as PathfindingGrid,
   mazeGenerationSteps: [],
+  pathfindingIterationSteps: [],
   setAlgorithm: () => {},
   setPlaybackTime: () => {},
   setInputGridHeight: () => {},
   setInputGridWidth: () => {},
   setInputGrid: () => {},
-  setMazeGenerationSteps: () => {},
   generateMaze: () => {},
 });
 
@@ -61,6 +62,9 @@ export function PathfindingContextProvider({
   const [inputGrid, setInputGrid] = useState<PathfindingGrid>(
     {} as PathfindingGrid
   );
+  const [pathfindingIterationSteps, setPathfindingIterationSteps] = useState<
+    PathfindingIterationStep[]
+  >([]);
   const [mazeGenerationSteps, setMazeGenerationSteps] = useState<
     MazeGenerationStep[]
   >([]);
@@ -78,6 +82,7 @@ export function PathfindingContextProvider({
 
   useEffect(() => {
     generateInput();
+    setMazeGenerationSteps([]);
   }, [inputGridWidth, inputGridHeight]);
 
   return (
@@ -94,7 +99,7 @@ export function PathfindingContextProvider({
         inputGrid: inputGrid,
         setInputGrid: setInputGrid,
         mazeGenerationSteps: mazeGenerationSteps,
-        setMazeGenerationSteps: setMazeGenerationSteps,
+        pathfindingIterationSteps: pathfindingIterationSteps,
         generateMaze: generateMaze,
       }}
     >

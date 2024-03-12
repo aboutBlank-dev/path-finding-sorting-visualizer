@@ -1,6 +1,6 @@
 import SortingIterationStep, {
   SortingIterationStepAction,
-} from "../../types/SortingIterationStep";
+} from "../../types/sortingIterationStep";
 
 export function bubbleSort(input: number[]): SortingIterationStep[] {
   const iterationSteps: SortingIterationStep[] = [];

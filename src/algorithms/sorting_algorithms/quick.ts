@@ -1,6 +1,6 @@
 import SortingIterationStep, {
   SortingIterationStepAction,
-} from "../../types/SortingIterationStep";
+} from "../../types/sortingIterationStep";
 
 export function quickSort(arr: number[]): SortingIterationStep[] {
   const iterationSteps: SortingIterationStep[] = [];

@@ -6,7 +6,7 @@ import useMediaQuery from "../hooks/useMediaQuery";
 import { useNavigate, useParams } from "react-router-dom";
 import SortingControlsPanel from "../components/sorting/sortingControlsPanel";
 import SortingVisualizePanel from "../components/sorting/sortingVisualizePanel";
-import { isValidSortingAlgorithm } from "../types/SortingAlgorithm";
+import { isValidSortingAlgorithm } from "../types/sortingAlgorithm";
 
 export default function Sorting() {
   const sortingContext = useSorting();

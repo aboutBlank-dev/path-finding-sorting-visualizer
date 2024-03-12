@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import "./stepSlider.css";
 
 type StepSliderProps = {
+  activeStepIndex: number;
   max: number;
   playbackTimeS: number;
   onChange: (value: number) => void;
@@ -9,11 +10,11 @@ type StepSliderProps = {
 
 let cancel = false;
 export default function StepSlider({
+  activeStepIndex,
   max,
   playbackTimeS,
   onChange,
 }: StepSliderProps) {
-  const [activeStepIndex, setActiveStepIndex] = useState(max);
   const [playing, setPlaying] = useState(false);
 
   const [intervalMS, stepIncrement] = useMemo(() => {
@@ -31,7 +32,6 @@ export default function StepSlider({
     setTimeout(() => {
       if (cancel) return;
       if (activeStepIndex < max) {
-        setActiveStepIndex(activeStepIndex + stepIncrement);
         onChange(activeStepIndex + stepIncrement);
       } else {
         setPlaying(false);
@@ -44,16 +44,9 @@ export default function StepSlider({
     setPlaying(!playing);
 
     if (activeStepIndex === max) {
-      setActiveStepIndex(0);
       onChange(0);
     }
   };
-
-  //reset active step index when max changes
-  useEffect(() => {
-    setActiveStepIndex(0);
-    onChange(0);
-  }, [max]);
 
   const playSVG = (
     <svg
@@ -96,7 +89,6 @@ export default function StepSlider({
         max={max}
         value={activeStepIndex}
         onChange={(e) => {
-          setActiveStepIndex(parseInt(e.target.value));
           onChange(parseInt(e.target.value));
 
           //manually stop playing if user interacts with the slider

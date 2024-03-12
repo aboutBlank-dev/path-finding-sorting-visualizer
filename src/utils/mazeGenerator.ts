@@ -1,12 +1,12 @@
 import {
   MazeGenerationStep,
   MazeGenerationStepAction,
-} from "../types/MazeGenerationStep";
+} from "../types/mazeGenerationStep";
 import {
   GridNode,
   GridNodeType,
   PathfindingGrid,
-} from "../types/PathfindingGrid";
+} from "../types/pathfindingGrid";
 
 export class MazeUtils {
   /**

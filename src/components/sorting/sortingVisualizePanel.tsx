@@ -1,9 +1,9 @@
 import { Panel, PanelProps } from "react-resizable-panels";
 import StepSlider from "../stepSlider";
 import SortingCanvas from "./sortingCanvas";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSorting } from "../../contexts/sortingContext";
-import { getSortingDataIteration } from "../../types/SortingIterationStep";
+import { getSortingDataIteration } from "../../types/sortingIterationStep";
 
 export default function SortingVisualizePanel(props: PanelProps) {
   const [activeStepIndex, setActiveStepIndex] = useState(0);
@@ -15,6 +15,10 @@ export default function SortingVisualizePanel(props: PanelProps) {
       sortingContext.playStepAudio(sortingContext.iterationSteps[index]);
     }
   };
+
+  useEffect(() => {
+    setActiveStepIndex(0);
+  }, [sortingContext.sortingAlgorithm]);
 
   return (
     <Panel {...props} minSize={25}>
@@ -28,6 +32,7 @@ export default function SortingVisualizePanel(props: PanelProps) {
             swap={sortingContext.iterationSteps[activeStepIndex]?.indexes ?? []}
           />
           <StepSlider
+            activeStepIndex={activeStepIndex}
             max={sortingContext.iterationSteps.length - 1}
             playbackTimeS={sortingContext.playbackTimeS}
             onChange={(value: number) => onActiveStepChange(value)}
