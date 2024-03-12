@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { usePathfinding } from "../contexts/pathfindingContext";
 import { useEffect } from "react";
-import { isValidPathfindingAlgorithm } from "../types/pathfindingAlgorithm";
+import { isValidPathfindingAlgorithm } from "../types/PathfindingAlgorithm";
 import useMediaQuery from "../hooks/useMediaQuery";
 import { PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import PathfindingControlsPanel from "../components/pathfinding/pathfindingControlsPanel";

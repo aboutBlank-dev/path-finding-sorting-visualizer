@@ -1,15 +1,15 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { PathfindingAlgorithm } from "../types/pathfindingAlgorithm";
-import { PathfindingGrid, createEmptyGrid } from "../types/pathfindingGrid";
+import { PathfindingAlgorithm } from "../types/PathfindingAlgorithm";
+import { PathfindingGrid, createEmptyGrid } from "../types/PathfindingGrid";
 import { MazeUtils } from "../utils/mazeGenerator";
-import { MazeGenerationStep } from "../types/mazeGenerationStep";
+import { MazeGenerationStep } from "../types/MazeGenerationStep";
 
 export const DEFAULT_PATHFINDING_ALGORITHM = PathfindingAlgorithm.DIJKSTRA;
 const DEFAULT_PLAYBACK_TIME_SECONDS = 10;
 const DEFAULT_INPUT_GRID_WIDTH = 25;
 const DEFAULT_INPUT_GRID_HEIGHT = 25;
 
-type PathfindingContextType = {
+export type PathfindingContextType = {
   inputGridWidth: number;
   setInputGridWidth: (width: number) => void;
   inputGridHeight: number;

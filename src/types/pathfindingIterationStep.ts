@@ -5,7 +5,7 @@ interface Coordinate {
 
 export type PathfindingIterationStep = {
   action: PathfindingIterationStepAction;
-  indexes: number[];
+  coordinates: Coordinate[];
 };
 
 export enum PathfindingIterationStepAction {

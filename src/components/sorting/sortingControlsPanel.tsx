@@ -6,7 +6,7 @@ import Toggle from "../toggle";
 import {
   SortingAlgorithm,
   isValidSortingAlgorithm,
-} from "../../types/sortingAlgorithm";
+} from "../../types/SortingAlgorithm";
 
 export default function SortingControlsPanel(props: PanelProps) {
   const sortingContext = useSorting();

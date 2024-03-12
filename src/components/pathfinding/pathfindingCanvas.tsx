@@ -1,14 +1,25 @@
 import { useEffect, useRef } from "react";
 import useSize from "../../hooks/useSize";
 import "./pathfindingCanvas.css";
-import { GridNodeType, PathfindingGrid } from "../../types/pathfindingGrid";
+import { GridNodeType, PathfindingGrid } from "../../types/PathfindingGrid";
+
+export enum PathfindingCanvasMode {
+  MAZE = "MAZE",
+  PATHFINDING = "PATHFINDING",
+}
 
 type PathfindingCanvasProps = {
   inputGrid: PathfindingGrid;
+  mazeGrid: PathfindingGrid;
+  algorithmStepIndex: number;
+  mode: PathfindingCanvasMode;
 };
 
 export default function PathfindingCanvas({
   inputGrid,
+  mazeGrid,
+  algorithmStepIndex,
+  mode,
 }: PathfindingCanvasProps) {
   const backgroundCanvasRef = useRef<HTMLCanvasElement>(null); //Grid Lines
   const foregroundCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -26,7 +37,8 @@ export default function PathfindingCanvas({
       const cellWidth = foregroundCanvas.width / width;
       const cellHeight = foregroundCanvas.height / height;
 
-      inputGrid.grid.forEach((row) => {
+      const gridToUse = mazeGrid ?? inputGrid;
+      gridToUse.grid.forEach((row) => {
         row.forEach((node) => {
           if (node.nodeType === GridNodeType.WALL) {
             ctx.fillStyle = "black";
@@ -79,7 +91,7 @@ export default function PathfindingCanvas({
 
   useEffect(() => {
     drawWalls();
-  }, [inputGrid, containerSize, containerRef]);
+  }, [inputGrid, containerSize, containerRef, mode, mazeGrid]);
 
   // Canvas size/Aspect ratio calculations
   let canvasWidth = 0;

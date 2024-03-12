@@ -19,7 +19,7 @@ export enum SortingIterationStepAction {
  *
  * @returns the state of the data at the given step index
  */
-export function getSortingDataStateIteration(
+export function getSortingDataIteration(
   stepIndex: number,
   sortingContext: SortingContextType
 ) {

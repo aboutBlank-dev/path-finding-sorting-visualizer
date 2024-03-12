@@ -3,7 +3,7 @@ import { usePathfinding } from "../../contexts/pathfindingContext";
 import {
   PathfindingAlgorithm,
   isValidPathfindingAlgorithm,
-} from "../../types/pathfindingAlgorithm";
+} from "../../types/PathfindingAlgorithm";
 import DropDown from "../dropDown";
 import NumberInputField from "../numberInputField";
 

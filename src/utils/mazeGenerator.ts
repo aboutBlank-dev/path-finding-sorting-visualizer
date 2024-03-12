@@ -1,12 +1,12 @@
 import {
   MazeGenerationStep,
   MazeGenerationStepAction,
-} from "../types/mazeGenerationStep";
+} from "../types/MazeGenerationStep";
 import {
   GridNode,
   GridNodeType,
   PathfindingGrid,
-} from "../types/pathfindingGrid";
+} from "../types/PathfindingGrid";
 
 export class MazeUtils {
   /**
@@ -29,7 +29,21 @@ export class MazeUtils {
       });
     });
 
-    const mazeGenerationSteps: MazeGenerationStep[] = [];
+    const mazeGenerationSteps: MazeGenerationStep[] = []; //Used for Visualizing the maze generation
+    //Add an empty step to start (so that index 0 shows an empty grid)
+    const allCoords = new Array(inputGrid.width * inputGrid.height)
+      .fill(null)
+      .map((_, i) => {
+        return {
+          x: Math.floor(i / inputGrid.width),
+          y: i % inputGrid.width,
+        };
+      });
+    mazeGenerationSteps.push({
+      coords: allCoords,
+      action: MazeGenerationStepAction.REMOVE_WALL,
+    });
+
     const stack: GridNode[] = [];
     const visited: Set<GridNode> = new Set();
     const start = newGrid[1][1];
