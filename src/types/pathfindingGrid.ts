@@ -1,6 +1,13 @@
+interface Coordinate {
+  x: number;
+  y: number;
+}
+
 export type PathfindingGrid = {
   width: number;
   height: number;
+  startNode: Coordinate;
+  endNode: Coordinate;
   grid: GridNode[][];
 };
 
@@ -17,23 +24,3 @@ export enum GridNodeType {
   EMPTY,
 }
 
-export function createEmptyGrid(
-  width: number,
-  height: number
-): PathfindingGrid {
-  const grid = new Array(height).fill(null).map((_, row) => {
-    return new Array(width).fill(null).map((_, col) => {
-      return {
-        x: row,
-        y: col,
-        nodeType: GridNodeType.EMPTY,
-      };
-    });
-  });
-
-  return {
-    width,
-    height,
-    grid,
-  };
-}

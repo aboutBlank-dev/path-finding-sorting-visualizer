@@ -107,22 +107,47 @@ export class MazeUtils {
       }
     }
 
-    //Find an empty cell for the end node.
-    for (let x = 0; x < newGrid.length; x++) {
-      for (let y = newGrid[x].length - 1; y >= 0; y--) {
+    let startPosition = { x: -1, y: -1 };
+    //Find an empty cell for the start node (As close to top left corner as possible).
+    loop: for (let x = 0; x < newGrid.length; x++) {
+      for (let y = 0; y < newGrid[x].length; y++) {
         if (newGrid[x][y].nodeType === GridNodeType.EMPTY) {
-          newGrid[x][y].nodeType = GridNodeType.END;
-          break;
+          newGrid[x][y].nodeType = GridNodeType.START;
+          startPosition = { x, y };
+          break loop;
         }
       }
     }
 
+    let endPosition = { x: -1, y: -1 };
+    //Find an empty cell for the end node( As close to bottom right corner as possible).
+    loop: for (let x = newGrid.length - 1; x >= 0; x--) {
+      for (let y = newGrid[x].length - 1; y >= 0; y--) {
+        if (newGrid[x][y].nodeType === GridNodeType.EMPTY) {
+          newGrid[x][y].nodeType = GridNodeType.END;
+          endPosition = { x, y };
+          break loop;
+        }
+      }
+    }
+
+    mazeGenerationSteps.push({
+      coords: [startPosition],
+      action: MazeGenerationStepAction.ADD_START,
+    });
+
+    mazeGenerationSteps.push({
+      coords: [endPosition],
+      action: MazeGenerationStepAction.ADD_END,
+    });
+
     const newPathfindingGrid = {
       width: inputGrid.width,
       height: inputGrid.height,
+      startNode: startPosition,
+      endNode: endPosition,
       grid: newGrid,
     };
-
     return [newPathfindingGrid, mazeGenerationSteps];
   }
 }

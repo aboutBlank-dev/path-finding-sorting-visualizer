@@ -11,4 +11,5 @@ export type PathfindingIterationStep = {
 export enum PathfindingIterationStepAction {
   NONE = "NONE",
   VISIT = "VISIT",
+  PATH = "PATH",
 }

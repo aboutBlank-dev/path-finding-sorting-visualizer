@@ -26,72 +26,42 @@ export default function PathfindingCanvas({
   const containerRef = useRef<HTMLDivElement>(null);
   const containerSize = useSize(containerRef); //used to track when the panel is resized
 
-  const drawWalls = () => {
-    const foregroundCanvas = foregroundCanvasRef.current;
-    const ctx = foregroundCanvas?.getContext("2d");
-
-    if (ctx && foregroundCanvas && inputGrid.grid) {
-      ctx.clearRect(0, 0, foregroundCanvas.width, foregroundCanvas.height);
-
-      const { width, height } = inputGrid;
-      const cellWidth = foregroundCanvas.width / width;
-      const cellHeight = foregroundCanvas.height / height;
-
-      const gridToUse = mazeGrid ?? inputGrid;
-      gridToUse.grid.forEach((row) => {
-        row.forEach((node) => {
-          if (node.nodeType === GridNodeType.WALL) {
-            ctx.fillStyle = "black";
-            ctx.fillRect(
-              node.y * cellWidth,
-              node.x * cellHeight,
-              cellWidth,
-              cellHeight
-            );
-          }
-        });
-      });
-    }
-  };
-
-  const drawGridLines = () => {
+  const drawBackground = () => {
     const backgroundCanvas = backgroundCanvasRef.current;
     const ctx = backgroundCanvas?.getContext("2d");
 
     if (ctx && backgroundCanvas) {
       ctx.clearRect(0, 0, backgroundCanvas.width, backgroundCanvas.height);
+      drawGridLines(
+        ctx,
+        backgroundCanvas.width,
+        backgroundCanvas.height,
+        inputGrid.width,
+        inputGrid.height
+      );
+    }
+  };
 
-      const { width, height } = inputGrid;
-      const cellWidth = backgroundCanvas.width / width;
-      const cellHeight = backgroundCanvas.height / height;
+  const drawForeground = () => {
+    const foregroundCanvas = foregroundCanvasRef.current;
+    const ctx = foregroundCanvas?.getContext("2d");
 
-      ctx.lineWidth = 0.5;
-      ctx.strokeStyle = "black";
-      //draw vertical lines
-      for (let i = 0; i <= width; i++) {
-        ctx.beginPath();
-        ctx.moveTo(i * cellWidth, 0);
-        ctx.lineTo(i * cellWidth, backgroundCanvas.height);
-        ctx.stroke();
-      }
+    if (ctx && foregroundCanvas) {
+      ctx.clearRect(0, 0, foregroundCanvas.width, foregroundCanvas.height);
 
-      //draw horizontal lines
-      for (let i = 0; i <= height; i++) {
-        ctx.beginPath();
-        ctx.moveTo(0, i * cellHeight);
-        ctx.lineTo(backgroundCanvas.width, i * cellHeight);
-        ctx.stroke();
-      }
+      const grid = mode === PathfindingCanvasMode.MAZE ? mazeGrid : inputGrid;
+      drawWalls(ctx, foregroundCanvas.width, foregroundCanvas.height, grid);
     }
   };
 
   useEffect(() => {
-    drawGridLines();
+    drawBackground();
+    drawForeground();
   }, [inputGrid.height, inputGrid.width, containerSize, containerRef]);
 
   useEffect(() => {
-    drawWalls();
-  }, [inputGrid, containerSize, containerRef, mode, mazeGrid]);
+    drawForeground();
+  }, [inputGrid.grid, mode, mazeGrid]);
 
   // Canvas size/Aspect ratio calculations
   let canvasWidth = 0;
@@ -126,3 +96,70 @@ export default function PathfindingCanvas({
     </div>
   );
 }
+
+const drawGridLines = (
+  ctx: CanvasRenderingContext2D,
+  canvasWidth: number,
+  canvasHeight: number,
+  gridWidth: number,
+  gridHeight: number
+) => {
+  const cellWidth = canvasWidth / gridWidth;
+  const cellHeight = canvasHeight / gridHeight;
+
+  ctx.lineWidth = 0.5;
+  ctx.strokeStyle = "black";
+  //draw vertical lines
+  for (let i = 0; i <= gridWidth; i++) {
+    ctx.beginPath();
+    ctx.moveTo(i * cellWidth, 0);
+    ctx.lineTo(i * cellWidth, canvasHeight);
+    ctx.stroke();
+  }
+
+  //draw horizontal lines
+  for (let i = 0; i <= gridHeight; i++) {
+    ctx.beginPath();
+    ctx.moveTo(0, i * cellHeight);
+    ctx.lineTo(canvasWidth, i * cellHeight);
+    ctx.stroke();
+  }
+};
+
+const drawWalls = (
+  ctx: CanvasRenderingContext2D,
+  canvasWidth: number,
+  canvasHeight: number,
+  pathfindingGrid: PathfindingGrid
+) => {
+  if (pathfindingGrid.grid) {
+    const { width, height } = pathfindingGrid;
+    const cellWidth = canvasWidth / width;
+    const cellHeight = canvasHeight / height;
+
+    pathfindingGrid.grid.forEach((row) => {
+      row.forEach((node) => {
+        switch (node.nodeType) {
+          case GridNodeType.WALL:
+            ctx.fillStyle = "black";
+            break;
+          case GridNodeType.START:
+            ctx.fillStyle = "green";
+            break;
+          case GridNodeType.END:
+            ctx.fillStyle = "red";
+            break;
+          default:
+            return;
+        }
+
+        ctx.fillRect(
+          node.y * cellWidth,
+          node.x * cellHeight,
+          cellWidth,
+          cellHeight
+        );
+      });
+    });
+  }
+};

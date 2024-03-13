@@ -10,6 +10,8 @@ export enum MazeGenerationStepAction {
   NONE = "NONE",
   REMOVE_WALL = "REMOVE_WALL",
   ADD_WALL = "ADD_WALL",
+  ADD_START = "ADD_START",
+  ADD_END = "ADD_END",
 }
 
 export type MazeGenerationStep = {
@@ -51,6 +53,12 @@ export function getMazeGridIteration(
             case MazeGenerationStepAction.ADD_WALL:
               newGrid[coord.x][coord.y].nodeType = GridNodeType.WALL;
               break;
+            case MazeGenerationStepAction.ADD_START:
+              newGrid[coord.x][coord.y].nodeType = GridNodeType.START;
+              break;
+            case MazeGenerationStepAction.ADD_END:
+              newGrid[coord.x][coord.y].nodeType = GridNodeType.END;
+              break;
           }
         }
       });
@@ -60,6 +68,8 @@ export function getMazeGridIteration(
   return {
     width: pathfindingContext.inputGrid.width,
     height: pathfindingContext.inputGrid.height,
+    startNode: pathfindingContext.inputGrid.startNode,
+    endNode: pathfindingContext.inputGrid.endNode,
     grid: newGrid,
   };
 }

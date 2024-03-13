@@ -1,9 +1,11 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { PathfindingAlgorithm } from "../types/pathfindingAlgorithm";
-import { PathfindingGrid, createEmptyGrid } from "../types/pathfindingGrid";
+import { PathfindingGrid } from "../types/pathfindingGrid";
 import { MazeUtils } from "../utils/mazeGenerator";
 import { MazeGenerationStep } from "../types/mazeGenerationStep";
 import { PathfindingIterationStep } from "../types/pathfindingIterationStep";
+import { GridUtils } from "../utils/gridUtils";
+import aStar from "../algorithms/pathfinding/aStar";
 
 export const DEFAULT_PATHFINDING_ALGORITHM = PathfindingAlgorithm.DIJKSTRA;
 const DEFAULT_PLAYBACK_TIME_SECONDS = 10;
@@ -70,7 +72,10 @@ export function PathfindingContextProvider({
   >([]);
 
   const generateInput = () => {
-    const emptyGrid = createEmptyGrid(inputGridWidth, inputGridHeight);
+    const emptyGrid = GridUtils.createEmptyGrid(
+      inputGridWidth,
+      inputGridHeight
+    );
     setInputGrid(emptyGrid);
   };
 
@@ -80,10 +85,17 @@ export function PathfindingContextProvider({
     setInputGrid(mazeGrid);
   };
 
+  // When width or height changes
   useEffect(() => {
     generateInput();
     setMazeGenerationSteps([]);
   }, [inputGridWidth, inputGridHeight]);
+
+  // When input grid changes
+  useEffect(() => {
+    const pathfinding = aStar(inputGrid);
+    setPathfindingIterationSteps(pathfinding);
+  }, [inputGrid]);
 
   return (
     <PathfindingContext.Provider

@@ -2,8 +2,8 @@ import { createContext, useContext, useEffect, useState } from "react";
 import SortingIterationStep, {
   SortingIterationStepAction,
 } from "../types/sortingIterationStep";
-import { quickSort } from "../algorithms/sorting_algorithms/quick";
-import { bubbleSort } from "../algorithms/sorting_algorithms/bubble";
+import { quickSort } from "../algorithms/sorting/quick";
+import { bubbleSort } from "../algorithms/sorting/bubble";
 import { Note, NotePlayer } from "../utils/audio";
 import {
   SortingAlgorithm,
