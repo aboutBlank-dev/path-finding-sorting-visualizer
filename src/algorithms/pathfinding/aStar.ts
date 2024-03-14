@@ -57,21 +57,22 @@ export default function aStar(
 
     // End node found
     if (currNode.x === endNode.x && currNode.y === endNode.y) {
-      const path: Position[] = [];
+      // Trace the "path" from start to end.
+      const path = [];
       let temp = { x: currNode.x, y: currNode.y, parent: currNode.parent };
-      path.push({ x: temp.x, y: temp.y });
-      pathfindingSteps.push({
-        action: PathfindingIterationStepAction.PATH,
-        coordinates: path,
-      });
+      path.push(temp);
 
       while (temp.parent) {
-        path.push({ x: temp.parent.x, y: temp.parent.y });
+        path.push(temp.parent);
+        temp = temp.parent;
+      }
+
+      //Reserve the path, add each step to the pathfindingSteps array
+      for (let i = path.length - 1; i >= 0; i--) {
         pathfindingSteps.push({
           action: PathfindingIterationStepAction.PATH,
-          coordinates: [temp.parent],
+          coordinates: [path[i]],
         });
-        temp = temp.parent;
       }
 
       return pathfindingSteps;
