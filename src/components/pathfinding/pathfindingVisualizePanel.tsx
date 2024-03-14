@@ -15,6 +15,10 @@ export default function PathfindingControlsPanel(props: PanelProps) {
     [mazeStepIndex, pathfindingContext.inputGrid]
   );
 
+  const mazeStepSliderEnabled = useMemo(() => {
+    return pathfindingContext.mazeGenerationSteps.length > 0;
+  }, [pathfindingContext.mazeGenerationSteps]);
+
   useEffect(() => {
     setMazeStepIndex(pathfindingContext.mazeGenerationSteps.length - 1);
   }, [pathfindingContext.mazeGenerationSteps]);
@@ -44,13 +48,17 @@ export default function PathfindingControlsPanel(props: PanelProps) {
             pathfindingSteps={pathfindingSteps}
             mode={PathfindingCanvasMode.MAZE}
           />
+          {mazeStepSliderEnabled ? (
+            <StepSlider
+              label='Maze Generation Step'
+              activeStepIndex={mazeStepIndex}
+              maxStepIndex={pathfindingContext.mazeGenerationSteps.length - 1}
+              playbackTimeS={pathfindingContext.playbackTimeS}
+              onChange={(value: number) => setMazeStepIndex(value)}
+            />
+          ) : null}
           <StepSlider
-            activeStepIndex={mazeStepIndex}
-            maxStepIndex={pathfindingContext.mazeGenerationSteps.length - 1}
-            playbackTimeS={pathfindingContext.playbackTimeS}
-            onChange={(value: number) => setMazeStepIndex(value)}
-          />
-          <StepSlider
+            label='Pathfinding Step'
             activeStepIndex={pathfindingStepIndex}
             maxStepIndex={
               pathfindingContext.pathfindingIterationSteps.length - 1
