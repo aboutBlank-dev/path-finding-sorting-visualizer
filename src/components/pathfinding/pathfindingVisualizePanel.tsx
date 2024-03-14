@@ -8,6 +8,9 @@ import { getMazeGridIteration } from "../../types/mazeGenerationStep";
 export default function PathfindingControlsPanel(props: PanelProps) {
   const [mazeStepIndex, setMazeStepIndex] = useState(0);
   const [pathfindingStepIndex, setPathfindingStepIndex] = useState(0);
+  const [canvasMode, setCanvasMode] = useState(
+    PathfindingCanvasMode.PATHFINDING
+  );
   const pathfindingContext = usePathfinding();
 
   const mazeGridState = useMemo(
@@ -29,6 +32,21 @@ export default function PathfindingControlsPanel(props: PanelProps) {
     );
   }, [pathfindingContext.pathfindingIterationSteps]);
 
+  const onMazeSliderChange = (value: number) => {
+    setMazeStepIndex(value);
+    //Maze Slider last interacted with, so canvas mode set to MAZE
+    setCanvasMode(PathfindingCanvasMode.MAZE);
+  };
+
+  const onPathfindingSliderChange = (value: number) => {
+    setPathfindingStepIndex(value);
+    //Pathfinding Slider last interacted with, so canvas mode set to PATHFINDING
+    setCanvasMode(PathfindingCanvasMode.PATHFINDING);
+
+    //if pathfindingStep was interacted with, then the maze should be shown as complete.
+    setMazeStepIndex(pathfindingContext.mazeGenerationSteps.length - 1);
+  };
+
   //get a copy of the pathfindingIterationSteps up to the current step
   const pathfindingSteps = pathfindingContext.pathfindingIterationSteps.slice(
     0,
@@ -46,7 +64,7 @@ export default function PathfindingControlsPanel(props: PanelProps) {
             inputGrid={pathfindingContext.inputGrid}
             mazeGrid={mazeGridState}
             pathfindingSteps={pathfindingSteps}
-            mode={PathfindingCanvasMode.MAZE}
+            mode={canvasMode}
           />
           {mazeStepSliderEnabled ? (
             <StepSlider
@@ -54,7 +72,7 @@ export default function PathfindingControlsPanel(props: PanelProps) {
               activeStepIndex={mazeStepIndex}
               maxStepIndex={pathfindingContext.mazeGenerationSteps.length - 1}
               playbackTimeS={pathfindingContext.playbackTimeS}
-              onChange={(value: number) => setMazeStepIndex(value)}
+              onChange={(value: number) => onMazeSliderChange(value)}
             />
           ) : null}
           <StepSlider
@@ -64,7 +82,7 @@ export default function PathfindingControlsPanel(props: PanelProps) {
               pathfindingContext.pathfindingIterationSteps.length - 1
             }
             playbackTimeS={pathfindingContext.playbackTimeS}
-            onChange={(value: number) => setPathfindingStepIndex(value)}
+            onChange={(value: number) => onPathfindingSliderChange(value)}
           />
         </div>
       </div>

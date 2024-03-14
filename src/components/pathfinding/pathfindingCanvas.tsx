@@ -53,15 +53,18 @@ export default function PathfindingCanvas({
     if (ctx && foregroundCanvas) {
       ctx.clearRect(0, 0, foregroundCanvas.width, foregroundCanvas.height);
 
+      if (mode === PathfindingCanvasMode.PATHFINDING) {
+        drawPathfinding(
+          ctx,
+          pathfindingSteps,
+          foregroundCanvas.width,
+          foregroundCanvas.height,
+          inputGrid.width,
+          inputGrid.height
+        );
+      }
+
       const grid = mode === PathfindingCanvasMode.MAZE ? mazeGrid : inputGrid;
-      drawPathfinding(
-        ctx,
-        pathfindingSteps,
-        foregroundCanvas.width,
-        foregroundCanvas.height,
-        inputGrid.width,
-        inputGrid.height
-      );
       drawNodes(ctx, foregroundCanvas.width, foregroundCanvas.height, grid);
     }
   };

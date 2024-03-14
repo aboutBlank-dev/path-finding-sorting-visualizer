@@ -57,7 +57,7 @@ export default function aStar(
 
     // End node found
     if (currNode.x === endNode.x && currNode.y === endNode.y) {
-      // Trace the "path" from start to end.
+      // Trace the "path" from END to START.
       const path = [];
       let temp = { x: currNode.x, y: currNode.y, parent: currNode.parent };
       path.push(temp);
