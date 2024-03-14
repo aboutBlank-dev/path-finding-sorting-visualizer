@@ -19,6 +19,18 @@ export default function PathfindingControlsPanel(props: PanelProps) {
     setMazeStepIndex(pathfindingContext.mazeGenerationSteps.length - 1);
   }, [pathfindingContext.mazeGenerationSteps]);
 
+  useEffect(() => {
+    setPathfindingStepIndex(
+      pathfindingContext.pathfindingIterationSteps.length - 1
+    );
+  }, [pathfindingContext.pathfindingIterationSteps]);
+
+  //get a copy of the pathfindingIterationSteps up to the current step
+  const pathfindingSteps = pathfindingContext.pathfindingIterationSteps.slice(
+    0,
+    pathfindingStepIndex + 1
+  );
+
   return (
     <Panel {...props} minSize={25}>
       <div className='visualize-section-wrapper'>
@@ -29,18 +41,20 @@ export default function PathfindingControlsPanel(props: PanelProps) {
           <PathfindingCanvas
             inputGrid={pathfindingContext.inputGrid}
             mazeGrid={mazeGridState}
-            algorithmStepIndex={0}
+            pathfindingSteps={pathfindingSteps}
             mode={PathfindingCanvasMode.MAZE}
           />
           <StepSlider
             activeStepIndex={mazeStepIndex}
-            max={pathfindingContext.mazeGenerationSteps.length - 1}
+            maxStepIndex={pathfindingContext.mazeGenerationSteps.length - 1}
             playbackTimeS={pathfindingContext.playbackTimeS}
             onChange={(value: number) => setMazeStepIndex(value)}
           />
           <StepSlider
             activeStepIndex={pathfindingStepIndex}
-            max={pathfindingContext.pathfindingIterationSteps.length - 1}
+            maxStepIndex={
+              pathfindingContext.pathfindingIterationSteps.length - 1
+            }
             playbackTimeS={pathfindingContext.playbackTimeS}
             onChange={(value: number) => setPathfindingStepIndex(value)}
           />

@@ -2,6 +2,10 @@ import { useEffect, useRef } from "react";
 import useSize from "../../hooks/useSize";
 import "./pathfindingCanvas.css";
 import { GridNodeType, PathfindingGrid } from "../../types/pathfindingGrid";
+import {
+  PathfindingIterationStep,
+  PathfindingIterationStepAction,
+} from "../../types/pathfindingIterationStep";
 
 export enum PathfindingCanvasMode {
   MAZE = "MAZE",
@@ -11,14 +15,14 @@ export enum PathfindingCanvasMode {
 type PathfindingCanvasProps = {
   inputGrid: PathfindingGrid;
   mazeGrid: PathfindingGrid;
-  algorithmStepIndex: number;
+  pathfindingSteps: PathfindingIterationStep[];
   mode: PathfindingCanvasMode;
 };
 
 export default function PathfindingCanvas({
   inputGrid,
   mazeGrid,
-  algorithmStepIndex,
+  pathfindingSteps,
   mode,
 }: PathfindingCanvasProps) {
   const backgroundCanvasRef = useRef<HTMLCanvasElement>(null); //Grid Lines
@@ -50,7 +54,15 @@ export default function PathfindingCanvas({
       ctx.clearRect(0, 0, foregroundCanvas.width, foregroundCanvas.height);
 
       const grid = mode === PathfindingCanvasMode.MAZE ? mazeGrid : inputGrid;
-      drawWalls(ctx, foregroundCanvas.width, foregroundCanvas.height, grid);
+      drawPathfinding(
+        ctx,
+        pathfindingSteps,
+        foregroundCanvas.width,
+        foregroundCanvas.height,
+        inputGrid.width,
+        inputGrid.height
+      );
+      drawNodes(ctx, foregroundCanvas.width, foregroundCanvas.height, grid);
     }
   };
 
@@ -61,7 +73,7 @@ export default function PathfindingCanvas({
 
   useEffect(() => {
     drawForeground();
-  }, [inputGrid.grid, mode, mazeGrid]);
+  }, [inputGrid.grid, mode, mazeGrid, pathfindingSteps]);
 
   // Canvas size/Aspect ratio calculations
   let canvasWidth = 0;
@@ -126,7 +138,7 @@ const drawGridLines = (
   }
 };
 
-const drawWalls = (
+const drawNodes = (
   ctx: CanvasRenderingContext2D,
   canvasWidth: number,
   canvasHeight: number,
@@ -160,6 +172,39 @@ const drawWalls = (
           cellHeight
         );
       });
+    });
+  }
+};
+
+const drawPathfinding = (
+  ctx: CanvasRenderingContext2D,
+  pathfindingSteps: PathfindingIterationStep[],
+  canvasWidth: number,
+  canvasHeight: number,
+  width: number,
+  height: number
+) => {
+  const cellWidth = canvasWidth / width;
+  const cellHeight = canvasHeight / height;
+  for (const step of pathfindingSteps) {
+    switch (step.action) {
+      case PathfindingIterationStepAction.VISIT:
+        ctx.fillStyle = "blue";
+        break;
+      case PathfindingIterationStepAction.PATH:
+        ctx.fillStyle = "yellow";
+        break;
+      default:
+        return;
+    }
+
+    step.coordinates.forEach((coord) => {
+      ctx.fillRect(
+        coord.y * cellWidth,
+        coord.x * cellHeight,
+        cellWidth,
+        cellHeight
+      );
     });
   }
 };

@@ -2,16 +2,18 @@ import { useEffect, useMemo, useState } from "react";
 import "./stepSlider.css";
 
 type StepSliderProps = {
+  label: string;
   activeStepIndex: number;
-  max: number;
+  maxStepIndex: number;
   playbackTimeS: number;
   onChange: (value: number) => void;
 };
 
 let cancel = false;
 export default function StepSlider({
+  label,
   activeStepIndex,
-  max,
+  maxStepIndex,
   playbackTimeS,
   onChange,
 }: StepSliderProps) {
@@ -19,19 +21,19 @@ export default function StepSlider({
 
   const [intervalMS, stepIncrement] = useMemo(() => {
     let stepIncrement = 1;
-    const interval = (playbackTimeS * 1000) / max;
+    const interval = (playbackTimeS * 1000) / maxStepIndex;
     if (interval < 10) {
       stepIncrement = Math.ceil(10 / interval);
       return [10, stepIncrement];
     }
 
     return [interval, 1];
-  }, [playbackTimeS, max]);
+  }, [playbackTimeS, maxStepIndex]);
 
   if (playing) {
     setTimeout(() => {
       if (cancel) return;
-      if (activeStepIndex < max) {
+      if (activeStepIndex < maxStepIndex) {
         onChange(activeStepIndex + stepIncrement);
       } else {
         setPlaying(false);
@@ -43,7 +45,7 @@ export default function StepSlider({
     cancel = playing;
     setPlaying(!playing);
 
-    if (activeStepIndex === max) {
+    if (activeStepIndex === maxStepIndex) {
       onChange(0);
     }
   };
@@ -81,21 +83,26 @@ export default function StepSlider({
 
   return (
     <div className='step-slider'>
-      {playing ? pauseSVG : playSVG}
-      <input
-        type='range'
-        className='slider'
-        min={0}
-        max={max}
-        value={activeStepIndex}
-        onChange={(e) => {
-          onChange(parseInt(e.target.value));
+      <span className='label'>
+        {label + ` (${activeStepIndex} / ${maxStepIndex})`}
+      </span>
+      <div className='slider'>
+        {playing ? pauseSVG : playSVG}
+        <input
+          type='range'
+          className='slider'
+          min={0}
+          max={maxStepIndex}
+          value={activeStepIndex}
+          onChange={(e) => {
+            onChange(parseInt(e.target.value));
 
-          //manually stop playing if user interacts with the slider
-          setPlaying(false);
-          cancel = true;
-        }}
-      />
+            //manually stop playing if user interacts with the slider
+            setPlaying(false);
+            cancel = true;
+          }}
+        />
+      </div>
     </div>
   );
 }

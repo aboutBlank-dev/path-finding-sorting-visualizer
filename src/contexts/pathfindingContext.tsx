@@ -23,6 +23,7 @@ export type PathfindingContextType = {
   setPlaybackTime: (time: number) => void;
   inputGrid: PathfindingGrid;
   setInputGrid: (grid: PathfindingGrid) => void;
+  clearGrid: () => void;
   mazeGenerationSteps: MazeGenerationStep[];
   pathfindingIterationSteps: PathfindingIterationStep[];
   generateMaze: () => void;
@@ -41,6 +42,7 @@ const PathfindingContext = createContext<PathfindingContextType>({
   setInputGridHeight: () => {},
   setInputGridWidth: () => {},
   setInputGrid: () => {},
+  clearGrid: () => {},
   generateMaze: () => {},
 });
 
@@ -79,6 +81,15 @@ export function PathfindingContextProvider({
     setInputGrid(emptyGrid);
   };
 
+  const clearGrid = () => {
+    const emptyGrid = GridUtils.createEmptyGrid(
+      inputGridWidth,
+      inputGridHeight
+    );
+    setInputGrid(emptyGrid);
+    setMazeGenerationSteps([]);
+  };
+
   const generateMaze = () => {
     const [mazeGrid, mazeGenerationSteps] = MazeUtils.generateMaze(inputGrid);
     setMazeGenerationSteps(mazeGenerationSteps);
@@ -110,6 +121,7 @@ export function PathfindingContextProvider({
         setInputGridWidth: setInputGridWidth,
         inputGrid: inputGrid,
         setInputGrid: setInputGrid,
+        clearGrid: clearGrid,
         mazeGenerationSteps: mazeGenerationSteps,
         pathfindingIterationSteps: pathfindingIterationSteps,
         generateMaze: generateMaze,

@@ -24,6 +24,12 @@ export default function PathfindingControlsPanel(props: PanelProps) {
         >
           Generate Maze
         </button>
+        <button
+          className='input-button'
+          onClick={() => pathfindingContext.clearGrid()}
+        >
+          Clear Grid
+        </button>
         <DropDown
           id='algorithm-dropdown'
           label='Algorithm'

@@ -32,8 +32,9 @@ export default function SortingVisualizePanel(props: PanelProps) {
             swap={sortingContext.iterationSteps[activeStepIndex]?.indexes ?? []}
           />
           <StepSlider
+            label='Sorting Step'
             activeStepIndex={activeStepIndex}
-            max={sortingContext.iterationSteps.length - 1}
+            maxStepIndex={sortingContext.iterationSteps.length - 1}
             playbackTimeS={sortingContext.playbackTimeS}
             onChange={(value: number) => onActiveStepChange(value)}
           />
