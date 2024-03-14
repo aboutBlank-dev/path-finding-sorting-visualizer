@@ -7,7 +7,14 @@ import { PathfindingIterationStep } from "../types/pathfindingIterationStep";
 import { GridUtils } from "../utils/gridUtils";
 import aStar from "../algorithms/pathfinding/aStar";
 
+export enum PathfindingDrawMode {
+  WALL,
+  START,
+  END,
+}
+
 export const DEFAULT_PATHFINDING_ALGORITHM = PathfindingAlgorithm.DIJKSTRA;
+const DEFAULT_DRAW_MODE = PathfindingDrawMode.WALL;
 const DEFAULT_PLAYBACK_TIME_SECONDS = 10;
 const DEFAULT_INPUT_GRID_WIDTH = 25;
 const DEFAULT_INPUT_GRID_HEIGHT = 25;
@@ -19,14 +26,16 @@ export type PathfindingContextType = {
   setInputGridHeight: (height: number) => void;
   pathfindingAlgorithm: PathfindingAlgorithm;
   setAlgorithm: (algorithm: PathfindingAlgorithm) => void;
+  pathfindingIterationSteps: PathfindingIterationStep[];
   playbackTimeS: number;
   setPlaybackTime: (time: number) => void;
   inputGrid: PathfindingGrid;
   setInputGrid: (grid: PathfindingGrid) => void;
   clearGrid: () => void;
   mazeGenerationSteps: MazeGenerationStep[];
-  pathfindingIterationSteps: PathfindingIterationStep[];
   generateMaze: () => void;
+  drawMode: PathfindingDrawMode;
+  setDrawMode: (mode: PathfindingDrawMode) => void;
 };
 
 const PathfindingContext = createContext<PathfindingContextType>({
@@ -37,6 +46,7 @@ const PathfindingContext = createContext<PathfindingContextType>({
   inputGrid: {} as PathfindingGrid,
   mazeGenerationSteps: [],
   pathfindingIterationSteps: [],
+  drawMode: PathfindingDrawMode.WALL,
   setAlgorithm: () => {},
   setPlaybackTime: () => {},
   setInputGridHeight: () => {},
@@ -44,6 +54,7 @@ const PathfindingContext = createContext<PathfindingContextType>({
   setInputGrid: () => {},
   clearGrid: () => {},
   generateMaze: () => {},
+  setDrawMode: () => {},
 });
 
 export function PathfindingContextProvider({
@@ -72,6 +83,8 @@ export function PathfindingContextProvider({
   const [mazeGenerationSteps, setMazeGenerationSteps] = useState<
     MazeGenerationStep[]
   >([]);
+  const [drawMode, setDrawMode] =
+    useState<PathfindingDrawMode>(DEFAULT_DRAW_MODE);
 
   const generateInput = () => {
     const emptyGrid = GridUtils.createEmptyGrid(
@@ -113,6 +126,7 @@ export function PathfindingContextProvider({
       value={{
         pathfindingAlgorithm: algorithm,
         setAlgorithm: setAlgorithm,
+        pathfindingIterationSteps: pathfindingIterationSteps,
         playbackTimeS: playbackTimeS,
         setPlaybackTime: setPlayBackTime,
         inputGridHeight: inputGridHeight,
@@ -123,8 +137,9 @@ export function PathfindingContextProvider({
         setInputGrid: setInputGrid,
         clearGrid: clearGrid,
         mazeGenerationSteps: mazeGenerationSteps,
-        pathfindingIterationSteps: pathfindingIterationSteps,
         generateMaze: generateMaze,
+        drawMode: drawMode,
+        setDrawMode: setDrawMode,
       }}
     >
       {children}

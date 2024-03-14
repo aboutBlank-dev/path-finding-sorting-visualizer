@@ -1,7 +1,9 @@
 import { Panel, PanelProps } from "react-resizable-panels";
 import { usePathfinding } from "../../contexts/pathfindingContext";
 import StepSlider from "../stepSlider";
-import PathfindingCanvas, { PathfindingCanvasMode } from "./pathfindingCanvas";
+import PathfindingCanvas, {
+  PathfindingVisualizeMode,
+} from "./pathfindingCanvas";
 import { useEffect, useMemo, useState } from "react";
 import { getMazeGridIteration } from "../../types/mazeGenerationStep";
 
@@ -9,7 +11,7 @@ export default function PathfindingControlsPanel(props: PanelProps) {
   const [mazeStepIndex, setMazeStepIndex] = useState(0);
   const [pathfindingStepIndex, setPathfindingStepIndex] = useState(0);
   const [canvasMode, setCanvasMode] = useState(
-    PathfindingCanvasMode.PATHFINDING
+    PathfindingVisualizeMode.PATHFINDING
   );
   const pathfindingContext = usePathfinding();
 
@@ -35,13 +37,13 @@ export default function PathfindingControlsPanel(props: PanelProps) {
   const onMazeSliderChange = (value: number) => {
     setMazeStepIndex(value);
     //Maze Slider last interacted with, so canvas mode set to MAZE
-    setCanvasMode(PathfindingCanvasMode.MAZE);
+    setCanvasMode(PathfindingVisualizeMode.MAZE);
   };
 
   const onPathfindingSliderChange = (value: number) => {
     setPathfindingStepIndex(value);
     //Pathfinding Slider last interacted with, so canvas mode set to PATHFINDING
-    setCanvasMode(PathfindingCanvasMode.PATHFINDING);
+    setCanvasMode(PathfindingVisualizeMode.PATHFINDING);
 
     //if pathfindingStep was interacted with, then the maze should be shown as complete.
     setMazeStepIndex(pathfindingContext.mazeGenerationSteps.length - 1);
@@ -64,7 +66,9 @@ export default function PathfindingControlsPanel(props: PanelProps) {
             inputGrid={pathfindingContext.inputGrid}
             mazeGrid={mazeGridState}
             pathfindingSteps={pathfindingSteps}
-            mode={canvasMode}
+            visualizeMode={canvasMode}
+            drawMode={pathfindingContext.drawMode}
+            onGridChange={(grid) => pathfindingContext.setInputGrid(grid)}
           />
           {mazeStepSliderEnabled ? (
             <StepSlider

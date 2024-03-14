@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import useSize from "../../hooks/useSize";
 import "./pathfindingCanvas.css";
 import { GridNodeType, PathfindingGrid } from "../../types/pathfindingGrid";
@@ -6,29 +6,41 @@ import {
   PathfindingIterationStep,
   PathfindingIterationStepAction,
 } from "../../types/pathfindingIterationStep";
+import { PathfindingDrawMode } from "../../contexts/pathfindingContext";
 
-export enum PathfindingCanvasMode {
-  MAZE = "MAZE",
-  PATHFINDING = "PATHFINDING",
+export enum PathfindingVisualizeMode {
+  MAZE,
+  PATHFINDING,
 }
 
 type PathfindingCanvasProps = {
   inputGrid: PathfindingGrid;
   mazeGrid: PathfindingGrid;
   pathfindingSteps: PathfindingIterationStep[];
-  mode: PathfindingCanvasMode;
+  visualizeMode: PathfindingVisualizeMode;
+  drawMode: PathfindingDrawMode;
+  onGridChange: (grid: PathfindingGrid) => void;
 };
+
+interface Coordinate {
+  x: number;
+  y: number;
+}
 
 export default function PathfindingCanvas({
   inputGrid,
   mazeGrid,
   pathfindingSteps,
-  mode,
+  visualizeMode,
+  drawMode,
+  onGridChange,
 }: PathfindingCanvasProps) {
   const backgroundCanvasRef = useRef<HTMLCanvasElement>(null); //Grid Lines
   const foregroundCanvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const containerSize = useSize(containerRef); //used to track when the panel is resized
+  const isMouseDown = useRef(false);
+  const lastCellClicked = useRef<Coordinate | null>(null);
 
   const drawBackground = () => {
     const backgroundCanvas = backgroundCanvasRef.current;
@@ -53,7 +65,7 @@ export default function PathfindingCanvas({
     if (ctx && foregroundCanvas) {
       ctx.clearRect(0, 0, foregroundCanvas.width, foregroundCanvas.height);
 
-      if (mode === PathfindingCanvasMode.PATHFINDING) {
+      if (visualizeMode === PathfindingVisualizeMode.PATHFINDING) {
         drawPathfinding(
           ctx,
           pathfindingSteps,
@@ -64,7 +76,8 @@ export default function PathfindingCanvas({
         );
       }
 
-      const grid = mode === PathfindingCanvasMode.MAZE ? mazeGrid : inputGrid;
+      const grid =
+        visualizeMode === PathfindingVisualizeMode.MAZE ? mazeGrid : inputGrid;
       drawNodes(ctx, foregroundCanvas.width, foregroundCanvas.height, grid);
     }
   };
@@ -76,7 +89,50 @@ export default function PathfindingCanvas({
 
   useEffect(() => {
     drawForeground();
-  }, [inputGrid.grid, mode, mazeGrid, pathfindingSteps]);
+  }, [inputGrid.grid, visualizeMode, mazeGrid, pathfindingSteps]);
+
+  //Handle drawing (mouse move)
+  useEffect(() => {
+    const canvas = foregroundCanvasRef.current;
+    if (!canvas) return;
+
+    const handleMouseDown = (e: MouseEvent) => {
+      isMouseDown.current = true;
+    };
+
+    const handleMouseUp = (e: MouseEvent) => {
+      isMouseDown.current = false;
+    };
+
+    canvas.addEventListener("mousemove", handleMouseMove);
+    canvas.addEventListener("mousedown", handleMouseDown);
+    canvas.addEventListener("mouseup", handleMouseUp);
+    return () => {
+      canvas.removeEventListener("mousemove", handleMouseMove);
+      canvas.removeEventListener("mousedown", handleMouseDown);
+      canvas.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, []);
+
+  const handleCellClicked = (row: number, col: number) => {
+    lastCellClicked.current = { x: row, y: col };
+    console.log("Clicked cell in row: ", row, "col: ", col);
+  };
+
+  const handleMouseMove = (e: MouseEvent) => {
+    const canvas = foregroundCanvasRef.current;
+    if (isMouseDown.current && canvas) {
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const cellWidth = canvas.width / inputGrid.width;
+      const cellHeight = canvas.height / inputGrid.height;
+
+      const row = Math.floor(y / cellHeight);
+      const col = Math.floor(x / cellWidth);
+    }
+  };
 
   // Canvas size/Aspect ratio calculations
   let canvasWidth = 0;

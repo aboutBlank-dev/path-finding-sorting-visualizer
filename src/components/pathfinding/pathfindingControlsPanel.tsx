@@ -1,5 +1,8 @@
 import { Panel, PanelProps } from "react-resizable-panels";
-import { usePathfinding } from "../../contexts/pathfindingContext";
+import {
+  PathfindingDrawMode,
+  usePathfinding,
+} from "../../contexts/pathfindingContext";
 import {
   PathfindingAlgorithm,
   isValidPathfindingAlgorithm,
@@ -14,6 +17,7 @@ export default function PathfindingControlsPanel(props: PanelProps) {
     if (isValidPathfindingAlgorithm(value))
       pathfindingContext.setAlgorithm(value);
   };
+
   return (
     <Panel {...props} minSize={20}>
       <div className='controls-section'>
@@ -30,6 +34,29 @@ export default function PathfindingControlsPanel(props: PanelProps) {
         >
           Clear Grid
         </button>
+        <div className='pallete'>
+          <button
+            onClick={() =>
+              pathfindingContext.setDrawMode(PathfindingDrawMode.WALL)
+            }
+          >
+            WALL
+          </button>
+          <button
+            onClick={() =>
+              pathfindingContext.setDrawMode(PathfindingDrawMode.START)
+            }
+          >
+            START
+          </button>
+          <button
+            onClick={() =>
+              pathfindingContext.setDrawMode(PathfindingDrawMode.END)
+            }
+          >
+            END
+          </button>
+        </div>
         <DropDown
           id='algorithm-dropdown'
           label='Algorithm'
@@ -37,14 +64,6 @@ export default function PathfindingControlsPanel(props: PanelProps) {
           options={Object.values(PathfindingAlgorithm)}
           onChange={onAlgorithmSelected}
         />
-        {/* <NumberInputField
-          label='Input Size'
-          onChange={(num) => sortingContext.setInputSize(num)}
-          max={1000}
-          min={1}
-          value={100}
-          id='input-size'
-        /> */}
         <NumberInputField
           label='Playback time (seconds)'
           onChange={(num) => pathfindingContext.setPlaybackTime(num)}
