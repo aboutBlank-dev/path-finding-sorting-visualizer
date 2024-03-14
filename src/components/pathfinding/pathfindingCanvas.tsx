@@ -98,6 +98,17 @@ export default function PathfindingCanvas({
 
     const handleMouseDown = (e: MouseEvent) => {
       isMouseDown.current = true;
+
+      const cellWidth = canvas.width / inputGrid.width;
+      const cellHeight = canvas.height / inputGrid.height;
+
+      const cellClicked = getCellFromMousePosition(
+        canvas,
+        e,
+        cellWidth,
+        cellHeight
+      );
+      handleCellClicked(cellClicked.x, cellClicked.y);
     };
 
     const handleMouseUp = (e: MouseEvent) => {
@@ -112,7 +123,7 @@ export default function PathfindingCanvas({
       canvas.removeEventListener("mousedown", handleMouseDown);
       canvas.removeEventListener("mouseup", handleMouseUp);
     };
-  }, []);
+  }, [foregroundCanvasRef.current]);
 
   const handleCellClicked = (row: number, col: number) => {
     lastCellClicked.current = { x: row, y: col };
@@ -120,17 +131,23 @@ export default function PathfindingCanvas({
   };
 
   const handleMouseMove = (e: MouseEvent) => {
+    isMouseDown.current = e.buttons === 1;
+
     const canvas = foregroundCanvasRef.current;
     if (isMouseDown.current && canvas) {
-      const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+      const { x, y } = getCellFromMousePosition(
+        canvas,
+        e,
+        canvas.width / inputGrid.width,
+        canvas.height / inputGrid.height
+      );
 
-      const cellWidth = canvas.width / inputGrid.width;
-      const cellHeight = canvas.height / inputGrid.height;
-
-      const row = Math.floor(y / cellHeight);
-      const col = Math.floor(x / cellWidth);
+      if (
+        lastCellClicked.current &&
+        (lastCellClicked.current.x !== x || lastCellClicked.current.y !== y)
+      ) {
+        handleCellClicked(x, y);
+      }
     }
   };
 
@@ -267,3 +284,18 @@ const drawPathfinding = (
     });
   }
 };
+
+function getCellFromMousePosition(
+  canvas: HTMLCanvasElement,
+  e: MouseEvent,
+  cellWidth: number,
+  cellHeight: number
+): Coordinate {
+  const x = e.clientX - canvas.getBoundingClientRect().left;
+  const y = e.clientY - canvas.getBoundingClientRect().top;
+
+  const row = Math.floor(y / cellHeight);
+  const col = Math.floor(x / cellWidth);
+
+  return { x: row, y: col };
+}
