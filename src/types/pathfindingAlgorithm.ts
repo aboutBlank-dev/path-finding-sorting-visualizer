@@ -1,5 +1,5 @@
 export enum PathfindingAlgorithm {
-  DIJKSTRA = "dijsktra",
+  DIJKSTRA = "dijkstra",
   A_STAR = "a_star",
   BFS = "bfs",
   DFS = "dfs",

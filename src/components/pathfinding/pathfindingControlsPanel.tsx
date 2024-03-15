@@ -14,8 +14,9 @@ export default function PathfindingControlsPanel(props: PanelProps) {
   const pathfindingContext = usePathfinding();
 
   const onAlgorithmSelected = (value: string) => {
-    if (isValidPathfindingAlgorithm(value))
+    if (isValidPathfindingAlgorithm(value)) {
       pathfindingContext.setAlgorithm(value);
+    }
   };
 
   return (
