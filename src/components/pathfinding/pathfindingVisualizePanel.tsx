@@ -6,6 +6,7 @@ import PathfindingCanvas, {
 } from "./pathfindingCanvas";
 import { useEffect, useMemo, useState } from "react";
 import { getMazeGridIteration } from "../../types/mazeGenerationStep";
+import { GridNodeType, PathfindingGrid } from "../../types/pathfindingGrid";
 
 export default function PathfindingControlsPanel(props: PanelProps) {
   const [mazeStepIndex, setMazeStepIndex] = useState(0);

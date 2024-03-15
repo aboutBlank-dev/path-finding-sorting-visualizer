@@ -1,5 +1,6 @@
 import { PathfindingContextType } from "../contexts/pathfindingContext";
-import { GridNodeType, PathfindingGrid } from "./pathfindingGrid";
+import { GridUtils } from "../utils/gridUtils";
+import { GridNode, GridNodeType, PathfindingGrid } from "./pathfindingGrid";
 
 interface Coordinate {
   x: number;
@@ -33,7 +34,9 @@ export function getMazeGridIteration(
   pathfindingContext: PathfindingContextType
 ): PathfindingGrid {
   if (!pathfindingContext.inputGrid.grid) return pathfindingContext.inputGrid;
-  const newGrid = pathfindingContext.inputGrid.grid.map((row) => row.slice());
+
+  const newGrid = GridUtils.copyGrid(pathfindingContext.inputGrid.grid);
+
   const maxStepIndex = Math.min(
     stepIndex,
     pathfindingContext.mazeGenerationSteps.length - 1

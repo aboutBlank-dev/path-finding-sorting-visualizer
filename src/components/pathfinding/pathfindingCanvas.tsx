@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useRef } from "react";
 import useSize from "../../hooks/useSize";
 import "./pathfindingCanvas.css";
 import { GridNodeType, PathfindingGrid } from "../../types/pathfindingGrid";
@@ -7,6 +7,7 @@ import {
   PathfindingIterationStepAction,
 } from "../../types/pathfindingIterationStep";
 import { PathfindingDrawMode } from "../../contexts/pathfindingContext";
+import { GridUtils } from "../../utils/gridUtils";
 
 export enum PathfindingVisualizeMode {
   MAZE,
@@ -41,7 +42,18 @@ export default function PathfindingCanvas({
   const containerSize = useSize(containerRef); //used to track when the panel is resized
   const isMouseDown = useRef(false);
   const lastCellClicked = useRef<Coordinate | null>(null);
+  const firstNodeTypeClicked = useRef<GridNodeType | null>(null); //used to determine whether the current "drag" should paint Wall or an END
 
+  useEffect(() => {
+    drawBackground();
+    drawForeground();
+  }, [inputGrid.height, inputGrid.width, containerSize, containerRef]);
+
+  useEffect(() => {
+    drawForeground();
+  }, [inputGrid.grid, visualizeMode, mazeGrid, pathfindingSteps]);
+
+  //Draws the background canvas (grid lines)
   const drawBackground = () => {
     const backgroundCanvas = backgroundCanvasRef.current;
     const ctx = backgroundCanvas?.getContext("2d");
@@ -58,6 +70,7 @@ export default function PathfindingCanvas({
     }
   };
 
+  //Draws the foreground canvas (nodes/pathfinding)
   const drawForeground = () => {
     const foregroundCanvas = foregroundCanvasRef.current;
     const ctx = foregroundCanvas?.getContext("2d");
@@ -65,74 +78,39 @@ export default function PathfindingCanvas({
     if (ctx && foregroundCanvas) {
       ctx.clearRect(0, 0, foregroundCanvas.width, foregroundCanvas.height);
 
+      const cellWidth = foregroundCanvas.width / inputGrid.width;
+      const cellHeight = foregroundCanvas.height / inputGrid.height;
       if (visualizeMode === PathfindingVisualizeMode.PATHFINDING) {
-        drawPathfinding(
-          ctx,
-          pathfindingSteps,
-          foregroundCanvas.width,
-          foregroundCanvas.height,
-          inputGrid.width,
-          inputGrid.height
-        );
+        drawPathfinding(ctx, pathfindingSteps, cellWidth, cellHeight);
       }
 
       const grid =
         visualizeMode === PathfindingVisualizeMode.MAZE ? mazeGrid : inputGrid;
+
       drawNodes(ctx, foregroundCanvas.width, foregroundCanvas.height, grid);
     }
   };
 
-  useEffect(() => {
-    drawBackground();
-    drawForeground();
-  }, [inputGrid.height, inputGrid.width, containerSize, containerRef]);
-
-  useEffect(() => {
-    drawForeground();
-  }, [inputGrid.grid, visualizeMode, mazeGrid, pathfindingSteps]);
-
-  //Handle drawing (mouse move)
-  useEffect(() => {
+  const handleMouseDown = (e: React.MouseEvent) => {
     const canvas = foregroundCanvasRef.current;
     if (!canvas) return;
 
-    const handleMouseDown = (e: MouseEvent) => {
-      isMouseDown.current = true;
+    isMouseDown.current = true;
+    const cellClicked = getCellFromMousePosition(
+      canvas,
+      e,
+      canvas.width / inputGrid.width,
+      canvas.height / inputGrid.height
+    );
 
-      const cellWidth = canvas.width / inputGrid.width;
-      const cellHeight = canvas.height / inputGrid.height;
-
-      const cellClicked = getCellFromMousePosition(
-        canvas,
-        e,
-        cellWidth,
-        cellHeight
-      );
-      handleCellClicked(cellClicked.x, cellClicked.y);
-    };
-
-    const handleMouseUp = (e: MouseEvent) => {
-      isMouseDown.current = false;
-    };
-
-    canvas.addEventListener("mousemove", handleMouseMove);
-    canvas.addEventListener("mousedown", handleMouseDown);
-    canvas.addEventListener("mouseup", handleMouseUp);
-    return () => {
-      canvas.removeEventListener("mousemove", handleMouseMove);
-      canvas.removeEventListener("mousedown", handleMouseDown);
-      canvas.removeEventListener("mouseup", handleMouseUp);
-    };
-  }, [foregroundCanvasRef.current]);
-
-  const handleCellClicked = (row: number, col: number) => {
-    lastCellClicked.current = { x: row, y: col };
-    console.log("Clicked cell in row: ", row, "col: ", col);
+    handleCellDraw(cellClicked.x, cellClicked.y);
   };
 
-  const handleMouseMove = (e: MouseEvent) => {
-    isMouseDown.current = e.buttons === 1;
+  const handleMouseUp = (e: React.MouseEvent) => {
+    isMouseDown.current = false;
+  };
 
+  const handleMouseMove = (e: React.MouseEvent) => {
     const canvas = foregroundCanvasRef.current;
     if (isMouseDown.current && canvas) {
       const { x, y } = getCellFromMousePosition(
@@ -146,9 +124,29 @@ export default function PathfindingCanvas({
         lastCellClicked.current &&
         (lastCellClicked.current.x !== x || lastCellClicked.current.y !== y)
       ) {
-        handleCellClicked(x, y);
+        handleCellDraw(x, y);
       }
     }
+  };
+
+  const handleCellDraw = (x: number, y: number) => {
+    if (x < 0 || x >= inputGrid.height || y < 0 || y >= inputGrid.width) return;
+    lastCellClicked.current = { x: x, y: y };
+
+    const clickedNode = inputGrid.grid[x][y];
+    if (clickedNode.nodeType !== GridNodeType.EMPTY) return;
+
+    let newGrid = inputGrid;
+    switch (drawMode) {
+      case PathfindingDrawMode.START:
+        newGrid = GridUtils.moveStartNode({ x: x, y: y }, inputGrid);
+        break;
+
+      case PathfindingDrawMode.END:
+        newGrid = GridUtils.moveEndNode({ x: x, y: y }, inputGrid);
+        break;
+    }
+    onGridChange(newGrid);
   };
 
   // Canvas size/Aspect ratio calculations
@@ -180,6 +178,10 @@ export default function PathfindingCanvas({
         width={canvasWidth}
         height={canvasHeight}
         style={{ zIndex: 2 }}
+        onMouseMove={handleMouseMove}
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseUp}
       />
     </div>
   );
@@ -255,13 +257,9 @@ const drawNodes = (
 const drawPathfinding = (
   ctx: CanvasRenderingContext2D,
   pathfindingSteps: PathfindingIterationStep[],
-  canvasWidth: number,
-  canvasHeight: number,
-  width: number,
-  height: number
+  cellWidth: number,
+  cellHeight: number
 ) => {
-  const cellWidth = canvasWidth / width;
-  const cellHeight = canvasHeight / height;
   for (const step of pathfindingSteps) {
     switch (step.action) {
       case PathfindingIterationStepAction.VISIT:
@@ -287,7 +285,7 @@ const drawPathfinding = (
 
 function getCellFromMousePosition(
   canvas: HTMLCanvasElement,
-  e: MouseEvent,
+  e: React.MouseEvent,
   cellWidth: number,
   cellHeight: number
 ): Coordinate {

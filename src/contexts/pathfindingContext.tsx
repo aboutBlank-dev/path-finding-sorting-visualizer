@@ -15,7 +15,7 @@ export enum PathfindingDrawMode {
 
 export const DEFAULT_PATHFINDING_ALGORITHM = PathfindingAlgorithm.DIJKSTRA;
 const DEFAULT_DRAW_MODE = PathfindingDrawMode.WALL;
-const DEFAULT_PLAYBACK_TIME_SECONDS = 10;
+const DEFAULT_PLAYBACK_TIME_SECONDS = 5;
 const DEFAULT_INPUT_GRID_WIDTH = 25;
 const DEFAULT_INPUT_GRID_HEIGHT = 25;
 
@@ -65,7 +65,7 @@ export function PathfindingContextProvider({
   const [algorithm, setAlgorithm] = useState<PathfindingAlgorithm>(
     PathfindingAlgorithm.DIJKSTRA
   );
-  const [playbackTimeS, setPlayBackTime] = useState<number>(
+  const [playbackTimeS, setPlaybackTime] = useState<number>(
     DEFAULT_PLAYBACK_TIME_SECONDS
   );
   const [inputGridWidth, setInputGridWidth] = useState<number>(
@@ -128,7 +128,7 @@ export function PathfindingContextProvider({
         setAlgorithm: setAlgorithm,
         pathfindingIterationSteps: pathfindingIterationSteps,
         playbackTimeS: playbackTimeS,
-        setPlaybackTime: setPlayBackTime,
+        setPlaybackTime: setPlaybackTime,
         inputGridHeight: inputGridHeight,
         setInputGridHeight: setInputGridHeight,
         inputGridWidth: inputGridWidth,

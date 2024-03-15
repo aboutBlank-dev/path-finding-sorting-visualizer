@@ -1,4 +1,8 @@
-import { GridNodeType, PathfindingGrid } from "../types/pathfindingGrid";
+import {
+  GridNode,
+  GridNodeType,
+  PathfindingGrid,
+} from "../types/pathfindingGrid";
 
 interface Coordinate {
   x: number;
@@ -69,5 +73,45 @@ export class GridUtils {
     }
 
     return neighbors;
+  }
+
+  public static moveStartNode(
+    newPosition: Coordinate,
+    grid: PathfindingGrid
+  ): PathfindingGrid {
+    const newGrid = [...grid.grid];
+    newGrid[grid.startNode.x][grid.startNode.y].nodeType = GridNodeType.EMPTY;
+    newGrid[newPosition.x][newPosition.y].nodeType = GridNodeType.START;
+
+    return {
+      startNode: newPosition,
+      endNode: grid.endNode,
+      width: grid.width,
+      height: grid.height,
+      grid: newGrid,
+    };
+  }
+
+  public static moveEndNode(
+    newPosition: Coordinate,
+    grid: PathfindingGrid
+  ): PathfindingGrid {
+    const newGrid = [...grid.grid];
+    newGrid[grid.endNode.x][grid.endNode.y].nodeType = GridNodeType.EMPTY;
+    newGrid[newPosition.x][newPosition.y].nodeType = GridNodeType.END;
+
+    return {
+      startNode: grid.startNode,
+      endNode: newPosition,
+      width: grid.width,
+      height: grid.height,
+      grid: newGrid,
+    };
+  }
+  /**
+   * Creates a deep copy of a grid 2D array
+   */
+  public static copyGrid(grid: GridNode[][]): GridNode[][] {
+    return grid.map((row) => row.map((node) => ({ ...node })));
   }
 }
