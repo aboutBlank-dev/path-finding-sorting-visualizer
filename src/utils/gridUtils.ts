@@ -108,6 +108,38 @@ export class GridUtils {
       grid: newGrid,
     };
   }
+
+  public static addWall(
+    position: Coordinate,
+    grid: PathfindingGrid
+  ): PathfindingGrid {
+    const newGrid = [...grid.grid];
+    newGrid[position.x][position.y].nodeType = GridNodeType.WALL;
+
+    return {
+      startNode: grid.startNode,
+      endNode: grid.endNode,
+      width: grid.width,
+      height: grid.height,
+      grid: newGrid,
+    };
+  }
+
+  public static removeWall(
+    position: Coordinate,
+    grid: PathfindingGrid
+  ): PathfindingGrid {
+    const newGrid = [...grid.grid];
+    newGrid[position.x][position.y].nodeType = GridNodeType.EMPTY;
+
+    return {
+      startNode: grid.startNode,
+      endNode: grid.endNode,
+      width: grid.width,
+      height: grid.height,
+      grid: newGrid,
+    };
+  }
   /**
    * Creates a deep copy of a grid 2D array
    */

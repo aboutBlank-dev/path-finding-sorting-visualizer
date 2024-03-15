@@ -6,7 +6,7 @@ import PathfindingCanvas, {
 } from "./pathfindingCanvas";
 import { useEffect, useMemo, useState } from "react";
 import { getMazeGridIteration } from "../../types/mazeGenerationStep";
-import { GridNodeType, PathfindingGrid } from "../../types/pathfindingGrid";
+import { PathfindingGrid } from "../../types/pathfindingGrid";
 
 export default function PathfindingControlsPanel(props: PanelProps) {
   const [mazeStepIndex, setMazeStepIndex] = useState(0);
@@ -43,10 +43,18 @@ export default function PathfindingControlsPanel(props: PanelProps) {
 
   const onPathfindingSliderChange = (value: number) => {
     setPathfindingStepIndex(value);
+  };
+
+  const onCanvasGridChange = (grid: PathfindingGrid) => {
+    pathfindingContext.setInputGrid(grid);
+    setPathfindingCanvasMode();
+  };
+
+  const setPathfindingCanvasMode = () => {
     //Pathfinding Slider last interacted with, so canvas mode set to PATHFINDING
     setCanvasMode(PathfindingVisualizeMode.PATHFINDING);
 
-    //if pathfindingStep was interacted with, then the maze should be shown as complete.
+    //In pathfinding mode we want the maze to be shown as complete.
     setMazeStepIndex(pathfindingContext.mazeGenerationSteps.length - 1);
   };
 
@@ -69,7 +77,8 @@ export default function PathfindingControlsPanel(props: PanelProps) {
             pathfindingSteps={pathfindingSteps}
             visualizeMode={canvasMode}
             drawMode={pathfindingContext.drawMode}
-            onGridChange={(grid) => pathfindingContext.setInputGrid(grid)}
+            onGridChange={onCanvasGridChange}
+            onInteraction={setPathfindingCanvasMode}
           />
           {mazeStepSliderEnabled ? (
             <StepSlider

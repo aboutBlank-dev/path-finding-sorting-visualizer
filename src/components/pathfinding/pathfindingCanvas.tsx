@@ -21,6 +21,7 @@ type PathfindingCanvasProps = {
   visualizeMode: PathfindingVisualizeMode;
   drawMode: PathfindingDrawMode;
   onGridChange: (grid: PathfindingGrid) => void;
+  onInteraction: () => void;
 };
 
 interface Coordinate {
@@ -35,14 +36,16 @@ export default function PathfindingCanvas({
   visualizeMode,
   drawMode,
   onGridChange,
+  onInteraction,
 }: PathfindingCanvasProps) {
   const backgroundCanvasRef = useRef<HTMLCanvasElement>(null); //Grid Lines
   const foregroundCanvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const containerSize = useSize(containerRef); //used to track when the panel is resized
   const isMouseDown = useRef(false);
+  const paintedThisUpdate = useRef(false); //used to prevent bug where the user can paint without the inputGrid being updated in props yet.
   const lastCellClicked = useRef<Coordinate | null>(null);
-  const firstNodeTypeClicked = useRef<GridNodeType | null>(null); //used to determine whether the current "drag" should paint Wall or an END
+  const firstDragNodeType = useRef<GridNodeType | null>(null); //used to determine whether the current "drag" should paint WALL or an EMPTY
 
   useEffect(() => {
     drawBackground();
@@ -104,10 +107,13 @@ export default function PathfindingCanvas({
     );
 
     handleCellDraw(cellClicked.x, cellClicked.y);
+    onInteraction();
   };
 
-  const handleMouseUp = (e: React.MouseEvent) => {
+  const handleMouseUp = () => {
     isMouseDown.current = false;
+    paintedThisUpdate.current = false;
+    firstDragNodeType.current = null;
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -130,23 +136,53 @@ export default function PathfindingCanvas({
   };
 
   const handleCellDraw = (x: number, y: number) => {
-    if (x < 0 || x >= inputGrid.height || y < 0 || y >= inputGrid.width) return;
     lastCellClicked.current = { x: x, y: y };
+    if (x < 0 || x >= inputGrid.height || y < 0 || y >= inputGrid.width) return;
+
+    if (paintedThisUpdate.current) return;
 
     const clickedNode = inputGrid.grid[x][y];
-    if (clickedNode.nodeType !== GridNodeType.EMPTY) return;
-
     let newGrid = inputGrid;
     switch (drawMode) {
       case PathfindingDrawMode.START:
+        if (clickedNode.nodeType !== GridNodeType.EMPTY) return;
         newGrid = GridUtils.moveStartNode({ x: x, y: y }, inputGrid);
         break;
 
       case PathfindingDrawMode.END:
+        if (clickedNode.nodeType !== GridNodeType.EMPTY) return;
         newGrid = GridUtils.moveEndNode({ x: x, y: y }, inputGrid);
         break;
+
+      case PathfindingDrawMode.WALL:
+        if (
+          clickedNode.nodeType === GridNodeType.START ||
+          clickedNode.nodeType === GridNodeType.END
+        )
+          return;
+
+        if (firstDragNodeType.current === null) {
+          firstDragNodeType.current = clickedNode.nodeType;
+        }
+
+        //If the first cell clicked was a WALL, paint ON WALLS only (only paint empty cells)
+        //If the first cell clicked was an EMPTY, paint ON EMPTY CELLS only (only paint walls)
+        if (
+          firstDragNodeType.current === GridNodeType.WALL &&
+          clickedNode.nodeType === GridNodeType.WALL
+        ) {
+          newGrid = GridUtils.removeWall({ x: x, y: y }, inputGrid);
+        } else if (
+          firstDragNodeType.current === GridNodeType.EMPTY &&
+          clickedNode.nodeType === GridNodeType.EMPTY
+        ) {
+          newGrid = GridUtils.addWall({ x: x, y: y }, inputGrid);
+        } else return;
+        break;
     }
+
     onGridChange(newGrid);
+    paintedThisUpdate.current = true;
   };
 
   // Canvas size/Aspect ratio calculations
@@ -165,6 +201,7 @@ export default function PathfindingCanvas({
     }
   }
 
+  paintedThisUpdate.current = false;
   return (
     <div className='canvas-container' ref={containerRef}>
       <canvas
