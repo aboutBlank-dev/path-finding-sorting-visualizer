@@ -43,6 +43,7 @@ export default function PathfindingControlsPanel(props: PanelProps) {
 
   const onPathfindingSliderChange = (value: number) => {
     setPathfindingStepIndex(value);
+    setPathfindingCanvasMode();
   };
 
   const onCanvasGridChange = (grid: PathfindingGrid) => {

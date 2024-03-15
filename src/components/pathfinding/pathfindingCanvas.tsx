@@ -40,6 +40,7 @@ export default function PathfindingCanvas({
 }: PathfindingCanvasProps) {
   const backgroundCanvasRef = useRef<HTMLCanvasElement>(null); //Grid Lines
   const foregroundCanvasRef = useRef<HTMLCanvasElement>(null);
+  const pathfindingCanvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const containerSize = useSize(containerRef); //used to track when the panel is resized
   const isMouseDown = useRef(false);
@@ -50,11 +51,16 @@ export default function PathfindingCanvas({
   useEffect(() => {
     drawBackground();
     drawForeground();
+    drawPathfinding();
   }, [inputGrid.height, inputGrid.width, containerSize, containerRef]);
 
   useEffect(() => {
     drawForeground();
-  }, [inputGrid.grid, visualizeMode, mazeGrid, pathfindingSteps]);
+  }, [inputGrid.grid, visualizeMode, mazeGrid]);
+
+  useEffect(() => {
+    drawPathfinding();
+  }, [pathfindingSteps]);
 
   //Draws the background canvas (grid lines)
   const drawBackground = () => {
@@ -83,14 +89,27 @@ export default function PathfindingCanvas({
 
       const cellWidth = foregroundCanvas.width / inputGrid.width;
       const cellHeight = foregroundCanvas.height / inputGrid.height;
-      if (visualizeMode === PathfindingVisualizeMode.PATHFINDING) {
-        drawPathfinding(ctx, pathfindingSteps, cellWidth, cellHeight);
-      }
 
       const grid =
         visualizeMode === PathfindingVisualizeMode.MAZE ? mazeGrid : inputGrid;
 
       drawNodes(ctx, foregroundCanvas.width, foregroundCanvas.height, grid);
+    }
+  };
+
+  const drawPathfinding = () => {
+    const pathfindingCanvas = pathfindingCanvasRef.current;
+    const ctx = pathfindingCanvas?.getContext("2d");
+
+    if (ctx && pathfindingCanvas) {
+      ctx.clearRect(0, 0, pathfindingCanvas.width, pathfindingCanvas.height);
+
+      const cellWidth = pathfindingCanvas.width / inputGrid.width;
+      const cellHeight = pathfindingCanvas.height / inputGrid.height;
+
+      if (visualizeMode === PathfindingVisualizeMode.PATHFINDING) {
+        drawPathfindingSteps(ctx, pathfindingSteps, cellWidth, cellHeight);
+      }
     }
   };
 
@@ -211,10 +230,16 @@ export default function PathfindingCanvas({
         style={{ zIndex: 1 }}
       />
       <canvas
-        ref={foregroundCanvasRef}
+        ref={pathfindingCanvasRef}
         width={canvasWidth}
         height={canvasHeight}
         style={{ zIndex: 2 }}
+      />
+      <canvas
+        ref={foregroundCanvasRef}
+        width={canvasWidth}
+        height={canvasHeight}
+        style={{ zIndex: 3 }}
         onMouseMove={handleMouseMove}
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
@@ -291,7 +316,7 @@ const drawNodes = (
   }
 };
 
-const drawPathfinding = (
+const drawPathfindingSteps = (
   ctx: CanvasRenderingContext2D,
   pathfindingSteps: PathfindingIterationStep[],
   cellWidth: number,
