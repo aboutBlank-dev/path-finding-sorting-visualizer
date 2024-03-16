@@ -19,7 +19,14 @@ interface Position {
   x: number;
   y: number;
 }
-
+/**
+ * A* pathfinding algorithm
+ * https://en.wikipedia.org/wiki/A*_search_algorithm
+ *
+ * @param pathfindingGrid - pathfinding grid object, containting the 2D grid and start/end nodes
+ *
+ * @returns array of pathfinding steps (Such as Nodes visited and Final path)
+ */
 export default function aStar(
   pathfindingGrid: PathfindingGrid
 ): PathfindingIterationStep[] {
@@ -41,19 +48,15 @@ export default function aStar(
   openSet.push(startNode);
 
   while (openSet.length > 0) {
-    let lowestIndex = 0;
-    for (let i = 0; i < openSet.length; i++) {
-      if (openSet[i].f <= openSet[lowestIndex].f) {
-        lowestIndex = i;
-      } else if (openSet[i].f === openSet[lowestIndex].f) {
-        if (openSet[i].h < openSet[lowestIndex].h) {
-          lowestIndex = i;
-        }
+    let currNode = openSet[0];
+    let currNodeIndex = 0;
+
+    for (let i = 1; i < openSet.length; i++) {
+      if (openSet[i].f < currNode.f) {
+        currNode = openSet[i];
+        currNodeIndex = i;
       }
     }
-
-    let currNodeIndex = lowestIndex;
-    const currNode = openSet[currNodeIndex];
 
     // End node found
     if (currNode.x === endNode.x && currNode.y === endNode.y) {

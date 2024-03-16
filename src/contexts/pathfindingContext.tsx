@@ -6,6 +6,9 @@ import { MazeGenerationStep } from "../types/mazeGenerationStep";
 import { PathfindingIterationStep } from "../types/pathfindingIterationStep";
 import { GridUtils } from "../utils/gridUtils";
 import aStar from "../algorithms/pathfinding/aStar";
+import { dfs } from "../algorithms/pathfinding/dfs";
+import { bfs } from "../algorithms/pathfinding/bfs";
+import { dijkstra } from "../algorithms/pathfinding/dijkstra";
 
 export enum PathfindingDrawMode {
   WALL,
@@ -117,9 +120,9 @@ export function PathfindingContextProvider({
 
   // When input grid changes
   useEffect(() => {
-    const pathfinding = aStar(inputGrid);
+    const pathfinding = pathfind(algorithm, inputGrid);
     setPathfindingIterationSteps(pathfinding);
-  }, [inputGrid]);
+  }, [inputGrid, algorithm]);
 
   return (
     <PathfindingContext.Provider
@@ -147,6 +150,23 @@ export function PathfindingContextProvider({
   );
 }
 
+function pathfind(
+  pathfindingAlgorithm: PathfindingAlgorithm,
+  grid: PathfindingGrid
+): PathfindingIterationStep[] {
+  switch (pathfindingAlgorithm) {
+    case PathfindingAlgorithm.A_STAR:
+      return aStar(grid);
+    case PathfindingAlgorithm.DFS:
+      return dfs(grid);
+    case PathfindingAlgorithm.BFS:
+      return bfs(grid);
+    case PathfindingAlgorithm.DIJKSTRA:
+      return dijkstra(grid);
+    default:
+      return [];
+  }
+}
 export function usePathfinding() {
   const context = useContext(PathfindingContext);
   if (!context) {
