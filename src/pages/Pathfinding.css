@@ -53,20 +53,67 @@
   cursor: pointer;
 }
 
-.draw-buttons-container {
+.draw-buttons-component {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   background-color: var(--bg-color-2);
   border: 2px solid black;
   border-radius: 0.5rem;
+  padding: 1rem;
+  color: var(--text-color);
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: left;
+  gap: 1rem;
+  width: 100%;
+  padding-top: 0.5rem;
+  overflow: auto;
 }
 
 .draw-button {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+
   background-color: var(--bg-color-2);
   border: 2px solid black;
   border-radius: 0.5rem;
+  padding: 0.5rem;
+
+  min-width: 75px;
+  min-height: 75px;
+
+  text-transform: capitalize;
+}
+
+.draw-button:hover {
+  background-color: var(--bg-color-1);
+  cursor: pointer;
 }
 
 .draw-button.active {
-  background-color: brown;
+  background-color: var(--bg-color-1);
+}
+
+/*THE FOLLOWING IS USED FOR THE DIFFERENT DRAW BUTTONS*/
+#WALL {
+  width: 25px;
+  height: 25px;
+  background-color: black;
+}
+
+#START {
+  width: 25px;
+  height: 25px;
+  background-color: green;
+}
+
+#END {
+  width: 25px;
+  height: 25px;
+  background-color: red;
 }

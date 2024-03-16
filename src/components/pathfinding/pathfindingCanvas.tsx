@@ -20,6 +20,7 @@ type PathfindingCanvasProps = {
   pathfindingSteps: PathfindingIterationStep[];
   visualizeMode: PathfindingVisualizeMode;
   drawMode: PathfindingDrawMode;
+  drawingEnabled: boolean;
   onGridChange: (grid: PathfindingGrid) => void;
   onInteraction: () => void;
 };
@@ -34,6 +35,7 @@ export default function PathfindingCanvas({
   mazeGrid,
   pathfindingSteps,
   visualizeMode,
+  drawingEnabled,
   drawMode,
   onGridChange,
   onInteraction,
@@ -87,9 +89,6 @@ export default function PathfindingCanvas({
     if (ctx && foregroundCanvas) {
       ctx.clearRect(0, 0, foregroundCanvas.width, foregroundCanvas.height);
 
-      const cellWidth = foregroundCanvas.width / inputGrid.width;
-      const cellHeight = foregroundCanvas.height / inputGrid.height;
-
       const grid =
         visualizeMode === PathfindingVisualizeMode.MAZE ? mazeGrid : inputGrid;
 
@@ -114,6 +113,8 @@ export default function PathfindingCanvas({
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {
+    if (!drawingEnabled) return;
+
     const canvas = foregroundCanvasRef.current;
     if (!canvas) return;
 
@@ -130,12 +131,16 @@ export default function PathfindingCanvas({
   };
 
   const handleMouseUp = () => {
+    if (!drawingEnabled) return;
+
     isMouseDown.current = false;
     paintedThisUpdate.current = false;
     firstDragNodeType.current = null;
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
+    if (!drawingEnabled) return;
+
     const canvas = foregroundCanvasRef.current;
     if (isMouseDown.current && canvas) {
       const { x, y } = getCellFromMousePosition(

@@ -87,7 +87,6 @@ export function dijkstra(
     });
 
     if (x === end.x && y === end.y) {
-      console.log("end found");
       //End node found
       const path: Position[] = [];
       let temp = current;
@@ -98,6 +97,7 @@ export function dijkstra(
         path.push({ x, y });
         temp = { x, y };
       }
+
       //reverse the path
       path.reverse();
 

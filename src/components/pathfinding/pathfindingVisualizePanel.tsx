@@ -78,6 +78,7 @@ export default function PathfindingControlsPanel(props: PanelProps) {
             pathfindingSteps={pathfindingSteps}
             visualizeMode={canvasMode}
             drawMode={pathfindingContext.drawMode}
+            drawingEnabled={pathfindingContext.drawingEnabled}
             onGridChange={onCanvasGridChange}
             onInteraction={setPathfindingCanvasMode}
           />

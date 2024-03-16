@@ -20,6 +20,7 @@ export default function PathfindingControlsPanel(props: PanelProps) {
     }
   };
 
+  console.log(pathfindingContext.drawingEnabled);
   return (
     <Panel {...props} minSize={20}>
       <div className='controls-section'>
@@ -36,10 +37,12 @@ export default function PathfindingControlsPanel(props: PanelProps) {
         >
           Clear Grid
         </button>
-        <DrawButtons
-          drawMode={pathfindingContext.drawMode}
-          onDrawButtonClick={pathfindingContext.setDrawMode}
-        />
+        {pathfindingContext.drawingEnabled ? (
+          <DrawButtons
+            drawMode={pathfindingContext.drawMode}
+            onDrawButtonClick={pathfindingContext.setDrawMode}
+          />
+        ) : null}
         <DropDown
           id='algorithm-dropdown'
           label='Algorithm'

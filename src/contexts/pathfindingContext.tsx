@@ -9,6 +9,7 @@ import aStar from "../algorithms/pathfinding/aStar";
 import { dfs } from "../algorithms/pathfinding/dfs";
 import { bfs } from "../algorithms/pathfinding/bfs";
 import { dijkstra } from "../algorithms/pathfinding/dijkstra";
+import useMediaQuery from "../hooks/useMediaQuery";
 
 export enum PathfindingDrawMode {
   WALL,
@@ -37,6 +38,7 @@ export type PathfindingContextType = {
   clearGrid: () => void;
   mazeGenerationSteps: MazeGenerationStep[];
   generateMaze: () => void;
+  drawingEnabled: boolean;
   drawMode: PathfindingDrawMode;
   setDrawMode: (mode: PathfindingDrawMode) => void;
 };
@@ -49,6 +51,7 @@ const PathfindingContext = createContext<PathfindingContextType>({
   inputGrid: {} as PathfindingGrid,
   mazeGenerationSteps: [],
   pathfindingIterationSteps: [],
+  drawingEnabled: false,
   drawMode: PathfindingDrawMode.WALL,
   setAlgorithm: () => {},
   setPlaybackTime: () => {},
@@ -88,6 +91,8 @@ export function PathfindingContextProvider({
   >([]);
   const [drawMode, setDrawMode] =
     useState<PathfindingDrawMode>(DEFAULT_DRAW_MODE);
+
+  const drawingEnabled = !useMediaQuery("(max-width: 768px)");
 
   const generateInput = () => {
     const emptyGrid = GridUtils.createEmptyGrid(
@@ -141,6 +146,7 @@ export function PathfindingContextProvider({
         clearGrid: clearGrid,
         mazeGenerationSteps: mazeGenerationSteps,
         generateMaze: generateMaze,
+        drawingEnabled: drawingEnabled,
         drawMode: drawMode,
         setDrawMode: setDrawMode,
       }}

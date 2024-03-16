@@ -32,7 +32,7 @@ function App() {
             </PathfindingContextProvider>
           }
         />
-        //Redirect to sorting visualizer if URL is invalid
+        //Redirect to sorting visualizer for any invalid path
         <Route
           path='*'
           element={
