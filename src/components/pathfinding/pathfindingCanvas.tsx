@@ -30,6 +30,7 @@ interface Coordinate {
   y: number;
 }
 
+const GRID_LINE_WIDTH = 1;
 export default function PathfindingCanvas({
   inputGrid,
   mazeGrid,
@@ -264,8 +265,9 @@ const drawGridLines = (
   const cellWidth = canvasWidth / gridWidth;
   const cellHeight = canvasHeight / gridHeight;
 
-  ctx.lineWidth = 0.5;
+  ctx.lineWidth = GRID_LINE_WIDTH;
   ctx.strokeStyle = "black";
+
   //draw vertical lines
   for (let i = 0; i <= gridWidth; i++) {
     ctx.beginPath();
@@ -311,10 +313,10 @@ const drawNodes = (
         }
 
         ctx.fillRect(
-          node.y * cellWidth,
-          node.x * cellHeight,
-          cellWidth,
-          cellHeight
+          Math.floor(node.y * cellWidth),
+          Math.floor(node.x * cellHeight),
+          Math.floor(cellWidth) + 1,
+          Math.floor(cellHeight) + 1
         );
       });
     });
@@ -327,7 +329,8 @@ const drawPathfindingSteps = (
   cellWidth: number,
   cellHeight: number
 ) => {
-  for (const step of pathfindingSteps) {
+  for (let i = 0; i < pathfindingSteps.length; i++) {
+    const step = pathfindingSteps[i];
     switch (step.action) {
       case PathfindingIterationStepAction.VISIT:
         ctx.fillStyle = "blue";
@@ -339,12 +342,16 @@ const drawPathfindingSteps = (
         return;
     }
 
+    if (i == pathfindingSteps.length - 1) {
+      ctx.fillStyle = "purple";
+    }
+
     step.coordinates.forEach((coord) => {
       ctx.fillRect(
-        coord.y * cellWidth,
-        coord.x * cellHeight,
-        cellWidth,
-        cellHeight
+        Math.floor(coord.y * cellWidth),
+        Math.floor(coord.x * cellHeight),
+        Math.floor(cellWidth) + 1,
+        Math.floor(cellHeight) + 1
       );
     });
   }

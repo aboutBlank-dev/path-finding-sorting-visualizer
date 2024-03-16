@@ -3,7 +3,10 @@ import { PathfindingAlgorithm } from "../types/pathfindingAlgorithm";
 import { PathfindingGrid } from "../types/pathfindingGrid";
 import { MazeUtils } from "../utils/mazeGenerator";
 import { MazeGenerationStep } from "../types/mazeGenerationStep";
-import { PathfindingIterationStep } from "../types/pathfindingIterationStep";
+import {
+  PathfindingIterationStep,
+  PathfindingIterationStepAction,
+} from "../types/pathfindingIterationStep";
 import { GridUtils } from "../utils/gridUtils";
 import aStar from "../algorithms/pathfinding/aStar";
 import { dfs } from "../algorithms/pathfinding/dfs";
@@ -126,6 +129,13 @@ export function PathfindingContextProvider({
   // When input grid changes
   useEffect(() => {
     const pathfinding = pathfind(algorithm, inputGrid);
+
+    //Add an "empty" step for display purposes
+    pathfinding.push({
+      action: PathfindingIterationStepAction.NONE,
+      coordinates: [],
+    });
+
     setPathfindingIterationSteps(pathfinding);
   }, [inputGrid, algorithm]);
 
