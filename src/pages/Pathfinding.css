@@ -52,3 +52,21 @@
   color: var(--text-color);
   cursor: pointer;
 }
+
+.draw-buttons-container {
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--bg-color-2);
+  border: 2px solid black;
+  border-radius: 0.5rem;
+}
+
+.draw-button {
+  background-color: var(--bg-color-2);
+  border: 2px solid black;
+  border-radius: 0.5rem;
+}
+
+.draw-button.active {
+  background-color: brown;
+}

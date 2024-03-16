@@ -15,6 +15,30 @@ class DijkstraNode {
   ) {}
 }
 
+class PriorityQueue<T> {
+  items: { item: T; priority: number }[];
+
+  constructor() {
+    this.items = [];
+  }
+
+  enqueue(item: T, priority: number): void {
+    this.items.push({ item, priority });
+    this.items.sort((a, b) => a.priority - b.priority);
+  }
+
+  dequeue(): T | null {
+    if (this.isEmpty()) {
+      return null;
+    }
+    return this.items.shift()!.item;
+  }
+
+  isEmpty(): boolean {
+    return this.items.length === 0;
+  }
+}
+
 interface Position {
   x: number;
   y: number;
@@ -33,43 +57,47 @@ export function dijkstra(
 ): PathfindingIterationStep[] {
   if (!pathfindingGrid.grid) return [];
 
+  const pathfindingSteps: PathfindingIterationStep[] = [];
   const start = pathfindingGrid.startNode;
   const end = pathfindingGrid.endNode;
 
-  const startNode: DijkstraNode = new DijkstraNode(start.x, start.y, 0);
-  const queue: DijkstraNode[] = [];
-  const pathfindingSteps: PathfindingIterationStep[] = [];
+  const numRows = pathfindingGrid.grid.length;
+  const numCols = pathfindingGrid.grid[0].length;
 
-  queue.push(startNode);
-  for (let x = 0; x < pathfindingGrid.grid.length; x++) {
-    for (let y = 0; y < pathfindingGrid.grid[x].length; y++) {
-      const isWall = pathfindingGrid.grid[x][y].nodeType === GridNodeType.WALL;
-      queue.push(new DijkstraNode(x, y, Infinity, undefined, isWall));
-    }
-  }
+  const distances: number[][] = Array(numRows)
+    .fill(null)
+    .map(() => new Array(numCols).fill(Infinity));
 
-  while (queue.length > 0) {
-    const visited: Position[] = [];
+  const parents: [number, number][][] = Array(numRows)
+    .fill(null)
+    .map(() => new Array(numCols).fill([-1, -1]));
 
-    let lowstDistanceIndex = 0;
-    for (let i = 0; i < queue.length; i++) {
-      if (queue[i].distance < queue[lowstDistanceIndex].distance) {
-        lowstDistanceIndex = i;
-      }
-    }
+  const pq = new PriorityQueue<Position>();
 
-    const u = queue[lowstDistanceIndex];
+  distances[start.x][start.y] = 0;
+  pq.enqueue(start, 0);
 
-    //End node found
-    if (u.x === end.x && u.y === end.y) {
+  while (!pq.isEmpty()) {
+    const current = pq.dequeue()!;
+    const { x, y } = current;
+
+    pathfindingSteps.push({
+      action: PathfindingIterationStepAction.VISIT,
+      coordinates: [{ x, y }],
+    });
+
+    if (x === end.x && y === end.y) {
+      console.log("end found");
+      //End node found
       const path: Position[] = [];
-      let temp = u;
-      path.push(u);
-      while (temp.parent) {
-        path.push(temp.parent);
-        temp = temp.parent;
-      }
+      let temp = current;
+      path.push(current);
 
+      while (parents[temp.x][temp.y][0] !== -1) {
+        const [x, y] = parents[temp.x][temp.y];
+        path.push({ x, y });
+        temp = { x, y };
+      }
       //reverse the path
       path.reverse();
 
@@ -83,31 +111,23 @@ export function dijkstra(
       return pathfindingSteps;
     }
 
-    queue.splice(lowstDistanceIndex, 1);
-
-    const neighbors = GridUtils.getNeighbors(u, pathfindingGrid.grid);
+    const neighbors = GridUtils.getNeighbors(current, pathfindingGrid.grid);
     for (const neighbor of neighbors) {
-      const alt = u.distance + GridUtils.getDistance(u, neighbor);
-      const v = queue.find(
-        (node) => node.x === neighbor.x && node.y === neighbor.y
-      );
-
-      if (!v) {
+      if (
+        pathfindingGrid.grid[neighbor.x][neighbor.y].nodeType ===
+        GridNodeType.WALL
+      )
         continue;
-      }
-      if (v.isWall) continue;
 
-      visited.push(v);
-      pathfindingSteps.push({
-        action: PathfindingIterationStepAction.VISIT,
-        coordinates: [{ x: v.x, y: v.y }],
-      });
+      const newDistance = distances[x][y] + 1;
 
-      if (alt < v.distance) {
-        v.distance = alt;
-        v.parent = u;
+      if (newDistance < distances[neighbor.x][neighbor.y]) {
+        distances[neighbor.x][neighbor.y] = newDistance;
+        parents[neighbor.x][neighbor.y] = [x, y];
+        pq.enqueue(neighbor, newDistance);
       }
     }
   }
+
   return pathfindingSteps;
 }

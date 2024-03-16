@@ -9,6 +9,7 @@ import {
 } from "../../types/pathfindingAlgorithm";
 import DropDown from "../dropDown";
 import NumberInputField from "../numberInputField";
+import DrawButtons from "./drawButtons";
 
 export default function PathfindingControlsPanel(props: PanelProps) {
   const pathfindingContext = usePathfinding();
@@ -35,29 +36,10 @@ export default function PathfindingControlsPanel(props: PanelProps) {
         >
           Clear Grid
         </button>
-        <div className='pallete'>
-          <button
-            onClick={() =>
-              pathfindingContext.setDrawMode(PathfindingDrawMode.WALL)
-            }
-          >
-            WALL
-          </button>
-          <button
-            onClick={() =>
-              pathfindingContext.setDrawMode(PathfindingDrawMode.START)
-            }
-          >
-            START
-          </button>
-          <button
-            onClick={() =>
-              pathfindingContext.setDrawMode(PathfindingDrawMode.END)
-            }
-          >
-            END
-          </button>
-        </div>
+        <DrawButtons
+          drawMode={pathfindingContext.drawMode}
+          onDrawButtonClick={pathfindingContext.setDrawMode}
+        />
         <DropDown
           id='algorithm-dropdown'
           label='Algorithm'
