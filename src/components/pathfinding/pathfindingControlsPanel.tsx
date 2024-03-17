@@ -20,7 +20,6 @@ export default function PathfindingControlsPanel(props: PanelProps) {
     }
   };
 
-  console.log(pathfindingContext.drawingEnabled);
   return (
     <Panel {...props} minSize={20}>
       <div className='controls-section'>

@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import "./stepSlider.css";
+import { useTheme } from "../contexts/themeContext";
 
 type StepSliderProps = {
   label: string;
@@ -18,6 +19,7 @@ export default function StepSlider({
   onChange,
 }: StepSliderProps) {
   const [playing, setPlaying] = useState(false);
+  const theme = useTheme();
 
   const [intervalMS, stepIncrement] = useMemo(() => {
     let stepIncrement = 1;
@@ -52,32 +54,25 @@ export default function StepSlider({
 
   const playSVG = (
     <svg
-      className='play-button'
+      fill={theme.currentTheme === "dark" ? "#fff" : "#000"}
+      xmlns='http://www.w3.org/2000/svg'
       onClick={() => togglePlaying()}
-      viewBox='0 0 24 24'
-      fill='none'
-      stroke='currentColor'
-      strokeWidth='2'
-      strokeLinecap='round'
-      strokeLinejoin='round'
+      viewBox='0 0 210 210'
+      className='play-button'
     >
-      <polygon points='5 3 19 12 5 21 5 3'></polygon>
+      <path d='M179.07,105L30.93,210V0L179.07,105z' />
     </svg>
   );
 
   const pauseSVG = (
     <svg
+      fill={theme.currentTheme === "dark" ? "#fff" : "#000"}
+      viewBox='4 0 15 20'
+      xmlns='http://www.w3.org/2000/svg'
       className='play-button'
       onClick={() => togglePlaying()}
-      viewBox='0 0 24 24'
-      fill='none'
-      stroke='currentColor'
-      strokeWidth='2'
-      strokeLinecap='round'
-      strokeLinejoin='round'
     >
-      <rect x='6' y='4' width='4' height='16'></rect>
-      <rect x='14' y='4' width='4' height='16'></rect>
+      <path d='M5 16V4h3v12H5zm7-12h3v12h-3V4z' />
     </svg>
   );
 
