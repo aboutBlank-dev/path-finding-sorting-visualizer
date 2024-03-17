@@ -25,13 +25,13 @@ export default function PathfindingControlsPanel(props: PanelProps) {
       <div className='controls-section'>
         <h1 className='controls-section-title'>Controls</h1>
         <button
-          className='input-button'
+          className='standard-button outline-card'
           onClick={() => pathfindingContext.generateMaze()}
         >
           Generate Maze
         </button>
         <button
-          className='input-button'
+          className='standard-button outline-card'
           onClick={() => pathfindingContext.clearGrid()}
         >
           Clear Grid

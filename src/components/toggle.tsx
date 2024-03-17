@@ -17,7 +17,7 @@ export default function Toggle({ id, label, checked, onChange }: ToggleProps) {
   };
 
   return (
-    <div className='toggle'>
+    <div className='outline-card toggle'>
       <span className='label'>{label}</span>
       <input
         type='checkbox'

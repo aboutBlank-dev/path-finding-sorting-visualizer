@@ -4,9 +4,12 @@
   width: 100%;
 }
 
-.play-button {
+.play-button,
+.pause-button {
   width: 25px;
   height: 25px;
+  cursor: pointer;
+  fill: black;
 }
 
 .slider {

@@ -22,7 +22,7 @@ export default function SortingControlsPanel(props: PanelProps) {
       <div className='controls-section'>
         <h1 className='controls-section-title'>Controls</h1>
         <button
-          className='input-button'
+          className='outline-card standard-button'
           onClick={() => sortingContext.generateInput()}
         >
           Generate Input

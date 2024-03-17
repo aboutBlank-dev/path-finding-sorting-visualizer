@@ -4,3 +4,58 @@
   display: flex;
   user-select: none;
 }
+
+.outline-card {
+  background-color: var(--bg-color-2);
+  border: 2px solid black;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  color: var(--text-color);
+  padding: 0.5rem;
+}
+
+.standard-button:hover {
+  background-color: var(--bg-color-1);
+  color: var(--text-color);
+  cursor: pointer;
+}
+
+.visualize-section-wrapper {
+  background-color: var(--bg-color-1);
+  height: 100%;
+}
+
+.controls-section,
+.visualize-section {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1rem;
+  gap: 0.5rem;
+}
+
+.visualize-section {
+  background-color: var(--bg-color-2);
+  @media screen and (max-width: 768px) {
+    border-top-left-radius: 0;
+  }
+  border-top-left-radius: 1rem;
+}
+
+.controls-section {
+  background-color: var(--bg-color-1);
+  overflow: auto;
+}
+
+.controls-section-title {
+  font-size: 1.5rem;
+  text-transform: capitalize;
+  color: var(--text-color);
+}
+
+.algorithm-title {
+  font-size: 1.5rem;
+  text-align: center;
+  text-transform: capitalize;
+  color: var(--text-color);
+}

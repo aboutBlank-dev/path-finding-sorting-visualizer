@@ -1,30 +1,22 @@
-.dropdown {
+.dropdown-container {
   display: flex;
   flex-direction: column;
-  background-color: var(--bg-color-2);
-  border: 2px solid black;
-  border-radius: 0.5rem;
+  gap: 0.5rem;
 }
 
-.label {
+.dropdown-label {
   color: var(--text-color);
   font-size: 1rem;
-  margin: 0.5rem 0.5rem 0 0.5rem;
 }
 
-.capitalize {
-  text-transform: capitalize;
-}
-
-.input {
-  margin: 0.5rem;
-  padding: 0;
+.dropdown-select {
   border: none;
   background-color: var(--bg-color-2);
   color: var(--text-color);
   font-size: 1rem;
+  margin-left: -0.25rem;
 }
 
-.input:hover {
+.dropdown-select:hover {
   cursor: pointer;
 }

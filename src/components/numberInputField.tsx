@@ -26,10 +26,10 @@ export default function NumberInputField({
   };
 
   return (
-    <div className='number-input-field'>
-      <span className='label'>{label + ` (${min} - ${max})`}</span>
+    <div className='outline-card number-input-field'>
+      <span className='number-input-label'>{label + ` (${min} - ${max})`}</span>
       <input
-        className='input'
+        className='number-input-input'
         type='number'
         id={id}
         onChange={handleChange}

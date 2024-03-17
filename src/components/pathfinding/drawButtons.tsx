@@ -1,4 +1,5 @@
 import { PathfindingDrawMode } from "../../contexts/pathfindingContext";
+import "./drawButtons.css";
 
 type DrawButtonsProps = {
   drawMode: PathfindingDrawMode;
@@ -10,9 +11,9 @@ export default function DrawButtons({
   onDrawButtonClick,
 }: DrawButtonsProps) {
   return (
-    <div className='draw-buttons-component'>
+    <div className='outline-card draw-buttons-component'>
       <div> Draw </div>
-      <div className='buttons-container'>
+      <div className='draw-buttons-container'>
         <DrawButton
           buttonDrawMode={PathfindingDrawMode.WALL}
           currentDrawMode={drawMode}
@@ -45,7 +46,7 @@ function DrawButton({
   onClicked,
 }: DrawButtonProps) {
   const active = currentDrawMode === buttonDrawMode;
-  let className = "draw-button";
+  let className = "outline-card draw-button";
   if (active) className += " active";
 
   return (

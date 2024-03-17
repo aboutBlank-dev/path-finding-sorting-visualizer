@@ -6,7 +6,6 @@ import useMediaQuery from "../hooks/useMediaQuery";
 import { PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import PathfindingControlsPanel from "../components/pathfinding/pathfindingControlsPanel";
 import PathfindingVisualizePanel from "../components/pathfinding/pathfindingVisualizePanel";
-import "./Pathfinding.css";
 
 export default function Pathfinding() {
   const isMediumScreen = useMediaQuery("(max-width: 768px)");

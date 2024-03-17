@@ -19,7 +19,6 @@ export default function StepSlider({
   onChange,
 }: StepSliderProps) {
   const [playing, setPlaying] = useState(false);
-  const theme = useTheme();
 
   const [intervalMS, stepIncrement] = useMemo(() => {
     let stepIncrement = 1;
@@ -54,10 +53,9 @@ export default function StepSlider({
 
   const playSVG = (
     <svg
-      fill={theme.currentTheme === "dark" ? "#fff" : "#000"}
       xmlns='http://www.w3.org/2000/svg'
       onClick={() => togglePlaying()}
-      viewBox='0 0 210 210'
+      viewBox='-20 -20 250 250'
       className='play-button'
     >
       <path d='M179.07,105L30.93,210V0L179.07,105z' />
@@ -66,10 +64,9 @@ export default function StepSlider({
 
   const pauseSVG = (
     <svg
-      fill={theme.currentTheme === "dark" ? "#fff" : "#000"}
       viewBox='4 0 15 20'
       xmlns='http://www.w3.org/2000/svg'
-      className='play-button'
+      className='pause-button'
       onClick={() => togglePlaying()}
     >
       <path d='M5 16V4h3v12H5zm7-12h3v12h-3V4z' />

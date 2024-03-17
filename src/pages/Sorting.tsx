@@ -1,4 +1,3 @@
-import "./Sorting.css";
 import { PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { useEffect } from "react";
 import { useSorting } from "../contexts/sortingContext";

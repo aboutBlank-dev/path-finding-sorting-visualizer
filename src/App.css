@@ -16,12 +16,18 @@ html * {
 
 .dark {
   --text-color: white;
+  --text-header-color: #f4f4f4;
   --bg-color-1: #333;
   --bg-color-2: #444;
 }
 
 .light {
   --text-color: black;
+  --text-header-color: #333;
   --bg-color-1: #f4f4f4;
   --bg-color-2: #e4e4e4;
+}
+
+.capitalize {
+  text-transform: capitalize;
 }
