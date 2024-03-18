@@ -1,8 +1,6 @@
 import { Link, useMatch, useResolvedPath } from "react-router-dom";
 import "./navBar.css";
 import { ThemeToggleButton } from "./themeToggleButton";
-import { DEFAULT_SORTING_ALGORITHM } from "../contexts/sortingContext";
-import { DEFAULT_PATHFINDING_ALGORITHM } from "../contexts/pathfindingContext";
 import GithubButton from "./githubButton";
 
 const NavBar = () => {

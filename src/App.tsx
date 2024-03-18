@@ -4,18 +4,8 @@ import "./ResizePanels.css";
 import NavBar from "./components/navbar";
 import Sorting from "./pages/Sorting";
 import Pathfinding from "./pages/Pathfinding";
-import {
-  Navigate,
-  Route,
-  Router,
-  Routes,
-  createBrowserRouter,
-  useRoutes,
-} from "react-router-dom";
-import {
-  DEFAULT_SORTING_ALGORITHM,
-  SortingContextProvider,
-} from "./contexts/sortingContext";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { SortingContextProvider } from "./contexts/sortingContext";
 import { PathfindingContextProvider } from "./contexts/pathfindingContext";
 
 function App() {
