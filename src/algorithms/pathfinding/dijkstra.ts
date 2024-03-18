@@ -5,16 +5,6 @@ import {
 } from "../../types/pathfindingIterationStep";
 import { GridUtils } from "../../utils/gridUtils";
 
-class DijkstraNode {
-  constructor(
-    public x: number,
-    public y: number,
-    public distance: number = Infinity,
-    public parent: DijkstraNode | undefined = undefined,
-    public isWall: boolean = false
-  ) {}
-}
-
 class PriorityQueue<T> {
   items: { item: T; priority: number }[];
 

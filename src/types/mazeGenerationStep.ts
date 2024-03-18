@@ -1,6 +1,6 @@
 import { PathfindingContextType } from "../contexts/pathfindingContext";
 import { GridUtils } from "../utils/gridUtils";
-import { GridNode, GridNodeType, PathfindingGrid } from "./pathfindingGrid";
+import { GridNodeType, PathfindingGrid } from "./pathfindingGrid";
 
 interface Coordinate {
   x: number;

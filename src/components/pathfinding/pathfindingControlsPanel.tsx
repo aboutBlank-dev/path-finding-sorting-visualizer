@@ -1,8 +1,5 @@
 import { Panel, PanelProps } from "react-resizable-panels";
-import {
-  PathfindingDrawMode,
-  usePathfinding,
-} from "../../contexts/pathfindingContext";
+import { usePathfinding } from "../../contexts/pathfindingContext";
 import {
   PathfindingAlgorithm,
   isValidPathfindingAlgorithm,

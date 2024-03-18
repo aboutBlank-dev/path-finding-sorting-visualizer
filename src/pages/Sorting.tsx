@@ -17,9 +17,9 @@ export default function Sorting() {
   //Change the URL based on the algorithm
   useEffect(() => {
     navigate(`/sorting-visualizer/${sortingContext.sortingAlgorithm}`);
-  }, [sortingContext.sortingAlgorithm]);
+  }, [sortingContext.sortingAlgorithm, navigate]);
 
-  //Change the algorithm based on the URL
+  //Change the algorithm based on the URL (on mount)
   useEffect(() => {
     const algorithm = params.algorithm;
     if (algorithm && isValidSortingAlgorithm(algorithm))

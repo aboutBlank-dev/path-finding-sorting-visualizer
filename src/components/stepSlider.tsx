@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
 import "./stepSlider.css";
-import { useTheme } from "../contexts/themeContext";
 
 type StepSliderProps = {
   label: string;

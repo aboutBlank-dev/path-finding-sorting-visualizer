@@ -35,7 +35,7 @@ export default function mergeSort(input: number[]): SortingIterationStep[] {
   };
 
   function merge(left: number[], right: number[]): number[] {
-    let arr: number[] = [];
+    const arr: number[] = [];
 
     while (left.length && right.length) {
       if (left[0] < right[0]) {

@@ -5,7 +5,7 @@ import SortingIterationStep, {
 export default function insertionSort(input: number[]): SortingIterationStep[] {
   const iterationSteps: SortingIterationStep[] = [];
   for (let i = 1; i < input.length; i++) {
-    let current = input[i];
+    const current = input[i];
 
     let j = i - 1;
 

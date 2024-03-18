@@ -102,7 +102,7 @@ export default function aStar(
         continue;
       }
 
-      var tempG = currNode.g + GridUtils.getDistance(currNode, neighbor);
+      const tempG = currNode.g + GridUtils.getDistance(currNode, neighbor);
 
       const existingNeighbor = openSet.find(
         (node) => node.x === neighbor.x && node.y === neighbor.y

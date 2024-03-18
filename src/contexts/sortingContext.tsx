@@ -115,9 +115,10 @@ export function SortingContextProvider({
 
     const averageValue = values.reduce((a, b) => a + b, 0) / values.length;
     //calculate frequency. The higher the average value, the higher the frequency
-    let frequency = MIN_FREQUENCY + (averageValue / inputSize) * MAX_FREQUENCY;
+    const frequency =
+      MIN_FREQUENCY + (averageValue / inputSize) * MAX_FREQUENCY;
 
-    let note = new Note(notePlayer.ctx!, frequency, "sine");
+    const note = new Note(notePlayer.ctx!, frequency, "sine");
     notePlayer.playNote(note, 0.1);
   };
 

@@ -37,10 +37,11 @@ export function getSortingDataIteration(
     const step = sortingContext.iterationSteps[i];
 
     switch (step.action) {
-      case SortingIterationStepAction.SWAP:
+      case SortingIterationStepAction.SWAP: {
         const [a, b] = step.indexes;
         [dataState[a], dataState[b]] = [dataState[b], dataState[a]];
         break;
+      }
       case SortingIterationStepAction.INSERT:
         if (step.insert !== undefined) {
           for (let i = 0; i < step.indexes.length; i++) {

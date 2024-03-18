@@ -12,7 +12,8 @@ export function quickSort(arr: number[]): SortingIterationStep[] {
     let left = low - 1;
     let right = high;
 
-    while (true) {
+    //@es-lint-disable-next-line
+    for (;;) {
       do {
         left++;
       } while (arr[left] < pivot);

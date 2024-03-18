@@ -6,7 +6,7 @@ export default function gnomeSort(input: number[]): SortingIterationStep[] {
   const iterationSteps: SortingIterationStep[] = [];
   function moveBack(i: number) {
     for (; i > 0 && input[i - 1] > input[i]; i--) {
-      var t = input[i];
+      const t = input[i];
       input[i] = input[i - 1];
       input[i - 1] = t;
 
@@ -16,7 +16,7 @@ export default function gnomeSort(input: number[]): SortingIterationStep[] {
       });
     }
   }
-  for (var i = 1; i < input.length; i++) {
+  for (let i = 1; i < input.length; i++) {
     if (input[i - 1] > input[i]) moveBack(i);
   }
 

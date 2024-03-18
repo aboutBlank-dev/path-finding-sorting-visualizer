@@ -1,4 +1,3 @@
-import { useState } from "react";
 import "./dropDown.css";
 
 type DropDownProps = {
