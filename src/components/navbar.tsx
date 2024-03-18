@@ -6,7 +6,8 @@ import GithubButton from "./githubButton";
 const NavBar = () => {
   return (
     <nav className='nav-bar'>
-      <div>
+      <div className='nav-bar-left'>
+        <h1 className='my-logo'>[about:Blank]</h1>
         <ul>
           <PageLink to={"/sorting-visualizer/"} text='SORTING' />
           <PageLink to={"/pathfinding-visualizer/"} text='PATHFINDING' />

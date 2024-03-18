@@ -28,6 +28,19 @@
   display: flex;
 }
 
+.my-logo {
+  color: var(--color-500);
+  user-select: none;
+  margin: 0;
+}
+
+.nav-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-left: 0.5rem;
+}
+
 .nav-bar-right {
   display: flex;
   align-items: center;

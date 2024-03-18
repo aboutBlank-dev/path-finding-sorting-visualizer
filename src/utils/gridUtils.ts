@@ -52,9 +52,9 @@ export class GridUtils {
     const neighbors: Coordinate[] = [];
 
     const dirs = [
+      [0, -1], //down
       [0, 1], //up
       [1, 0], //right
-      [0, -1], //down
       [-1, 0], //left
     ];
 

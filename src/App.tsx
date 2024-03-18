@@ -32,11 +32,11 @@ function App() {
   };
 
   const sortingRoutes = sortingUrls.map((url) => (
-    <Route path={url} element={<SortingPage />} />
+    <Route key='sorting' path={url} element={<SortingPage />} />
   ));
 
   const pathfindingRoutes = pathfindingUrls.map((url) => (
-    <Route path={url} element={<PathfindingPage />} />
+    <Route key='pathfinding' path={url} element={<PathfindingPage />} />
   ));
 
   return (
