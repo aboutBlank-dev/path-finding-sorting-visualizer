@@ -40,7 +40,7 @@ export class NotePlayer {
       this.ctx.resume();
     }
 
-    note.gain.gain.linearRampToValueAtTime(1.0, this.ctx.currentTime + 0.05);
+    note.gain.gain.linearRampToValueAtTime(1, this.ctx.currentTime + 0.05);
     note.osc.connect(note.gain);
     note.gain.connect(this.compressor);
 

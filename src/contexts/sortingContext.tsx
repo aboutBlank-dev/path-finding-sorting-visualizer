@@ -9,6 +9,10 @@ import {
   SortingAlgorithm,
   isValidSortingAlgorithm,
 } from "../types/sortingAlgorithm";
+import insertionSort from "../algorithms/sorting/insertion";
+import gnomeSort from "../algorithms/sorting/gnome";
+import mergeSort from "../algorithms/sorting/merge";
+import heapSort from "../algorithms/sorting/heap";
 
 export const DEFAULT_SORTING_ALGORITHM = SortingAlgorithm.QUICK;
 const DEFAULT_INPUT_SIZE = 100;
@@ -28,8 +32,7 @@ export type SortingContextType = {
   setPlaybackTime: (time: number) => void;
   audioEnabled: boolean;
   setAudioEnabled: (enabled: boolean) => void;
-
-  playStepAudio: (step: SortingIterationStep) => void;
+  playStepAudio: (step: SortingIterationStep, values: number[]) => void;
   iterationSteps: SortingIterationStep[];
 };
 
@@ -106,15 +109,16 @@ export function SortingContextProvider({
     generateInput();
   }, []);
 
-  const playStepAudio = (step: SortingIterationStep) => {
+  const playStepAudio = (step: SortingIterationStep, values: number[]) => {
     if (!step || !notePlayer) return;
     if (!audioEnabled) return;
 
-    let ratio = step.indexes[1] / iterationSteps.length;
-    let frequency = MIN_FREQUENCY + ratio * (MAX_FREQUENCY - MIN_FREQUENCY);
+    const averageValue = values.reduce((a, b) => a + b, 0) / values.length;
+    //calculate frequency. The higher the average value, the higher the frequency
+    let frequency = MIN_FREQUENCY + (averageValue / inputSize) * MAX_FREQUENCY;
 
     let note = new Note(notePlayer.ctx!, frequency, "sine");
-    notePlayer.playNote(note, 0.2);
+    notePlayer.playNote(note, 0.1);
   };
 
   return (
@@ -154,5 +158,13 @@ function sort(input: number[], algorithm: SortingAlgorithm) {
       return quickSort(inputCopy);
     case SortingAlgorithm.BUBBLE:
       return bubbleSort(inputCopy);
+    case SortingAlgorithm.INSERTION:
+      return insertionSort(inputCopy);
+    case SortingAlgorithm.GNOME:
+      return gnomeSort(inputCopy);
+    case SortingAlgorithm.MERGE:
+      return mergeSort(inputCopy);
+    case SortingAlgorithm.HEAP:
+      return heapSort(inputCopy);
   }
 }

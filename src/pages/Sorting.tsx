@@ -39,7 +39,7 @@ export default function Sorting() {
         ) : (
           <SortingControlsPanel
             order={1}
-            defaultSize={33}
+            defaultSize={20}
             id='sorting-controls-panel'
           />
         )}
@@ -53,7 +53,7 @@ export default function Sorting() {
         ) : (
           <SortingVisualizePanel
             order={2}
-            defaultSize={67}
+            defaultSize={80}
             id='sorting-visualize-panel'
           />
         )}

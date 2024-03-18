@@ -7,12 +7,25 @@ import { getSortingDataIteration } from "../../types/sortingIterationStep";
 
 export default function SortingVisualizePanel(props: PanelProps) {
   const [activeStepIndex, setActiveStepIndex] = useState(0);
+  const [dataState, setDataState] = useState<number[]>([]);
   const sortingContext = useSorting();
 
   const onActiveStepChange = (index: number) => {
     if (index !== activeStepIndex) {
       setActiveStepIndex(index);
-      sortingContext.playStepAudio(sortingContext.iterationSteps[index]);
+      const newDataState = getSortingDataIteration(index, sortingContext);
+      setDataState(newDataState);
+
+      //sound
+      const values = [];
+      for (const indexes of sortingContext.iterationSteps[index].indexes) {
+        values.push(newDataState[indexes]);
+      }
+
+      sortingContext.playStepAudio(
+        sortingContext.iterationSteps[index],
+        values
+      );
     }
   };
 

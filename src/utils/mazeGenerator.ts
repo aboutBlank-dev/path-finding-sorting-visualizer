@@ -13,7 +13,7 @@ export class MazeUtils {
    * Generates a maze using the recursive backtracking algorithm.
    * https://en.wikipedia.org/wiki/Maze_generation_algorithm#Recursive_backtracker
    *
-   * @returns mazeGrid: modified inputGrid with a maze
+   * @returns mazeGrid: modified grid with a maze (added wall nodes and possibly moved start and end nodes)
    * @returns mazeGenerationSteps: the steps taken to generate the maze
    */
   static generateMaze(
@@ -30,6 +30,7 @@ export class MazeUtils {
     });
 
     const mazeGenerationSteps: MazeGenerationStep[] = []; //Used for Visualizing the maze generation
+
     //Add an empty step to start (so that index 0 shows an empty grid)
     const allCoords = new Array(inputGrid.width * inputGrid.height)
       .fill(null)
@@ -39,6 +40,7 @@ export class MazeUtils {
           y: i % inputGrid.width,
         };
       });
+
     mazeGenerationSteps.push({
       coords: allCoords,
       action: MazeGenerationStepAction.REMOVE_WALL,
@@ -107,8 +109,8 @@ export class MazeUtils {
       }
     }
 
-    let startPosition = { x: -1, y: -1 };
     //Find an empty cell for the start node (As close to top left corner as possible).
+    let startPosition = { x: -1, y: -1 };
     loop: for (let x = 0; x < newGrid.length; x++) {
       for (let y = 0; y < newGrid[x].length; y++) {
         if (newGrid[x][y].nodeType === GridNodeType.EMPTY) {
@@ -119,8 +121,8 @@ export class MazeUtils {
       }
     }
 
-    let endPosition = { x: -1, y: -1 };
     //Find an empty cell for the end node( As close to bottom right corner as possible).
+    let endPosition = { x: -1, y: -1 };
     loop: for (let x = newGrid.length - 1; x >= 0; x--) {
       for (let y = newGrid[x].length - 1; y >= 0; y--) {
         if (newGrid[x][y].nodeType === GridNodeType.EMPTY) {
@@ -131,6 +133,7 @@ export class MazeUtils {
       }
     }
 
+    //Add the "moving"of the start and end nodes to the mazeGenerationSteps
     mazeGenerationSteps.push({
       coords: [startPosition],
       action: MazeGenerationStepAction.ADD_START,
@@ -152,7 +155,9 @@ export class MazeUtils {
   }
 }
 
-// For mazes, we want to get neighbors that are *2* cells away, since the walls are 1 cell thick
+/**
+ * For maze generation, we want to get neighbors that are *2* cells away, since the walls are 1 cell thick
+ */
 function getNeighbors(cell: GridNode, grid: GridNode[][]): GridNode[] {
   const neighbors: GridNode[] = [];
 

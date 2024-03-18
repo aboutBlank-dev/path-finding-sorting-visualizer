@@ -1,6 +1,10 @@
 export enum SortingAlgorithm {
   BUBBLE = "bubble",
   QUICK = "quick",
+  INSERTION = "insertion",
+  GNOME = "gnome",
+  MERGE = "merge",
+  HEAP = "heap",
 }
 
 export function isValidSortingAlgorithm(

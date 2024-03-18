@@ -35,12 +35,12 @@ export default function SortingCanvas({ data, swap, ...props }: CanvasProps) {
           const [i, j] = swap;
           const xPos1 = (i * canvas.width) / data.length;
           const xPos2 = (j * canvas.width) / data.length;
-          const width = canvas.width / data.length;
+          const width = canvas.width / data.length + 1;
           const height1 = (data[i] * canvas.height) / data.length;
           const height2 = (data[j] * canvas.height) / data.length;
           ctx.fillStyle = "green";
-          ctx.fillRect(xPos1 - 1, canvas.height - height1, width + 1, height1);
-          ctx.fillRect(xPos2 - 1, canvas.height - height2, width + 1, height2);
+          ctx.fillRect(xPos1, canvas.height - height1, width, height1);
+          ctx.fillRect(xPos2, canvas.height - height2, width, height2);
         }
       }
     }

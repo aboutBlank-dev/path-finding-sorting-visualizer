@@ -3,11 +3,13 @@ import { SortingContextType } from "../contexts/sortingContext";
 type SortingIterationStep = {
   action: SortingIterationStepAction;
   indexes: number[];
+  insert?: number;
 };
 
 export enum SortingIterationStepAction {
   NONE = "NONE",
   SWAP = "SWAP",
+  INSERT = "INSERT",
 }
 
 /**
@@ -30,13 +32,25 @@ export function getSortingDataIteration(
     stepIndex,
     sortingContext.iterationSteps.length - 1
   );
+
   for (let i = 0; i <= maxStepIndex; i++) {
     const step = sortingContext.iterationSteps[i];
-    if (step.indexes && step.indexes.length === 2) {
-      const [a, b] = step.indexes;
-      [dataState[a], dataState[b]] = [dataState[b], dataState[a]];
+
+    switch (step.action) {
+      case SortingIterationStepAction.SWAP:
+        const [a, b] = step.indexes;
+        [dataState[a], dataState[b]] = [dataState[b], dataState[a]];
+        break;
+      case SortingIterationStepAction.INSERT:
+        if (step.insert !== undefined) {
+          for (let i = 0; i < step.indexes.length; i++) {
+            dataState[step.indexes[i]] = step.insert;
+          }
+        }
+        break;
     }
   }
+
   return dataState;
 }
 

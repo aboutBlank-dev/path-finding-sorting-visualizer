@@ -8,7 +8,7 @@
 .outline-card {
   background-color: var(--bg-color-2);
   border: 2px solid black;
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
   font-size: 1rem;
   color: var(--text-color);
   padding: 0.5rem;
