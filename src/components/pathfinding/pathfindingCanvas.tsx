@@ -349,31 +349,61 @@ const drawPathfindingSteps = (
   cellWidth: number,
   cellHeight: number
 ) => {
-  for (let i = 0; i < pathfindingSteps.length; i++) {
+  let pathStartIndex = -1;
+  loop: for (let i = 0; i < pathfindingSteps.length; i++) {
     const step = pathfindingSteps[i];
     switch (step.action) {
       case PathfindingIterationStepAction.VISIT:
         ctx.fillStyle = "rgba(0, 0, 100, 0.5)";
+
+        if (i == pathfindingSteps.length - 1) {
+          ctx.fillStyle = "purple";
+        }
+
+        step.coordinates.forEach((coord) => {
+          ctx.fillRect(
+            Math.floor(coord.y * cellWidth),
+            Math.floor(coord.x * cellHeight),
+            Math.floor(cellWidth) + 1,
+            Math.floor(cellHeight) + 1
+          );
+        });
         break;
+
       case PathfindingIterationStepAction.PATH:
-        ctx.fillStyle = "rgb(0, 255, 0)";
-        break;
+        pathStartIndex = i;
+        break loop;
+
       default:
         return;
     }
+  }
 
-    if (i == pathfindingSteps.length - 1) {
-      ctx.fillStyle = "purple";
+  //Draw the path if there is one
+  if (pathStartIndex !== -1) {
+    //draw a curved line through the path
+    ctx.strokeStyle = "yellow";
+    ctx.lineWidth = cellWidth / 3;
+    ctx.lineCap = "round";
+    ctx.beginPath();
+    ctx.moveTo(
+      pathfindingSteps[pathStartIndex].coordinates[0].y * cellWidth +
+        cellWidth / 2,
+      pathfindingSteps[pathStartIndex].coordinates[0].x * cellHeight +
+        cellHeight / 2
+    );
+
+    for (let i = pathStartIndex; i < pathfindingSteps.length; i++) {
+      const step = pathfindingSteps[i];
+      if (step.action === PathfindingIterationStepAction.PATH) {
+        ctx.lineTo(
+          step.coordinates[0].y * cellWidth + cellWidth / 2,
+          step.coordinates[0].x * cellHeight + cellHeight / 2
+        );
+      }
     }
 
-    step.coordinates.forEach((coord) => {
-      ctx.fillRect(
-        Math.floor(coord.y * cellWidth),
-        Math.floor(coord.x * cellHeight),
-        Math.floor(cellWidth) + 1,
-        Math.floor(cellHeight) + 1
-      );
-    });
+    ctx.stroke();
   }
 };
 
