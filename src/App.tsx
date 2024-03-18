@@ -1,6 +1,6 @@
 import "./App.css";
 import "./pages/Pages.css";
-import "./resizePanels.css";
+import "./ResizePanels.css";
 import NavBar from "./components/navbar";
 import Sorting from "./pages/Sorting";
 import Pathfinding from "./pages/Pathfinding";
