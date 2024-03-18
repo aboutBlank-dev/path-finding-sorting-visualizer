@@ -21,12 +21,6 @@ export default function SortingControlsPanel(props: PanelProps) {
     <Panel {...props} minSize={20}>
       <div className='controls-section'>
         <h1 className='controls-section-title'>Controls</h1>
-        <button
-          className='outline-card standard-button'
-          onClick={() => sortingContext.generateInput()}
-        >
-          Generate Input
-        </button>
         <DropDown
           id='algorithm-dropdown'
           label='Algorithm'
@@ -34,6 +28,12 @@ export default function SortingControlsPanel(props: PanelProps) {
           options={Object.values(SortingAlgorithm)}
           onChange={onAlgorithmSelected}
         />
+        <button
+          className='outline-card standard-button'
+          onClick={() => sortingContext.generateInput()}
+        >
+          Generate Input
+        </button>
         <NumberInputField
           label='Input Size'
           onChange={(num) => sortingContext.setInputSize(num)}

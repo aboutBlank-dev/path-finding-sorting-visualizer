@@ -5,9 +5,9 @@
   justify-content: space-between;
 }
 
-.label {
-  color: var(--text-color);
-  font-size: 1rem;
+.toggle-label {
+  color: var(--text-header-color);
+  font-size: 0.8rem;
 }
 
 .checkbox {

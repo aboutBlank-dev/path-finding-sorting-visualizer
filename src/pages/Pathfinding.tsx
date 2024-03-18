@@ -40,7 +40,7 @@ export default function Pathfinding() {
         ) : (
           <PathfindingControlsPanel
             order={1}
-            defaultSize={33}
+            defaultSize={20}
             id='pathfinding-controls-panel'
           />
         )}
@@ -54,7 +54,7 @@ export default function Pathfinding() {
         ) : (
           <PathfindingVisualizePanel
             order={2}
-            defaultSize={67}
+            defaultSize={80}
             id='pathfinding-visualize-panel'
           />
         )}

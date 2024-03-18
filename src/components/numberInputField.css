@@ -6,7 +6,8 @@
 
 .number-input-label {
   color: var(--text-header-color);
-  font-size: 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
 }
 
 .number-input-input {

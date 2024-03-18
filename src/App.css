@@ -15,19 +15,37 @@ html * {
 }
 
 .dark {
+  --color-100: #121212;
+  --color-200: #282828;
+  --color-300: #3f3f3f;
+  --color-400: #575757;
+  --color-500: #d4d4d4;
+
   --text-color: white;
   --text-header-color: #f4f4f4;
-  --bg-color-1: #333;
-  --bg-color-2: #444;
+  --bg-color-1: var(--color-100);
+  --bg-color-2: var(--color-200);
 }
 
 .light {
-  --text-color: black;
-  --text-header-color: #333;
-  --bg-color-1: #f4f4f4;
-  --bg-color-2: #e4e4e4;
+  --color-100: #f4efe7;
+  --color-200: #fff8e3;
+  --color-300: #f3d7ca;
+  --color-400: #986211;
+  --color-500: #643f07;
+
+  --text-color: var(--color-600);
+  --text-header-color: var(--color-400);
+  --bg-color-1: var(--color-200);
+  --bg-color-2: var(--color-100);
 }
 
 .capitalize {
   text-transform: capitalize;
+}
+
+.github-logo {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
 }

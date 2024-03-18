@@ -8,6 +8,7 @@ import {
 } from "../../types/pathfindingIterationStep";
 import { PathfindingDrawMode } from "../../contexts/pathfindingContext";
 import { GridUtils } from "../../utils/gridUtils";
+import { ThemeContextType, useTheme } from "../../contexts/themeContext";
 
 export enum PathfindingVisualizeMode {
   MAZE,
@@ -51,11 +52,19 @@ export default function PathfindingCanvas({
   const lastCellClicked = useRef<Coordinate | null>(null);
   const firstDragNodeType = useRef<GridNodeType | null>(null); //used to determine whether the current "drag" should paint WALL or an EMPTY
 
+  const theme = useTheme();
+
   useEffect(() => {
     drawBackground();
     drawForeground();
     drawPathfinding();
-  }, [inputGrid.height, inputGrid.width, containerSize, containerRef]);
+  }, [
+    inputGrid.height,
+    inputGrid.width,
+    containerSize,
+    containerRef,
+    theme.currentTheme,
+  ]);
 
   useEffect(() => {
     drawForeground();
@@ -77,7 +86,8 @@ export default function PathfindingCanvas({
         backgroundCanvas.width,
         backgroundCanvas.height,
         inputGrid.width,
-        inputGrid.height
+        inputGrid.height,
+        theme
       );
     }
   };
@@ -93,7 +103,13 @@ export default function PathfindingCanvas({
       const grid =
         visualizeMode === PathfindingVisualizeMode.MAZE ? mazeGrid : inputGrid;
 
-      drawNodes(ctx, foregroundCanvas.width, foregroundCanvas.height, grid);
+      drawNodes(
+        ctx,
+        foregroundCanvas.width,
+        foregroundCanvas.height,
+        grid,
+        theme
+      );
     }
   };
 
@@ -260,13 +276,15 @@ const drawGridLines = (
   canvasWidth: number,
   canvasHeight: number,
   gridWidth: number,
-  gridHeight: number
+  gridHeight: number,
+  theme: ThemeContextType
 ) => {
   const cellWidth = canvasWidth / gridWidth;
   const cellHeight = canvasHeight / gridHeight;
 
   ctx.lineWidth = GRID_LINE_WIDTH;
-  ctx.strokeStyle = "black";
+  ctx.strokeStyle =
+    theme.currentTheme === "dark" ? "rgb(180, 180, 180)" : "black";
 
   //draw vertical lines
   for (let i = 0; i <= gridWidth; i++) {
@@ -289,7 +307,8 @@ const drawNodes = (
   ctx: CanvasRenderingContext2D,
   canvasWidth: number,
   canvasHeight: number,
-  pathfindingGrid: PathfindingGrid
+  pathfindingGrid: PathfindingGrid,
+  theme: ThemeContextType
 ) => {
   if (pathfindingGrid.grid) {
     const { width, height } = pathfindingGrid;
@@ -300,7 +319,8 @@ const drawNodes = (
       row.forEach((node) => {
         switch (node.nodeType) {
           case GridNodeType.WALL:
-            ctx.fillStyle = "black";
+            ctx.fillStyle =
+              theme.currentTheme === "dark" ? "rgb(180, 180, 180)" : "black";
             break;
           case GridNodeType.START:
             ctx.fillStyle = "green";
@@ -333,10 +353,10 @@ const drawPathfindingSteps = (
     const step = pathfindingSteps[i];
     switch (step.action) {
       case PathfindingIterationStepAction.VISIT:
-        ctx.fillStyle = "blue";
+        ctx.fillStyle = "rgba(0, 0, 100, 0.5)";
         break;
       case PathfindingIterationStepAction.PATH:
-        ctx.fillStyle = "yellow";
+        ctx.fillStyle = "rgb(0, 255, 0)";
         break;
       default:
         return;

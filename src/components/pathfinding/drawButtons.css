@@ -6,11 +6,18 @@
 
 .draw-buttons-container {
   display: flex;
-  justify-content: left;
+  justify-content: center;
   gap: 1rem;
   width: 100%;
   padding-top: 0.5rem;
   overflow: auto;
+}
+
+.draw-buttons-label {
+  font-size: 1rem;
+  color: var(--text-header-color);
+  text-align: center;
+  font-weight: 600;
 }
 
 .draw-button {
@@ -32,7 +39,7 @@
 }
 
 .draw-button.active {
-  background-color: var(--bg-color-1);
+  background-color: var(--color-300);
 }
 
 #WALL {

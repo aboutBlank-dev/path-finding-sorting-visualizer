@@ -7,16 +7,19 @@
 
 .outline-card {
   background-color: var(--bg-color-2);
-  border: 2px solid black;
+  border: 2px solid var(--color-400);
   border-radius: 0.25rem;
   font-size: 1rem;
   color: var(--text-color);
   padding: 0.5rem;
 }
 
-.standard-button:hover {
-  background-color: var(--bg-color-1);
+.standard-button {
   color: var(--text-color);
+}
+
+.standard-button:hover {
+  background-color: var(--color-300);
   cursor: pointer;
 }
 
@@ -50,12 +53,15 @@
 .controls-section-title {
   font-size: 1.5rem;
   text-transform: capitalize;
-  color: var(--text-color);
+  color: var(--color-500);
+  margin-bottom: 0.5rem;
+  margin-top: 0;
 }
 
 .algorithm-title {
   font-size: 1.5rem;
+  font-weight: 600;
   text-align: center;
   text-transform: capitalize;
-  color: var(--text-color);
+  color: var(--color-500);
 }

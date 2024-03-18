@@ -18,11 +18,13 @@ export default function SortingCanvas({ data, swap, ...props }: CanvasProps) {
     const canvas = canvasRef.current;
     const container = containerRef.current;
 
+    const barColor = theme.currentTheme === "light" ? "#986211" : "#d4d4d4";
+
     if (canvas && container) {
       const ctx = canvas.getContext("2d");
       if (ctx) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = theme.currentTheme === "light" ? "black" : "white";
+        ctx.fillStyle = barColor;
         for (let i = 0; i < data.length; i++) {
           const xPos = (i * canvas.width) / data.length;
           const width = canvas.width / data.length + 1; // +1 to avoid micro-gaps

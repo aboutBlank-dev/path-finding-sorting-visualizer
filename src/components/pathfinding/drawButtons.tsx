@@ -12,7 +12,7 @@ export default function DrawButtons({
 }: DrawButtonsProps) {
   return (
     <div className='outline-card draw-buttons-component'>
-      <div> Draw </div>
+      <div className='draw-buttons-label'> Draw </div>
       <div className='draw-buttons-container'>
         <DrawButton
           buttonDrawMode={PathfindingDrawMode.WALL}

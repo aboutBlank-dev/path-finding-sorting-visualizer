@@ -1,25 +1,24 @@
 import { Panel, PanelProps } from "react-resizable-panels";
 import StepSlider from "../stepSlider";
 import SortingCanvas from "./sortingCanvas";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSorting } from "../../contexts/sortingContext";
 import { getSortingDataIteration } from "../../types/sortingIterationStep";
 
 export default function SortingVisualizePanel(props: PanelProps) {
   const [activeStepIndex, setActiveStepIndex] = useState(0);
-  const [dataState, setDataState] = useState<number[]>([]);
+  const dataState = useRef<number[]>([]);
   const sortingContext = useSorting();
 
   const onActiveStepChange = (index: number) => {
     if (index !== activeStepIndex) {
       setActiveStepIndex(index);
-      const newDataState = getSortingDataIteration(index, sortingContext);
-      setDataState(newDataState);
+      dataState.current = getSortingDataIteration(index, sortingContext);
 
       //sound
       const values = [];
       for (const indexes of sortingContext.iterationSteps[index].indexes) {
-        values.push(newDataState[indexes]);
+        values.push(dataState.current[indexes]);
       }
 
       sortingContext.playStepAudio(
@@ -31,7 +30,8 @@ export default function SortingVisualizePanel(props: PanelProps) {
 
   useEffect(() => {
     setActiveStepIndex(0);
-  }, [sortingContext.sortingAlgorithm]);
+    dataState.current = getSortingDataIteration(0, sortingContext);
+  }, [sortingContext.sortingAlgorithm, sortingContext.input]);
 
   return (
     <Panel {...props} minSize={25}>
@@ -41,7 +41,7 @@ export default function SortingVisualizePanel(props: PanelProps) {
             {sortingContext.sortingAlgorithm}
           </span>
           <SortingCanvas
-            data={getSortingDataIteration(activeStepIndex, sortingContext)}
+            data={dataState.current}
             swap={sortingContext.iterationSteps[activeStepIndex]?.indexes ?? []}
           />
           <StepSlider

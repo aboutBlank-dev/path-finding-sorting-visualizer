@@ -75,7 +75,7 @@ export default function StepSlider({
 
   return (
     <div className='step-slider'>
-      <span className='label'>
+      <span className='step-slider-label'>
         {label + ` (${activeStepIndex} / ${maxStepIndex})`}
       </span>
       <div className='slider'>

@@ -2,7 +2,7 @@
   background-color: var(--bg-color-1);
   justify-content: space-between;
   display: flex;
-  padding: 0 1rem;
+  padding: 0 0.5rem;
   align-items: center;
   min-height: var(--nav-height);
   max-height: var(--nav-height);
@@ -10,8 +10,15 @@
 
 .nav-bar a {
   text-decoration: none;
-  color: var(--text-color);
+  color: var(--color-500);
   margin: 0 10px;
+  font-weight: 900;
+  padding: 0.25rem;
+}
+
+/* select any anchor that with the class active */
+.nav-bar a.active {
+  border: 1px solid var(--color-500);
 }
 
 .nav-bar ul {
@@ -19,4 +26,10 @@
   margin: 0;
   list-style: none;
   display: flex;
+}
+
+.nav-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }

@@ -47,7 +47,6 @@ export default function heapSort(input: number[]): SortingIterationStep[] {
   }
 
   sort(input);
-  console.log(input);
 
   return iterationSteps;
 }
