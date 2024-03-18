@@ -10,14 +10,8 @@ const NavBar = () => {
     <nav className='nav-bar'>
       <div>
         <ul>
-          <PageLink
-            to={"/sorting-visualizer/" + DEFAULT_SORTING_ALGORITHM}
-            text='SORTING'
-          />
-          <PageLink
-            to={"/pathfinding-visualizer/" + DEFAULT_PATHFINDING_ALGORITHM}
-            text='PATHFINDING'
-          />
+          <PageLink to={"/sorting-visualizer/"} text='SORTING' />
+          <PageLink to={"/pathfinding-visualizer/"} text='PATHFINDING' />
         </ul>
       </div>
       <div className='nav-bar-right'>
@@ -35,7 +29,10 @@ type PageLinkProps = {
 
 function PageLink({ to, text }: PageLinkProps) {
   const resolvedPath = useResolvedPath(to);
-  const isActive = useMatch({ path: resolvedPath.pathname, end: false });
+  const isActive = useMatch({
+    path: resolvedPath.pathname,
+    end: false,
+  });
 
   return (
     <li>
