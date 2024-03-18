@@ -48,6 +48,11 @@
   background-color: black;
 }
 
+/* select #WALL if body.dark */
+body.dark #WALL {
+  background-color: rgb(180, 180, 180, 0.5);
+}
+
 #START {
   width: 25px;
   height: 25px;
