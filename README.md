@@ -1,30 +1,29 @@
-# React + TypeScript + Vite
+# [Pathfinding and Sorting Visualizer](https://aboutblank.dev/sorting-visualizer/quick)  
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Website to visualize different Sorting and Pathfinding algorithms in a visually satisfying and intuitive way.
+Made using React(vite). Actual visualization makes use of HTML Canvas.
 
-Currently, two official plugins are available:
+## Sorting Visualizer
+Sorting Algorithms available(possibly more in the future):
+* Bubble
+* Quick
+* Insertion
+* Gnome
+* Merge
+* Heap
+  
+![chrome_ZJM5L8gIJ3](https://github.com/aboutBlank-dev/path-finding-sorting-visualizer/assets/48128161/97cf1db1-9a75-4549-bad1-86e7a30a9808)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Pathfinding Visualizer
+Pathfinding Algorithms available(possibly more in the future):
+* Dijkstra
+* A Star
+* Breadth-first Search (BFS)
+* Depth-first Search (DFS)
 
-## Expanding the ESLint configuration
+Maze Generation is also available(also visualizable); using the [recursive backtracking algorithm] (https://en.wikipedia.org/wiki/Maze_generation_algorithm#Recursive_backtracker)
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+You can also "paint" Wall/Empty squares, move the Start and End node and the graph updates responsively.
 
-- Configure the top-level `parserOptions` property like this:
+![chrome_InPOKH9FNZ](https://github.com/aboutBlank-dev/path-finding-sorting-visualizer/assets/48128161/4212d45f-9176-4e26-93a4-64e95f998f56)
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
