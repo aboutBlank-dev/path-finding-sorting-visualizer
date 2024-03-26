@@ -21,7 +21,7 @@ Pathfinding Algorithms available(possibly more in the future):
 * Breadth-first Search (BFS)
 * Depth-first Search (DFS)
 
-Maze Generation is also available(also visualizable); using the [recursive backtracking algorithm] (https://en.wikipedia.org/wiki/Maze_generation_algorithm#Recursive_backtracker)
+Maze Generation is also available(also visualizable); using the [recursive backtracking algorithm](https://en.wikipedia.org/wiki/Maze_generation_algorithm#Recursive_backtracker)
 
 You can also "paint" Wall/Empty squares, move the Start and End node and the graph updates responsively.
 
