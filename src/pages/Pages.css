@@ -1,8 +1,14 @@
 .page {
   width: 100%;
+  padding-top: 1rem;
   height: calc(100vh - var(--nav-height));
   display: flex;
   user-select: none;
+  background: var(--bg-color-1);
+
+  @media screen and (max-width: 768px) {
+    padding-top: 0;
+  }
 }
 
 .outline-card {

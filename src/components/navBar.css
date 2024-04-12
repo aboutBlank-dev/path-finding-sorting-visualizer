@@ -1,5 +1,8 @@
 .nav-bar {
-  background-color: var(--bg-color-1);
+  background-color: var(--color-300);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 10;
   justify-content: space-between;
   display: flex;
   padding: 0 0.5rem;
@@ -16,8 +19,7 @@
 }
 
 .nav-bar li.active {
-  /* background-color: var(--bg-color-2); */
-  background-color: var(--color-400);
+  background-color: var(--bg-color-2);
 }
 
 .nav-bar ul {
@@ -43,12 +45,6 @@
   color: var(--color-500);
 }
 
-@media (max-width: 768px) {
-  .my-logo {
-    display: none;
-  }
-}
-
 .nav-bar-left {
   display: flex;
   align-items: stretch;
@@ -56,9 +52,35 @@
   margin-left: 0.5rem;
 }
 
+.nav-bar-left a {
+  user-select: none;
+}
+
 .nav-bar-right {
   display: flex;
   align-items: center;
   gap: 1rem;
   margin-right: 0.5rem;
+}
+
+/* on Small Screens */
+@media (max-width: 768px) {
+  .nav-bar {
+    font-size: 0.8rem;
+    overflow: hidden;
+  }
+
+  .my-logo {
+    display: none;
+    width: 0px;
+  }
+
+  .nav-bar {
+    padding: 0;
+  }
+
+  .nav-bar-left {
+    gap: 0;
+    margin-left: 0;
+  }
 }
