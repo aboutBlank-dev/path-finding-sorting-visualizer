@@ -3,7 +3,6 @@
   justify-content: space-between;
   display: flex;
   padding: 0 0.5rem;
-  align-items: center;
   min-height: var(--nav-height);
   max-height: var(--nav-height);
 }
@@ -16,9 +15,9 @@
   padding: 0.25rem;
 }
 
-/* select any anchor that with the class active */
-.nav-bar a.active {
-  border: 1px solid var(--color-500);
+.nav-bar li.active {
+  /* background-color: var(--bg-color-2); */
+  background-color: var(--color-400);
 }
 
 .nav-bar ul {
@@ -26,17 +25,33 @@
   margin: 0;
   list-style: none;
   display: flex;
+  align-items: stretch;
+}
+
+.nav-bar li {
+  display: flex;
+  align-items: center;
+}
+
+.my-logo-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .my-logo {
   color: var(--color-500);
-  user-select: none;
-  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .my-logo {
+    display: none;
+  }
 }
 
 .nav-bar-left {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   gap: 1rem;
   margin-left: 0.5rem;
 }

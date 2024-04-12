@@ -7,7 +7,9 @@ const NavBar = () => {
   return (
     <nav className='nav-bar'>
       <div className='nav-bar-left'>
-        <h1 className='my-logo'>[about:Blank]</h1>
+        <div className='my-logo-container'>
+          <h1 className='my-logo'>[about:Blank]</h1>
+        </div>
         <ul>
           <PageLink to={"/sorting-visualizer/"} text='SORTING' />
           <PageLink to={"/pathfinding-visualizer/"} text='PATHFINDING' />
@@ -34,10 +36,8 @@ function PageLink({ to, text }: PageLinkProps) {
   });
 
   return (
-    <li>
-      <Link to={to} className={isActive ? "active" : ""}>
-        {text}
-      </Link>
+    <li className={isActive ? "active" : ""}>
+      <Link to={to}>{text}</Link>
     </li>
   );
 }
